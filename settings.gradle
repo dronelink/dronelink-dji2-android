@@ -1,0 +1,2 @@
+include ':dronelink_dji2'
+rootProject.name='DronelinkDJI2'
