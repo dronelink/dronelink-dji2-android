@@ -77,6 +77,7 @@ import dji.sdk.keyvalue.value.flightcontroller.AirSenseSystemInformation;
 import dji.sdk.keyvalue.value.flightcontroller.CompassCalibrationState;
 import dji.sdk.keyvalue.value.flightcontroller.CompassSensorState;
 import dji.sdk.keyvalue.value.flightcontroller.FCGoHomeState;
+import dji.sdk.keyvalue.value.flightcontroller.FlightControlAuthorityChangeReason;
 import dji.sdk.keyvalue.value.flightcontroller.FlightMode;
 import dji.sdk.keyvalue.value.flightcontroller.GPSSignalLevel;
 import dji.sdk.keyvalue.value.flightcontroller.WindWarning;
@@ -2847,5 +2848,39 @@ public class DronelinkDJI2 {
             }
         }
         return false;
+    }
+
+    public static String getString(final Context context, final @Nullable FlightControlAuthorityChangeReason value) {
+        if (value != null) {
+            switch (value) {
+                case MSDK_REQUEST:
+                    return context.getString(R.string.DronelinkDJI2_FlightControlAuthorityChangeReason_MSDK_REQUEST);
+                case AUTO_TEST_REQUEST:
+                    return context.getString(R.string.DronelinkDJI2_FlightControlAuthorityChangeReason_AUTO_TEST_REQUEST);
+                case OSDK_REQUEST:
+                    return context.getString(R.string.DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_REQUEST);
+                case RC_LOST:
+                    return context.getString(R.string.DronelinkDJI2_FlightControlAuthorityChangeReason_RC_LOST);
+                case RC_NOT_P_MODE:
+                    return context.getString(R.string.DronelinkDJI2_FlightControlAuthorityChangeReason_RC_NOT_P_MODE);
+                case RC_SWITCH:
+                    return context.getString(R.string.DronelinkDJI2_FlightControlAuthorityChangeReason_RC_SWITCH);
+                case RC_PAUSE_STOP:
+                    return context.getString(R.string.DronelinkDJI2_FlightControlAuthorityChangeReason_RC_PAUSE_STOP);
+                case RC_ONE_KEY_GO_HOME:
+                    return context.getString(R.string.DronelinkDJI2_FlightControlAuthorityChangeReason_RC_ONE_KEY_GO_HOME);
+                case BATTERY_LOW_GO_HOME:
+                    return context.getString(R.string.DronelinkDJI2_FlightControlAuthorityChangeReason_BATTERY_LOW_GO_HOME);
+                case BATTERY_SUPER_LOW_LANDING:
+                    return context.getString(R.string.DronelinkDJI2_FlightControlAuthorityChangeReason_BATTERY_SUPER_LOW_LANDING);
+                case OSDK_LOST:
+                    return context.getString(R.string.DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_LOST);
+                case NEAR_BOUNDARY:
+                    return context.getString(R.string.DronelinkDJI2_FlightControlAuthorityChangeReason_NEAR_BOUNDARY);
+                case UNKNOWN:
+                    return context.getString(R.string.DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN);
+            }
+        }
+        return context.getString(R.string.DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN);
     }
 }

@@ -11,6 +11,7 @@ import android.location.Location;
 
 import com.dronelink.core.Convert;
 import com.dronelink.core.DatedValue;
+import com.dronelink.core.adapters.DroneAdapter;
 import com.dronelink.core.adapters.DroneStateAdapter;
 import com.dronelink.core.kernel.core.Message;
 import com.dronelink.core.kernel.core.Orientation3;
@@ -52,6 +53,7 @@ import dji.v5.manager.diagnostic.DeviceStatusManager;
 public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataListener, WaypointMissionExecuteStateListener {
     private final DJI2ListenerGroup listeners = new DJI2ListenerGroup();
     private final Context context;
+    private final DJI2DroneAdapter drone;
     private Date updated = new Date();
     public FlightMode flightMode;
     private String flightModeString;
@@ -90,8 +92,9 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataLis
     private ObstacleData obstacleData;
     private WaypointMissionExecuteState waypointMissionExecuteState;
 
-    public DJI2DroneStateAdapter(final Context context) {
+    public DJI2DroneStateAdapter(final Context context, final DJI2DroneAdapter drone) {
         this.context = context;
+        this.drone = drone;
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyFlightMode), (oldValue, newValue) -> flightMode = newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyFlightModeString), (oldValue, newValue) -> flightModeString = newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyFlightTimeInSeconds), (oldValue, newValue) -> {
@@ -207,11 +210,11 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataLis
             if (!isHomeLocationSet) {
                 messages.add(new Message(context.getString(R.string.DJI2DroneStateAdapter_statusMessages_homeLocationNotSet_title), Message.Level.DANGER));
             }
+        }
 
-            final Message windWarningMessage = DronelinkDJI2.getMessage(context, windWarning);
-            if (windWarningMessage != null) {
-                messages.add(windWarningMessage);
-            }
+        final Message windWarningMessage = DronelinkDJI2.getMessage(context, windWarning);
+        if (windWarningMessage != null) {
+            messages.add(windWarningMessage);
         }
 
         final List<CompassState> compassStates = this.compassStates;
@@ -233,6 +236,8 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataLis
         if (deviceStatusMessage != null) {
             messages.add(deviceStatusMessage);
         }
+
+        messages.addAll(drone.getStatusMessages());
 
         return messages;
     }

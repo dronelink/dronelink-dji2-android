@@ -10,6 +10,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.dronelink.core.DroneSession;
 import com.dronelink.core.DroneSessionManager;
 import com.dronelink.core.command.Command;
@@ -21,7 +23,10 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import dji.sdk.keyvalue.key.KeyTools;
+import dji.sdk.keyvalue.key.ProductKey;
 import dji.sdk.keyvalue.key.RemoteControllerKey;
+import dji.sdk.keyvalue.value.product.ProductType;
+import dji.v5.common.callback.CommonCallbacks;
 import dji.v5.common.error.IDJIError;
 import dji.v5.common.register.DJISDKInitEvent;
 import dji.v5.manager.KeyManager;
@@ -124,6 +129,25 @@ public class DJI2DroneSessionManager implements DroneSessionManager {
                 public void onRegisterSuccess() {
                     registered = true;
                     Log.i(TAG, "DJI SDK registered successfully");
+
+                    KeyManager.getInstance().listen(KeyTools.createKey(ProductKey.KeyProductType), this, new CommonCallbacks.KeyListener<ProductType>() {
+                        @Override
+                        public void onValueChange(final @Nullable ProductType oldValue, final @Nullable ProductType newValue) {
+                            if (newValue == null || newValue == ProductType.UNKNOWN || newValue == ProductType.UNRECOGNIZED) {
+                                closeSession();
+                            }
+                            else {
+                                if (session != null) {
+                                    closeSession();
+                                }
+
+                                session = new DJI2DroneSession(context, self);
+                                for (final Listener listener : listeners) {
+                                    listener.onOpened(session);
+                                }
+                            }
+                        }
+                    });
                 }
 
                 @Override
@@ -135,19 +159,21 @@ public class DJI2DroneSessionManager implements DroneSessionManager {
 
                 @Override
                 public void onProductDisconnect(int productId) {
-                    closeSession();
+                    //FIXME remove (favoring KeyManager.getInstance().listen(KeyTools.createKey(ProductKey.KeyProductType))
+//                    closeSession();
                 }
 
                 @Override
                 public void onProductConnect(final int productId) {
-                    if (session != null) {
-                        closeSession();
-                    }
-
-                    session = new DJI2DroneSession(context, self);
-                    for (final Listener listener : listeners) {
-                        listener.onOpened(session);
-                    }
+                    //FIXME remove (favoring KeyManager.getInstance().listen(KeyTools.createKey(ProductKey.KeyProductType))
+//                    if (session != null) {
+//                        closeSession();
+//                    }
+//
+//                    session = new DJI2DroneSession(context, self);
+//                    for (final Listener listener : listeners) {
+//                        listener.onOpened(session);
+//                    }
                 }
 
                 @Override

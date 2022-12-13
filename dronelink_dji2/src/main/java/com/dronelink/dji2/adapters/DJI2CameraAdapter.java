@@ -27,6 +27,7 @@ import com.dronelink.core.kernel.command.camera.StartCaptureCameraCommand;
 import com.dronelink.core.kernel.command.camera.StopCaptureCameraCommand;
 import com.dronelink.core.kernel.command.camera.StorageLocationCameraCommand;
 import com.dronelink.core.kernel.command.camera.VideoStreamSourceCameraCommand;
+import com.dronelink.core.kernel.core.Message;
 import com.dronelink.core.kernel.core.enums.CameraMode;
 import com.dronelink.core.kernel.core.enums.CameraPhotoMode;
 import com.dronelink.core.kernel.core.enums.CameraStorageLocation;
@@ -160,9 +161,13 @@ public class DJI2CameraAdapter implements CameraAdapter {
         if (getActiveState().isCapturingVideo()) {
             KeyManager.getInstance().performAction(createKey(CameraKey.KeyStopRecord), null);
         }
-        else if (getActiveState().isCapturing()) {
-            KeyManager.getInstance().performAction(createKey(CameraKey.KeyStopContinuePhoto), null);
+        else if (getActiveState().isCapturingPhotoInterval()) {
+            KeyManager.getInstance().performAction(createKey(CameraKey.KeyStopShootPhoto), null);
         }
+    }
+
+    public List<Message> getStatusMessages() {
+        return getActiveState().getStatusMessages();
     }
 
     @Override

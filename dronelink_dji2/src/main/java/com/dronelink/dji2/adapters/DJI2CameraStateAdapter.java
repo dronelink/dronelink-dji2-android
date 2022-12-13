@@ -26,6 +26,7 @@ import com.dronelink.core.kernel.command.camera.AutoLockGimbalCameraCommand;
 import com.dronelink.core.kernel.command.camera.CameraCommand;
 import com.dronelink.core.kernel.command.camera.ColorCameraCommand;
 import com.dronelink.core.kernel.command.camera.ContrastCameraCommand;
+import com.dronelink.core.kernel.command.camera.DewarpingCameraCommand;
 import com.dronelink.core.kernel.command.camera.DisplayModeCameraCommand;
 import com.dronelink.core.kernel.command.camera.ExposureCompensationCameraCommand;
 import com.dronelink.core.kernel.command.camera.ExposureCompensationStepCameraCommand;
@@ -55,6 +56,7 @@ import com.dronelink.core.kernel.command.camera.VideoStreamSourceCameraCommand;
 import com.dronelink.core.kernel.command.camera.WhiteBalanceCustomCameraCommand;
 import com.dronelink.core.kernel.command.camera.WhiteBalancePresetCameraCommand;
 import com.dronelink.core.kernel.core.CameraFocusCalibration;
+import com.dronelink.core.kernel.core.Message;
 import com.dronelink.core.kernel.core.Point2;
 import com.dronelink.core.kernel.core.enums.CameraAEBCount;
 import com.dronelink.core.kernel.core.enums.CameraAperture;
@@ -104,6 +106,7 @@ import dji.sdk.keyvalue.value.camera.PhotoBurstCount;
 import dji.sdk.keyvalue.value.camera.PhotoFileFormat;
 import dji.sdk.keyvalue.value.camera.PhotoIntervalShootSettings;
 import dji.sdk.keyvalue.value.camera.PhotoRatio;
+import dji.sdk.keyvalue.value.camera.SSDTotalSpace;
 import dji.sdk.keyvalue.value.camera.ThermalDisplayMode;
 import dji.sdk.keyvalue.value.camera.VideoFileCompressionStandard;
 import dji.sdk.keyvalue.value.camera.VideoFileFormat;
@@ -144,8 +147,11 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
     private boolean isSDCardInserted = false;
     private dji.sdk.keyvalue.value.camera.CameraStorageLocation storageLocation;
     private Integer remainingSpaceSDCard;
+    private Integer totalSpaceSDCard;
     private Integer remainingSpaceSSD;
+    private SSDTotalSpace totalSpaceSSD;
     private Integer remainingSpaceInternalStorage;
+    private Integer totalSpaceInternalStorage;
     private Integer availablePhotoCountSDCard;
     private Integer availablePhotoCountSSD;
     private Integer availablePhotoCountInternalStorage;
@@ -184,6 +190,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
     private PhotoRatio photoRatio;
     private boolean lockGimbalDuringShootPhotoEnabled = false;
     private boolean mechanicalShutterEnabled = false;
+    private boolean dewarpingEnabled = false;
 
     public DJI2CameraStateAdapter(final Context context, final DJI2DroneAdapter drone, final ComponentIndexType index, final CameraLensType lensType) {
         this.context = context;
@@ -334,8 +341,11 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
         listeners.init(createKey(CameraKey.KeyCameraSDCardInserted), (oldValue, newValue) -> isSDCardInserted = newValue != null && newValue);
         listeners.init(createKey(CameraKey.KeyCameraStorageLocation), (oldValue, newValue) -> storageLocation = newValue);
         listeners.init(createKey(CameraKey.KeySDCardRemainSpace), (oldValue, newValue) -> remainingSpaceSDCard = newValue);
+        listeners.init(createKey(CameraKey.KeySDCardTotalSpace), (oldValue, newValue) -> totalSpaceSDCard = newValue);
         listeners.init(createKey(CameraKey.KeySSDRemainingSpaceInMB), (oldValue, newValue) -> remainingSpaceSSD = newValue);
+        listeners.init(createKey(CameraKey.KeySSDTotalSpace), (oldValue, newValue) -> totalSpaceSSD = newValue);
         listeners.init(createKey(CameraKey.KeyInternalStorageRemainSpace), (oldValue, newValue) -> remainingSpaceInternalStorage = newValue);
+        listeners.init(createKey(CameraKey.KeyInternalStorageTotalSpace), (oldValue, newValue) -> totalSpaceInternalStorage = newValue);
         listeners.init(createKey(CameraKey.KeySDCardAvailablePhotoCount), (oldValue, newValue) -> availablePhotoCountSDCard = newValue);
         listeners.init(createKey(CameraKey.KeyInternalSSDAvailablePhotoCount), (oldValue, newValue) -> availablePhotoCountSSD = newValue);
         listeners.init(createKey(CameraKey.KeyInternalStorageAvailablePhotoCount), (oldValue, newValue) -> availablePhotoCountInternalStorage = newValue);
@@ -383,6 +393,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
         listeners.init(createLensKey(CameraKey.KeyPhotoRatio), (oldValue, newValue) -> photoRatio = newValue);
         listeners.init(createLensKey(CameraKey.KeyLockGimbalDuringShootPhotoEnabled), (oldValue, newValue) -> lockGimbalDuringShootPhotoEnabled = newValue != null && newValue);
         listeners.init(createLensKey(CameraKey.KeyMechanicalShutterEnabled), (oldValue, newValue) -> mechanicalShutterEnabled = newValue != null && newValue);
+        listeners.init(createLensKey(CameraKey.KeyDewarpingEnabled), (oldValue, newValue) -> dewarpingEnabled = newValue != null && newValue);
     }
 
     private <T> DJIKey<T> createKey(final DJIKeyInfo<T> keyInfo) {
@@ -399,6 +410,28 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
 
     public DatedValue<CameraStateAdapter> asDatedValue() {
         return new DatedValue<>(this, new Date());
+    }
+
+    public List<Message> getStatusMessages() {
+        final List<Message> messages = new ArrayList<>();
+
+        final Long storageRemainingSpace = getStorageRemainingSpace();
+        if (storageRemainingSpace != null) {
+            final String storageName = Dronelink.getInstance().formatEnum("CameraStorageLocation", Kernel.enumRawValue(getStorageLocation()), "");
+            int percentFull = 0;
+            final Long storageTotalSpace = getStorageTotalSpace();
+            if (storageTotalSpace != null && storageTotalSpace > 0) {
+                percentFull = 100 - (int)(Math.min(1.0, (storageRemainingSpace.doubleValue() / storageTotalSpace.doubleValue())) * 100.0);
+            }
+
+            if (storageRemainingSpace == 0 || percentFull == 100) {
+                messages.add(new Message(context.getString(R.string.DJI2CameraStateAdapter_statusMessages_storage_remaining_space_none_title, storageName), Message.Level.WARNING));
+            } else if (percentFull >= 90) {
+                messages.add(new Message(context.getString(R.string.DJI2CameraStateAdapter_statusMessages_storage_remaining_space_low_title, storageName, percentFull), Message.Level.WARNING));
+            }
+        }
+
+        return messages;
     }
 
     @Override
@@ -436,8 +469,9 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
         }
 
         if (getMode() == CameraMode.PHOTO && getPhotoMode() == CameraPhotoMode.INTERVAL) {
+            final Double photoInterval = getPhotoInterval();
             //0.7s doesn't work with photoIntervalCountdown
-            if (getPhotoInterval() < 1 && (System.currentTimeMillis() - isShootingPhotoUpdated.getTime()) < getPhotoInterval() * 1000) {
+            if (photoInterval != null && photoInterval < 1 && (System.currentTimeMillis() - isShootingPhotoUpdated.getTime()) < photoInterval * 1000) {
                 return true;
             }
             return isShootingPhoto;
@@ -483,6 +517,47 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
                 break;
             case INTERNAL_SSD:
                 value = remainingSpaceSSD;
+                break;
+            case UNKNOWN:
+                break;
+        }
+
+        if (value == null) {
+            return null;
+        }
+
+        return value.longValue() * 1024 * 1014;
+    }
+
+    public Long getStorageTotalSpace() {
+        Integer value = null;
+        switch (getStorageLocation()) {
+            case SD_CARD:
+                value = totalSpaceSDCard;
+                break;
+            case INTERNAL:
+                value = totalSpaceInternalStorage;
+                break;
+            case INTERNAL_SSD:
+                final SSDTotalSpace totalSpace = totalSpaceSSD;
+                if (totalSpace != null) {
+                    switch (totalSpaceSSD) {
+                        case SPACE_256GB:
+                            value = 256 * 1000;
+                            break;
+
+                        case SPACE_512GB:
+                            value = 512 * 1000;
+                            break;
+
+                        case SPACE_1TB:
+                            value = 1024 * 1000;
+                            break;
+
+                        case UNKNOWN:
+                            break;
+                    }
+                }
                 break;
             case UNKNOWN:
                 break;
@@ -740,15 +815,6 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
             return null;
         }
 
-        if (command instanceof DisplayModeCameraCommand) {
-            final CameraDisplayMode target = ((DisplayModeCameraCommand) command).displayMode;
-            Command.conditionallyExecute(target != DronelinkDJI2.getCameraDisplayMode(displayMode), finished, () -> KeyManager.getInstance().setValue(
-                    createLensKey(CameraKey.KeyThermalDisplayMode),
-                    DronelinkDJI2.getCameraDisplayMode(target),
-                    DronelinkDJI2.createCompletionCallback(finished)));
-            return null;
-        }
-
         if (command instanceof ColorCameraCommand) {
             final CameraColor target = ((ColorCameraCommand) command).color;
             Command.conditionallyExecute(target != DronelinkDJI2.getCameraColor(color), finished, () -> KeyManager.getInstance().setValue(
@@ -762,6 +828,24 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
             Command.conditionallyExecute(contrast == null || target != contrast, finished, () -> KeyManager.getInstance().setValue(
                     createLensKey(CameraKey.KeyContrast),
                     target,
+                    DronelinkDJI2.createCompletionCallback(finished)));
+            return null;
+        }
+
+        if (command instanceof DewarpingCameraCommand) {
+            final boolean target = ((DewarpingCameraCommand) command).enabled;
+            Command.conditionallyExecute(target != dewarpingEnabled, finished, () -> KeyManager.getInstance().setValue(
+                    createLensKey(CameraKey.KeyDewarpingEnabled),
+                    target,
+                    DronelinkDJI2.createCompletionCallback(finished)));
+            return null;
+        }
+
+        if (command instanceof DisplayModeCameraCommand) {
+            final CameraDisplayMode target = ((DisplayModeCameraCommand) command).displayMode;
+            Command.conditionallyExecute(target != DronelinkDJI2.getCameraDisplayMode(displayMode), finished, () -> KeyManager.getInstance().setValue(
+                    createLensKey(CameraKey.KeyThermalDisplayMode),
+                    DronelinkDJI2.getCameraDisplayMode(target),
                     DronelinkDJI2.createCompletionCallback(finished)));
             return null;
         }

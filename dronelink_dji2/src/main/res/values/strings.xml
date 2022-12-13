@@ -1,7 +1,6 @@
 <resources>
     <string name="MissionDisengageReason_drone_disconnected_title">Drone Disconnected</string>
     <string name="MissionDisengageReason_drone_control_override_title">Automatic Control Interrupted</string>
-    <string name="MissionDisengageReason_drone_control_override_details">The drone must remain in P-GPS flight mode for automatic control.</string>
     <string name="MissionDisengageReason_take_off_failed_title">Unable to Take Off</string>
     <string name="MissionDisengageReason_take_control_failed_title">Unable to Take Control</string>
     <string name="MissionDisengageReason_telemetry_delayed_title">Weak Signal</string>
@@ -29,6 +28,8 @@
     <string name="DJI2CameraStateAdapter_cameraCommand_focus_target_error">Camera Busy</string>
     <string name="DJI2CameraStateAdapter_cameraCommand_focus_target_ring_invalid">Focus Ring Outside Limits:</string>
     <string name="DJI2CameraStateAdapter_cameraCommand_focus_distance_error">Uncalibrated Focus Distance</string>
+    <string name="DJI2CameraStateAdapter_statusMessages_storage_remaining_space_none_title">%1$s Full</string>
+    <string name="DJI2CameraStateAdapter_statusMessages_storage_remaining_space_low_title">%1$s %2$d%% Full</string>
     <string name="DJI2GimbalAdapter_gimbalCommand_orientation_not_achieved">Gimbal Not Rotated</string>
     <string name="DronelinkDJI2_AirSenseAirplaneState_title">AirSense Alert</string>
     <string name="DronelinkDJI2_AirSenseAirplaneState_message">Aircraft %1$s at %2$s %3$s</string>
@@ -81,4 +82,17 @@
     <string name="DronelinkDJI2_DJIWaypointMissionState_value_INTERRUPTED">Interrupted</string>
     <string name="DronelinkDJI2_DJIWaypointMissionState_value_RECOVERING">Recovering</string>
     <string name="DronelinkDJI2_DJIWaypointMissionState_value_RETURN_TO_START_POINT">Return to Start</string>
+    <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_MSDK_REQUEST">MSDK Request</string>
+    <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_AUTO_TEST_REQUEST">Auto Test Request</string>
+    <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_REQUEST">OSDK Request</string>
+    <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_RC_LOST">RC Disconnected</string>
+    <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_RC_NOT_P_MODE">RC Not in P-Mode</string>
+    <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_RC_SWITCH">RC Flight Mode Switched</string>
+    <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_RC_PAUSE_STOP">RC Pause</string>
+    <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_RC_ONE_KEY_GO_HOME">RTH Activated</string>
+    <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_BATTERY_LOW_GO_HOME">Low Battery RTH</string>
+    <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_BATTERY_SUPER_LOW_LANDING">Low Battery Landing</string>
+    <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_LOST">OSDK Lost</string>
+    <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_NEAR_BOUNDARY">Near Boundary</string>
+    <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN">Unknown</string>
 </resources>

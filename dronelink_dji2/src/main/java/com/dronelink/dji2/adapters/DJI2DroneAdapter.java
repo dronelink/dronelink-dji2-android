@@ -10,7 +10,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.dronelink.core.Convert;
@@ -34,6 +33,7 @@ import com.dronelink.core.kernel.command.drone.MaxAltitudeDroneCommand;
 import com.dronelink.core.kernel.command.drone.RemoteControllerSticksDroneCommand;
 import com.dronelink.core.kernel.command.drone.ReturnHomeAltitudeDroneCommand;
 import com.dronelink.core.kernel.command.drone.VelocityDroneCommand;
+import com.dronelink.core.kernel.core.Message;
 import com.dronelink.core.kernel.core.Orientation3;
 import com.dronelink.core.kernel.core.Vector2;
 import com.dronelink.core.kernel.core.enums.GimbalMode;
@@ -47,8 +47,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import dji.sdk.keyvalue.key.BatteryKey;
 import dji.sdk.keyvalue.key.CameraKey;
@@ -64,19 +62,11 @@ import dji.sdk.keyvalue.value.flightcontroller.VirtualStickFlightControlParam;
 import dji.sdk.keyvalue.value.flightcontroller.YawControlMode;
 import dji.sdk.keyvalue.value.product.ProductType;
 import dji.v5.common.callback.CommonCallbacks;
-import dji.v5.common.error.IDJIError;
 import dji.v5.manager.KeyManager;
 import dji.v5.manager.aircraft.virtualstick.VirtualStickManager;
 import dji.v5.manager.aircraft.virtualstick.VirtualStickRange;
-import dji.v5.manager.datacenter.media.MediaFile;
-import dji.v5.manager.datacenter.media.MediaFileFilter;
-import dji.v5.manager.datacenter.media.MediaFileListData;
-import dji.v5.manager.datacenter.media.MediaFileListState;
-import dji.v5.manager.datacenter.media.MediaFileListStateListener;
-import dji.v5.manager.datacenter.media.MediaManager;
-import dji.v5.manager.datacenter.media.PullMediaFileListParam;
 
-public class DJI2DroneAdapter implements DroneAdapter, MediaFileListStateListener {
+public class DJI2DroneAdapter implements DroneAdapter {
     public interface CameraFileGeneratedCallback {
         void onCameraFileGenerated(final DJI2CameraFile file);
     }
@@ -89,11 +79,6 @@ public class DJI2DroneAdapter implements DroneAdapter, MediaFileListStateListene
     public String firmwarePackageVersion;
     public DJI2DroneStateAdapter state;
 
-    private final Timer pullMediaFileTimer;
-    private boolean pullingMediaFileListState = false;
-    private MediaFileListState mediaFileListState;
-    private final Map<Integer, DJI2CameraFile> pendingCameraFiles = new HashMap<>();
-
     private final DJI2ListenerGroup listeners = new DJI2ListenerGroup();
     private final DJI2RemoteControllerAdapter remoteController;
     private final Map<ComponentIndexType, CameraAdapter> cameras = new HashMap<>();
@@ -101,65 +86,7 @@ public class DJI2DroneAdapter implements DroneAdapter, MediaFileListStateListene
     private final Map<Integer, DJI2BatteryAdapter> batteries = new HashMap<>();
 
     public DJI2DroneAdapter(final Context context, final CommonCallbacks.CompletionCallbackWithParam<String> onSerialNumber, final CameraFileGeneratedCallback cameraFileReceiver) {
-        state = new DJI2DroneStateAdapter(context);
-
-        MediaManager.getInstance().addMediaFileListStateListener(this);
-
-        pullMediaFileTimer = new Timer();
-        pullMediaFileTimer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                if (pullingMediaFileListState || pendingCameraFiles.size() == 0) {
-                    return;
-                }
-
-                pullingMediaFileListState = true;
-                //disregarding mediaFileListState, seems unreliable and will get stuck in UPDATING, even though it isn't?
-                final PullMediaFileListParam.Builder param = new PullMediaFileListParam.Builder();
-                param.filter(MediaFileFilter.ALL);
-                MediaManager.getInstance().pullMediaFileListFromCamera(param.build(), new CommonCallbacks.CompletionCallback() {
-                    @Override
-                    public void onSuccess() {
-                        Log.d(TAG, "Pulled media file list!");
-
-                        new Handler().post(() -> {
-                            synchronized (pendingCameraFiles) {
-                                if (pendingCameraFiles.size() > 0) {
-                                    final MediaFileListData mediaFileListData = MediaManager.getInstance().getMediaFileListData();
-                                    if (mediaFileListData != null) {
-                                        final List<MediaFile> mediaFiles = mediaFileListData.getData();
-                                        if (mediaFiles != null && mediaFiles.size() > 0) {
-                                            for (final Object pendingCameraFile : pendingCameraFiles.values().toArray()) {
-                                                final DJI2CameraFile cameraFile = (DJI2CameraFile)pendingCameraFile;
-                                                for (final MediaFile mediaFile : mediaFiles) {
-                                                    if (mediaFile.getFileIndex() == cameraFile.generatedMediaFileInfo.getIndex()) {
-                                                        cameraFile.mediaFile = mediaFile;
-                                                        cameraFileReceiver.onCameraFileGenerated(cameraFile);
-                                                        Log.d(TAG, String.format("Camera[%d] file generated: %s, %s",
-                                                                cameraFile.getChannel(),
-                                                                cameraFile.getName(),
-                                                                Convert.HumanReadableByteCount(cameraFile.getSize(), true)));
-                                                        pendingCameraFiles.remove(mediaFile.getFileIndex());
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        });
-
-                        pullingMediaFileListState = false;
-                    }
-
-                    @Override
-                    public void onFailure(final @NonNull IDJIError error) {
-                        Log.e(TAG, "Unable to pull media file list: " + (error.errorCode()));
-                        pullingMediaFileListState = false;
-                    }
-                });
-            }
-        }, 0, 1000);
+        state = new DJI2DroneStateAdapter(context, this);
 
         listeners.init(KeyTools.createKey(FlightControllerKey.KeySerialNumber), (oldValue, newValue) -> {
             if (newValue != null) {
@@ -233,10 +160,13 @@ public class DJI2DroneAdapter implements DroneAdapter, MediaFileListStateListene
                                     orientation.y = 0.0;
                                 }
 
+                                final DJI2CameraFile cameraFile = new DJI2CameraFile(index.value(), info, state.getLocation(), state.getAltitude(), orientation);
                                 new Handler().post(() -> {
-                                    synchronized (pendingCameraFiles) {
-                                        pendingCameraFiles.put(info.getIndex(), new DJI2CameraFile(index.value(), info, state.getLocation(), state.getAltitude(), orientation));
-                                    }
+                                    cameraFileReceiver.onCameraFileGenerated(cameraFile);
+                                    Log.d(TAG, String.format("Camera[%d] file generated: %s, %s",
+                                            cameraFile.getChannel(),
+                                            cameraFile.getName(),
+                                            Convert.HumanReadableByteCount(cameraFile.getSize(), true)));
                                 });
                             }));
                         }
@@ -280,8 +210,6 @@ public class DJI2DroneAdapter implements DroneAdapter, MediaFileListStateListene
     }
 
     public void close() {
-        pullMediaFileTimer.cancel();
-        MediaManager.getInstance().removeMediaFileListStateListener(this);
         listeners.cancelAll();
         state.close();
         remoteController.close();
@@ -303,10 +231,14 @@ public class DJI2DroneAdapter implements DroneAdapter, MediaFileListStateListene
         return state.asDatedValue();
     }
 
-    @Override
-    public void onUpdate(final MediaFileListState mediaFileListState) {
-        this.mediaFileListState = mediaFileListState;
-        //Log.d(TAG, "Media file list state changed: " + mediaFileListState.name());
+    public List<Message> getStatusMessages() {
+        final List<Message> messages = new ArrayList<>();
+
+        for (final CameraAdapter camera : getCameras()) {
+            messages.addAll(((DJI2CameraAdapter)camera).getStatusMessages());
+        }
+
+        return messages;
     }
 
     @Override
@@ -384,6 +316,30 @@ public class DJI2DroneAdapter implements DroneAdapter, MediaFileListStateListene
         }
     }
 
+    private boolean isYawControlModeAngleAvailable() {
+        return false;
+        //TODO test M30 and M300 to see what is possible here
+//        switch (productType) {
+//            case DJI_MAVIC_3:
+//            case DJI_MAVIC_3_ENTERPRISE_SERIES:
+//                return false;
+//
+//            default:
+//                return true;
+//        }
+    }
+
+    private void setVirtualStickFlightControlParamYaw(final VirtualStickFlightControlParam param, final double heading) {
+        if (isYawControlModeAngleAvailable()) {
+            param.setYawControlMode(YawControlMode.ANGLE);
+            param.setYaw(Math.toDegrees(Convert.AngleDifferenceSigned(heading, 0)));
+        }
+        else {
+            param.setYawControlMode(YawControlMode.ANGULAR_VELOCITY);
+            param.setYaw(Math.toDegrees(Convert.AngleDifferenceSigned(heading, state.getOrientation().getYaw()) * 1.5));
+        }
+    }
+
     @Override
     public void sendVelocityCommand(final @Nullable VelocityDroneCommand velocityCommand) {
         if (velocityCommand == null) {
@@ -395,15 +351,23 @@ public class DJI2DroneAdapter implements DroneAdapter, MediaFileListStateListene
         param.setRollPitchControlMode(RollPitchControlMode.VELOCITY);
         param.setRollPitchCoordinateSystem(FlightCoordinateSystem.GROUND);
         param.setVerticalControlMode(VerticalControlMode.VELOCITY);
-        param.setYawControlMode(velocityCommand.heading == null ? YawControlMode.ANGULAR_VELOCITY : YawControlMode.ANGLE);
         final Vector2 horizontal = velocityCommand.velocity.getHorizontal();
         //TODO allow the web to plan missions up to 23 m/s?
         horizontal.magnitude = Math.min(VirtualStickRange.ROLL_PITCH_CONTROL_MAX_VELOCITY, horizontal.magnitude);
         param.setPitch(horizontal.getY());
         param.setRoll(horizontal.getX());
-        param.setYaw(Math.toDegrees(velocityCommand.heading == null ? velocityCommand.velocity.getRotational() : Convert.AngleDifferenceSigned(velocityCommand.heading, 0)));
-        param.setVerticalThrottle(velocityCommand.velocity.getVertical());
-        VirtualStickManager.getInstance().setVirtualStickAdvancedModeEnabled(true);
+        param.setVerticalThrottle(Math.min(
+                VirtualStickRange.VERTICAL_CONTROL_MAX_VELOCITY,
+                Math.max(VirtualStickRange.VERTICAL_CONTROL_MIN_VELOCITY,
+                        velocityCommand.velocity.getVertical())));
+        final Double heading = velocityCommand.heading;
+        if (heading == null) {
+            param.setYawControlMode(YawControlMode.ANGULAR_VELOCITY);
+            param.setYaw(Math.toDegrees(velocityCommand.velocity.getRotational()));
+        }
+        else {
+            setVirtualStickFlightControlParamYaw(param, heading);
+        }
         VirtualStickManager.getInstance().sendVirtualStickAdvancedParam(param);
     }
 
@@ -421,9 +385,15 @@ public class DJI2DroneAdapter implements DroneAdapter, MediaFileListStateListene
         param.setYawControlMode(remoteControllerSticks.heading == null ? YawControlMode.ANGULAR_VELOCITY : YawControlMode.ANGLE);
         param.setPitch((double) (-remoteControllerSticks.rightStick.y * 30));
         param.setRoll((double) (remoteControllerSticks.rightStick.x * 30));
-        param.setYaw(remoteControllerSticks.heading == null ? (double) (remoteControllerSticks.leftStick.x * 100) : (double) Math.toDegrees(Convert.AngleDifferenceSigned(remoteControllerSticks.heading, 0)));
         param.setVerticalThrottle((double) (remoteControllerSticks.leftStick.y * 4.0));
-        VirtualStickManager.getInstance().setVirtualStickAdvancedModeEnabled(true);
+        final Double heading = remoteControllerSticks.heading;
+        if (heading == null) {
+            param.setYawControlMode(YawControlMode.ANGULAR_VELOCITY);
+            param.setYaw((double) (remoteControllerSticks.leftStick.x * 100));
+        }
+        else {
+            setVirtualStickFlightControlParamYaw(param, heading);
+        }
         VirtualStickManager.getInstance().sendVirtualStickAdvancedParam(param);
     }
 
@@ -519,7 +489,6 @@ public class DJI2DroneAdapter implements DroneAdapter, MediaFileListStateListene
         param.setRoll(0.0);
         param.setYaw(0.0);
         param.setVerticalThrottle(0.0);
-        VirtualStickManager.getInstance().setVirtualStickAdvancedModeEnabled(true);
         VirtualStickManager.getInstance().sendVirtualStickAdvancedParam(param);
     }
 

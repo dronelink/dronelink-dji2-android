@@ -21,13 +21,16 @@ import java.util.Date;
 import dji.sdk.keyvalue.key.FlightControllerKey;
 import dji.sdk.keyvalue.key.KeyTools;
 import dji.sdk.keyvalue.value.common.EmptyMsg;
+import dji.sdk.keyvalue.value.flightcontroller.FlightControlAuthorityChangeReason;
 import dji.sdk.keyvalue.value.flightcontroller.FlightMode;
 import dji.v5.common.callback.CommonCallbacks;
 import dji.v5.common.error.IDJIError;
 import dji.v5.manager.KeyManager;
 import dji.v5.manager.aircraft.virtualstick.VirtualStickManager;
+import dji.v5.manager.aircraft.virtualstick.VirtualStickState;
+import dji.v5.manager.aircraft.virtualstick.VirtualStickStateListener;
 
-public class DJI2VirtualStickSession implements DroneControlSession {
+public class DJI2VirtualStickSession implements DroneControlSession, VirtualStickStateListener {
     private static final String TAG = DJI2VirtualStickSession.class.getCanonicalName();
 
     private enum State {
@@ -49,6 +52,7 @@ public class DJI2VirtualStickSession implements DroneControlSession {
     private Date virtualStickAttemptPrevious = null;
     private Date flightModeJoystickAttemptingStarted = null;
     private Message attemptDisengageReason = null;
+    private FlightControlAuthorityChangeReason reason;
 
     public DJI2VirtualStickSession(final Context context, final DJI2DroneAdapter droneAdapter) {
         this.context = context;
@@ -65,8 +69,15 @@ public class DJI2VirtualStickSession implements DroneControlSession {
             return attemptDisengageReason;
         }
 
-        if (state == State.FLIGHT_MODE_JOYSTICK_COMPLETE && droneAdapter.state.flightMode != FlightMode.VIRTUAL_STICK) {
-            return new Message(context.getString(R.string.MissionDisengageReason_drone_control_override_title), context.getString(R.string.MissionDisengageReason_drone_control_override_details));
+        if (state == State.FLIGHT_MODE_JOYSTICK_COMPLETE) {
+            final FlightControlAuthorityChangeReason reason = this.reason;
+            if (reason != null) {
+                return new Message(context.getString(R.string.MissionDisengageReason_drone_control_override_title), DronelinkDJI2.getString(context, reason));
+            }
+
+            if (droneAdapter.state.flightMode != FlightMode.VIRTUAL_STICK && droneAdapter.state.flightMode != FlightMode.GPS_NORMAL) {
+                return new Message(context.getString(R.string.MissionDisengageReason_drone_control_override_title), droneAdapter.state.getMode());
+            }
         }
         return null;
     }
@@ -137,6 +148,8 @@ public class DJI2VirtualStickSession implements DroneControlSession {
                     VirtualStickManager.getInstance().enableVirtualStick(new CommonCallbacks.CompletionCallback() {
                         @Override
                         public void onSuccess() {
+                            VirtualStickManager.getInstance().setVirtualStickAdvancedModeEnabled(true);
+
                             Log.i(TAG, "Virtual stick control enabled");
                             flightModeJoystickAttemptingStarted = new Date();
                             state = State.FLIGHT_MODE_JOYSTICK_ATTEMPTING;
@@ -163,6 +176,7 @@ public class DJI2VirtualStickSession implements DroneControlSession {
                 if (droneAdapter.state.flightMode == FlightMode.VIRTUAL_STICK) {
                     Log.i(TAG, "Flight mode joystick achieved");
                     state = State.FLIGHT_MODE_JOYSTICK_COMPLETE;
+                    VirtualStickManager.getInstance().setVirtualStickStateListener(this);
                     return activate();
                 }
 
@@ -187,6 +201,7 @@ public class DJI2VirtualStickSession implements DroneControlSession {
     }
 
     public void deactivate() {
+        VirtualStickManager.getInstance().removeVirtualStickStateListener(this);
         droneAdapter.sendResetVelocityCommand();
         VirtualStickManager.getInstance().disableVirtualStick(new CommonCallbacks.CompletionCallback() {
             @Override
@@ -200,5 +215,13 @@ public class DJI2VirtualStickSession implements DroneControlSession {
             }
         });
         state = State.DEACTIVATED;
+    }
+    @Override
+    public void onVirtualStickStateUpdate(final @NonNull VirtualStickState stickState) {
+    }
+
+    @Override
+    public void onChangeReasonUpdate(final @NonNull FlightControlAuthorityChangeReason reason) {
+        this.reason = reason;
     }
 }

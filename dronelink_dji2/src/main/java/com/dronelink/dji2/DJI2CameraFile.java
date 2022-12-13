@@ -50,12 +50,13 @@ public class DJI2CameraFile implements CameraFile {
     @SuppressLint("DefaultLocale")
     @Override
     public String getName() {
-        if (mediaFile == null) {
-            return "";
+        //can't use MediaDataCenter.getInstance().getMediaManager() (per DJI's instructions)
+        //because it causes the camera to error when the number of files is too great
+        if (mediaFile != null) {
+            return mediaFile.getFileName();
         }
 
-        return mediaFile.getFileName();
-        //using MediaDataCenter.getInstance().getMediaManager() now (per DJI's instructions)
+        return generatedMediaFileInfo.getDir_no() + "_" + generatedMediaFileInfo.getFile_no() + "_" + generatedMediaFileInfo.getType();
 //        final StringBuilder name = new StringBuilder("DJI_");
 //
 //        DateTime createTime = generatedMediaFileInfo.getCreateTime();
