@@ -9,9 +9,9 @@ package com.dronelink.dji2.adapters;
 import android.content.Context;
 import android.location.Location;
 
+
 import com.dronelink.core.Convert;
 import com.dronelink.core.DatedValue;
-import com.dronelink.core.adapters.DroneAdapter;
 import com.dronelink.core.adapters.DroneStateAdapter;
 import com.dronelink.core.kernel.core.Message;
 import com.dronelink.core.kernel.core.Orientation3;
@@ -26,8 +26,10 @@ import java.util.Date;
 import java.util.List;
 
 import dji.sdk.keyvalue.key.AirLinkKey;
+import dji.sdk.keyvalue.key.FlightAssistantKey;
 import dji.sdk.keyvalue.key.FlightControllerKey;
 import dji.sdk.keyvalue.key.KeyTools;
+import dji.sdk.keyvalue.value.airlink.ChannelSelectionMode;
 import dji.sdk.keyvalue.value.airlink.FrequencyBand;
 import dji.sdk.keyvalue.value.common.Attitude;
 import dji.sdk.keyvalue.value.common.LocationCoordinate2D;
@@ -37,14 +39,14 @@ import dji.sdk.keyvalue.value.flightcontroller.AirSenseSystemInformation;
 import dji.sdk.keyvalue.value.flightcontroller.CompassCalibrationState;
 import dji.sdk.keyvalue.value.flightcontroller.CompassState;
 import dji.sdk.keyvalue.value.flightcontroller.FCGoHomeState;
+import dji.sdk.keyvalue.value.flightcontroller.FailsafeAction;
 import dji.sdk.keyvalue.value.flightcontroller.FlightMode;
 import dji.sdk.keyvalue.value.flightcontroller.GPSSignalLevel;
 import dji.sdk.keyvalue.value.flightcontroller.GoHomeState;
 import dji.sdk.keyvalue.value.flightcontroller.WindWarning;
-import dji.v5.common.callback.CommonCallbacks;
-import dji.v5.manager.aircraft.perception.ObstacleData;
-import dji.v5.manager.aircraft.perception.ObstacleDataListener;
 import dji.v5.manager.aircraft.perception.PerceptionManager;
+import dji.v5.manager.aircraft.perception.data.ObstacleData;
+import dji.v5.manager.aircraft.perception.listener.ObstacleDataListener;
 import dji.v5.manager.aircraft.waypoint3.WaypointMissionExecuteStateListener;
 import dji.v5.manager.aircraft.waypoint3.WaypointMissionManager;
 import dji.v5.manager.aircraft.waypoint3.model.WaypointMissionExecuteState;
@@ -73,11 +75,14 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataLis
     private Integer ultrasonicAltitude;
     public Integer returnHomeAltitude;
     public Integer maxAltitude;
+    public Integer maxDistance;
+    public boolean distanceLimitEnabled = false;
     private boolean isNearDistanceLimit = false;
     public boolean isOutOfDistanceLimit = false;
     private boolean isNearHeightLimit = false;
     private Integer batterPercent;
     public Integer lowBatteryThreshold;
+    public Integer seriousLowBatteryThreshold;
     private boolean isLowBatteryWarning = false;
     private boolean isSeriousLowBatteryWarning = false;
     private Integer flightTimeRemaining;
@@ -86,10 +91,19 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataLis
     private GPSSignalLevel gpsSignalLevel;
     private Integer uplinkQuality;
     private Integer downlinkQuality;
+    public Integer ocuSyncChannel;
+    public ChannelSelectionMode ocuSyncChannelSelectionMode;
     private FrequencyBand ocuSyncFrequencyBand;
     private WindWarning windWarning;
     private AirSenseSystemInformation airSenseSystemInformation;
+    public FailsafeAction failSafeAction;
     private ObstacleData obstacleData;
+    public boolean obstacleAvoidanceEnabled = false;
+    public boolean landingProtectionEnabled = false;
+    public boolean precisionLandingEnabled = false;
+    public boolean returnHomeObstacleAvoidanceEnabled = false;
+    public boolean upwardsAvoidanceEnabled = false;
+    public boolean visionPositioningEnabled = false;
     private WaypointMissionExecuteState waypointMissionExecuteState;
 
     public DJI2DroneStateAdapter(final Context context, final DJI2DroneAdapter drone) {
@@ -115,21 +129,24 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataLis
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyGoHomeState), (oldValue, newValue) -> fcGoHomeState = newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyGoHomeStatus), (oldValue, newValue) -> goHomeState = newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyIsCompassCalibrating), (oldValue, newValue) -> isCompassCalibrating = newValue != null && newValue);
-        listeners.init(KeyTools.createKey(FlightControllerKey.KeyCompassState), (CommonCallbacks.KeyListener<List<CompassState>>) (oldValue, newValue) -> compassStates = newValue);
+        listeners.init(KeyTools.createKey(FlightControllerKey.KeyCompassState), (oldValue, newValue) -> compassStates = newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyCompassCalibrationStatus), (oldValue, newValue) -> compassCalibrationState = newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyAircraftVelocity), (oldValue, newValue) -> velocity = newValue == null ? new Velocity3D() : newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyAltitude), (oldValue, newValue) -> altitude = newValue == null ? 0 : newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyUltrasonicHeight), (oldValue, newValue) -> ultrasonicAltitude = newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyGoHomeHeight), (oldValue, newValue) -> returnHomeAltitude = newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyHeightLimit), (oldValue, newValue) -> maxAltitude = newValue);
+        listeners.init(KeyTools.createKey(FlightControllerKey.KeyDistanceLimit), (oldValue, newValue) -> maxDistance = newValue);
+        listeners.init(KeyTools.createKey(FlightControllerKey.KeyDistanceLimitEnabled), (oldValue, newValue) -> distanceLimitEnabled = newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyIsNearDistanceLimit), (oldValue, newValue) -> isNearDistanceLimit = newValue != null && newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyOutOfDistanceLimit), (oldValue, newValue) -> isOutOfDistanceLimit = newValue != null && newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyIsNearHeightLimit), (oldValue, newValue) -> isNearHeightLimit = newValue != null && newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyIsNearHeightLimit), (oldValue, newValue) -> isNearHeightLimit = newValue != null && newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyBatteryPowerPercent), (oldValue, newValue) -> batterPercent = newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyLowBatteryWarningThreshold), (oldValue, newValue) -> lowBatteryThreshold = newValue);
-        listeners.init(KeyTools.createKey(FlightControllerKey.KeyIsLowBatteryWarning), (CommonCallbacks.KeyListener<Boolean>) (oldValue, newValue) -> isLowBatteryWarning = newValue != null && newValue);
-        listeners.init(KeyTools.createKey(FlightControllerKey.KeyIsSeriousLowBatteryWarning), (CommonCallbacks.KeyListener<Boolean>) (oldValue, newValue) -> isSeriousLowBatteryWarning = newValue != null && newValue);
+        listeners.init(KeyTools.createKey(FlightControllerKey.KeySeriousLowBatteryWarningThreshold), (oldValue, newValue) -> seriousLowBatteryThreshold = newValue);
+        listeners.init(KeyTools.createKey(FlightControllerKey.KeyIsLowBatteryWarning), (oldValue, newValue) -> isLowBatteryWarning = newValue != null && newValue);
+        listeners.init(KeyTools.createKey(FlightControllerKey.KeyIsSeriousLowBatteryWarning), (oldValue, newValue) -> isSeriousLowBatteryWarning = newValue != null && newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyRemainingFlightTime), (oldValue, newValue) -> flightTimeRemaining = newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyAircraftAttitude), (oldValue, newValue) -> {
             updated = new Date();
@@ -139,10 +156,18 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataLis
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyGPSSignalLevel), (oldValue, newValue) -> gpsSignalLevel = newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyWindWarning), (oldValue, newValue) -> windWarning = newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyAirSenseSystemInformation), (oldValue, newValue) -> airSenseSystemInformation = newValue);
+        listeners.init(KeyTools.createKey(FlightControllerKey.KeyFailsafeAction), (oldValue, newValue) -> failSafeAction = newValue);
+        listeners.init(KeyTools.createKey(FlightAssistantKey.KeyObstacleAvoidanceEnabled), (oldValue, newValue) -> obstacleAvoidanceEnabled = newValue != null && newValue);
+        listeners.init(KeyTools.createKey(FlightAssistantKey.KeyLandingProtectionEnabled), (oldValue, newValue) -> landingProtectionEnabled = newValue != null && newValue);
+        listeners.init(KeyTools.createKey(FlightAssistantKey.KeyPrecisionLandingEnabled), (oldValue, newValue) -> precisionLandingEnabled = newValue != null && newValue);
+        listeners.init(KeyTools.createKey(FlightAssistantKey.KeyRTHObstacleAvoidanceEnabled), (oldValue, newValue) -> returnHomeObstacleAvoidanceEnabled = newValue != null && newValue);
+        listeners.init(KeyTools.createKey(FlightAssistantKey.KeyUpwardsAvoidanceEnable), (oldValue, newValue) -> upwardsAvoidanceEnabled = newValue != null && newValue);
+        listeners.init(KeyTools.createKey(FlightAssistantKey.KeyVisionPositioningEnabled), (oldValue, newValue) -> visionPositioningEnabled = newValue != null && newValue);
         listeners.init(KeyTools.createKey(AirLinkKey.KeyUpLinkQuality), (oldValue, newValue) -> uplinkQuality = newValue);
         listeners.init(KeyTools.createKey(AirLinkKey.KeyDownLinkQuality), (oldValue, newValue) -> downlinkQuality = newValue);
+        listeners.init(KeyTools.createKey(AirLinkKey.KeyChannelNumber), (oldValue, newValue) -> ocuSyncChannel = newValue);
+        listeners.init(KeyTools.createKey(AirLinkKey.KeyChannelSelectionMode), (oldValue, newValue) -> ocuSyncChannelSelectionMode = newValue);
         listeners.init(KeyTools.createKey(AirLinkKey.KeyFrequencyBand), (oldValue, newValue) -> ocuSyncFrequencyBand = newValue);
-        //TODO initRemoteController
 
         PerceptionManager.getInstance().addObstacleDataListener(this);
         WaypointMissionManager.getInstance().addWaypointMissionExecuteStateListener(this);

@@ -480,8 +480,18 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
 
     @Override
     public void resetPayloads() {
-        droneAdapter.sendResetGimbalCommands();
-        droneAdapter.sendResetCameraCommands();
+        resetPayloads(true, true);
+    }
+
+    @Override
+    public void resetPayloads(final boolean gimbal, final boolean camera) {
+        if (gimbal) {
+            droneAdapter.sendResetGimbalCommands();
+        }
+
+        if (camera) {
+            droneAdapter.sendResetCameraCommands();
+        }
     }
 
     @Override

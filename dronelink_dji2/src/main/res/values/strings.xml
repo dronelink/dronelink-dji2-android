@@ -11,6 +11,7 @@
     <string name="MissionDisengageReason_drone_camera_unavailable_title">Camera Unavailable</string>
     <string name="MissionDisengageReason_drone_gimbal_unavailable_title">Gimbal Unavailable</string>
     <string name="MissionDisengageReason_command_type_unhandled">Unhandled Command Type</string>
+    <string name="MissionDisengageReason_command_value_invalid">Unable to Set Value</string>
     <string name="DJI2DroneSessionManager_initializing">Initializing DJI SDK</string>
     <string name="DJI2DroneSessionManager_register_failed">Unable to register DJI SDK</string>
     <string name="DJI2DroneSession_serial_number_failed">Serial Number Unavailable</string>
@@ -54,10 +55,10 @@
     <string name="DronelinkDJI2_CompassCalibrationState_value_FAILED">Failed</string>
     <string name="DronelinkDJI2_ProductType_title">Model</string>
     <string name="DronelinkDJI2_ProductType_value_DJI_MAVIC_3_ENTERPRISE_SERIES">Mavic 3 Enterprise</string>
-    <string name="DronelinkDJI2_ProductType_value_DronelinkDJI2_ProductType_M30_SERIES">M30</string>
-    <string name="DronelinkDJI2_ProductType_value_DronelinkDJI2_ProductType_M300_RTK">M300 RTK</string>
-    <string name="DronelinkDJI2_ProductType_value_DronelinkDJI2_ProductType_UNRECOGNIZED">Unrecognized</string>
-    <string name="DronelinkDJI2_ProductType_value_DronelinkDJI2_ProductType_UNKNOWN">Unknown</string>
+    <string name="DronelinkDJI2_ProductType_value_M30_SERIES">M30</string>
+    <string name="DronelinkDJI2_ProductType_value_M300_RTK">M300 RTK</string>
+    <string name="DronelinkDJI2_ProductType_value_UNRECOGNIZED">Unrecognized</string>
+    <string name="DronelinkDJI2_ProductType_value_UNKNOWN">Unknown</string>
     <string name="DronelinkDJI2_WindWarning_title">Wind Warning</string>
     <string name="DronelinkDJI2_WindWarning_LEVEL_1">Strong Wind</string>
     <string name="DronelinkDJI2_WindWarning_LEVEL_2">Very Strong Wind</string>
@@ -76,7 +77,7 @@
     <string name="DronelinkDJI2_DJIWaypointMissionState_title">Onboard Waypoints</string>
     <string name="DronelinkDJI2_DJIWaypointMissionState_value_READY">Ready</string>
     <string name="DronelinkDJI2_DJIWaypointMissionState_value_UPLOADING">Uploading</string>
-    <string name="DronelinkDJI2_DJIWaypointMissionState_value_EXECUTING_PRE_PRARING">Preparing to Execute</string>
+    <string name="DronelinkDJI2_DJIWaypointMissionState_value_PREPARING">Preparing to Execute</string>
     <string name="DronelinkDJI2_DJIWaypointMissionState_value_ENTER_WAYLINE">Enter Wayline</string>
     <string name="DronelinkDJI2_DJIWaypointMissionState_value_EXECUTING">Running</string>
     <string name="DronelinkDJI2_DJIWaypointMissionState_value_INTERRUPTED">Interrupted</string>

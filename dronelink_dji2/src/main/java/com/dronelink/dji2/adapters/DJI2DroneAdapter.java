@@ -27,15 +27,40 @@ import com.dronelink.core.adapters.RemoteControllerAdapter;
 import com.dronelink.core.adapters.RemoteControllerStateAdapter;
 import com.dronelink.core.command.Command;
 import com.dronelink.core.command.CommandError;
+import com.dronelink.core.kernel.command.drone.AccessoryDroneCommand;
+import com.dronelink.core.kernel.command.drone.BeaconDroneCommand;
+import com.dronelink.core.kernel.command.drone.CollisionAvoidanceDroneCommand;
+import com.dronelink.core.kernel.command.drone.ConnectionFailSafeBehaviorDroneCommand;
 import com.dronelink.core.kernel.command.drone.DroneCommand;
+import com.dronelink.core.kernel.command.drone.FlightAssistantDroneCommand;
+import com.dronelink.core.kernel.command.drone.HomeLocationDroneCommand;
+import com.dronelink.core.kernel.command.drone.LandingProtectionDroneCommand;
 import com.dronelink.core.kernel.command.drone.LowBatteryWarningThresholdDroneCommand;
 import com.dronelink.core.kernel.command.drone.MaxAltitudeDroneCommand;
+import com.dronelink.core.kernel.command.drone.MaxDistanceDroneCommand;
+import com.dronelink.core.kernel.command.drone.MaxDistanceLimitationDroneCommand;
+import com.dronelink.core.kernel.command.drone.OcuSyncChannelDroneCommand;
+import com.dronelink.core.kernel.command.drone.OcuSyncChannelSelectionModeDroneCommand;
+import com.dronelink.core.kernel.command.drone.OcuSyncDroneCommand;
+import com.dronelink.core.kernel.command.drone.OcuSyncFrequencyBandDroneCommand;
+import com.dronelink.core.kernel.command.drone.OcuSyncVideoFeedSourcesDroneCommand;
+import com.dronelink.core.kernel.command.drone.PrecisionLandingDroneCommand;
 import com.dronelink.core.kernel.command.drone.RemoteControllerSticksDroneCommand;
 import com.dronelink.core.kernel.command.drone.ReturnHomeAltitudeDroneCommand;
+import com.dronelink.core.kernel.command.drone.ReturnHomeObstacleAvoidanceDroneCommand;
+import com.dronelink.core.kernel.command.drone.ReturnHomeRemoteObstacleAvoidanceDroneCommand;
+import com.dronelink.core.kernel.command.drone.SeriousLowBatteryWarningThresholdDroneCommand;
+import com.dronelink.core.kernel.command.drone.SmartReturnHomeDroneCommand;
+import com.dronelink.core.kernel.command.drone.SpotlightBrightnessDroneCommand;
+import com.dronelink.core.kernel.command.drone.SpotlightDroneCommand;
+import com.dronelink.core.kernel.command.drone.UpwardsAvoidanceDroneCommand;
 import com.dronelink.core.kernel.command.drone.VelocityDroneCommand;
+import com.dronelink.core.kernel.command.drone.VisionAssistedPositioningDroneCommand;
+import com.dronelink.core.kernel.core.GeoCoordinate;
 import com.dronelink.core.kernel.core.Message;
 import com.dronelink.core.kernel.core.Orientation3;
 import com.dronelink.core.kernel.core.Vector2;
+import com.dronelink.core.kernel.core.enums.DroneOcuSyncFrequencyBand;
 import com.dronelink.core.kernel.core.enums.GimbalMode;
 import com.dronelink.dji2.DJI2CameraFile;
 import com.dronelink.dji2.DJI2ListenerGroup;
@@ -48,13 +73,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import dji.sdk.keyvalue.key.AirLinkKey;
 import dji.sdk.keyvalue.key.BatteryKey;
 import dji.sdk.keyvalue.key.CameraKey;
+import dji.sdk.keyvalue.key.FlightAssistantKey;
 import dji.sdk.keyvalue.key.FlightControllerKey;
 import dji.sdk.keyvalue.key.GimbalKey;
 import dji.sdk.keyvalue.key.KeyTools;
 import dji.sdk.keyvalue.key.ProductKey;
+import dji.sdk.keyvalue.value.airlink.ChannelSelectionMode;
 import dji.sdk.keyvalue.value.common.ComponentIndexType;
+import dji.sdk.keyvalue.value.flightcontroller.FailsafeAction;
 import dji.sdk.keyvalue.value.flightcontroller.FlightCoordinateSystem;
 import dji.sdk.keyvalue.value.flightcontroller.RollPitchControlMode;
 import dji.sdk.keyvalue.value.flightcontroller.VerticalControlMode;
@@ -195,7 +224,7 @@ public class DJI2DroneAdapter implements DroneAdapter {
             listeners.init(KeyTools.createKey(BatteryKey.KeyConnection, index), (oldValue, newValue) -> {
                 synchronized (batteries) {
                     if (newValue == null || !newValue) {
-                        final DJI2BatteryAdapter battery = (DJI2BatteryAdapter) batteries.remove(index);
+                        final DJI2BatteryAdapter battery = batteries.remove(index);
                         if (battery != null) {
                             Log.i(TAG, "Battery disconnected: " + index);
                             battery.close();
@@ -383,13 +412,13 @@ public class DJI2DroneAdapter implements DroneAdapter {
         param.setRollPitchCoordinateSystem(FlightCoordinateSystem.BODY);
         param.setVerticalControlMode(VerticalControlMode.VELOCITY);
         param.setYawControlMode(remoteControllerSticks.heading == null ? YawControlMode.ANGULAR_VELOCITY : YawControlMode.ANGLE);
-        param.setPitch((double) (-remoteControllerSticks.rightStick.y * 30));
-        param.setRoll((double) (remoteControllerSticks.rightStick.x * 30));
-        param.setVerticalThrottle((double) (remoteControllerSticks.leftStick.y * 4.0));
+        param.setPitch(-remoteControllerSticks.rightStick.y * 30);
+        param.setRoll(remoteControllerSticks.rightStick.x * 30);
+        param.setVerticalThrottle(remoteControllerSticks.leftStick.y * 4.0);
         final Double heading = remoteControllerSticks.heading;
         if (heading == null) {
             param.setYawControlMode(YawControlMode.ANGULAR_VELOCITY);
-            param.setYaw((double) (remoteControllerSticks.leftStick.x * 100));
+            param.setYaw(remoteControllerSticks.leftStick.x * 100);
         }
         else {
             setVirtualStickFlightControlParamYaw(param, heading);
@@ -509,6 +538,33 @@ public class DJI2DroneAdapter implements DroneAdapter {
     }
 
     public CommandError executeCommand(final Context context, final DroneCommand command, final Command.Finisher finished) {
+        if (command instanceof FlightAssistantDroneCommand) {
+            return executeFlightAssistantDroneCommand(context, (FlightAssistantDroneCommand) command, finished);
+        }
+
+        if (command instanceof OcuSyncDroneCommand) {
+            return executeOcuSyncDroneCommand(context, (OcuSyncDroneCommand) command, finished);
+        }
+
+        if (command instanceof AccessoryDroneCommand) {
+            return executeAccessoryDroneCommand(context, (AccessoryDroneCommand) command, finished);
+        }
+
+        if (command instanceof ConnectionFailSafeBehaviorDroneCommand) {
+            final FailsafeAction target = DronelinkDJI2.getDroneConnectionFailSafeBehavior(((ConnectionFailSafeBehaviorDroneCommand) command).connectionFailSafeBehavior);
+            Command.conditionallyExecute(target != state.failSafeAction, finished, () -> KeyManager.getInstance().setValue(
+                    KeyTools.createKey(FlightControllerKey.KeyFailsafeAction),
+                    target,
+                    DronelinkDJI2.createCompletionCallback(finished)));
+            return null;
+        }
+
+        if (command instanceof HomeLocationDroneCommand) {
+            final GeoCoordinate coordinate = ((HomeLocationDroneCommand) command).coordinate;
+            KeyManager.getInstance().setValue(KeyTools.createKey(FlightControllerKey.KeyHomeLocation), DronelinkDJI2.getCoordinate(coordinate), DronelinkDJI2.createCompletionCallback(finished));
+            return null;
+        }
+
         if (command instanceof LowBatteryWarningThresholdDroneCommand) {
             final int target = (int)(((LowBatteryWarningThresholdDroneCommand) command).lowBatteryWarningThreshold * 100);
             Command.conditionallyExecute(target != state.lowBatteryThreshold, finished, () -> KeyManager.getInstance().setValue(
@@ -518,8 +574,24 @@ public class DJI2DroneAdapter implements DroneAdapter {
 
         if (command instanceof MaxAltitudeDroneCommand) {
             final int target = (int)((MaxAltitudeDroneCommand) command).maxAltitude;
-            Command.conditionallyExecute(target != state.maxAltitude, finished, () -> KeyManager.getInstance().setValue(
+            Command.conditionallyExecute(state.maxAltitude == null || target != state.maxAltitude, finished, () -> KeyManager.getInstance().setValue(
                     KeyTools.createKey(FlightControllerKey.KeyHeightLimit), target, DronelinkDJI2.createCompletionCallback(finished)));
+            return null;
+        }
+
+        if (command instanceof MaxDistanceDroneCommand) {
+            final int target = (int)((MaxDistanceDroneCommand) command).maxDistance;
+            Command.conditionallyExecute(state.maxDistance == null || target != state.maxDistance, finished, () -> KeyManager.getInstance().setValue(
+                    KeyTools.createKey(FlightControllerKey.KeyDistanceLimit), target, DronelinkDJI2.createCompletionCallback(finished)));
+            return null;
+        }
+
+        if (command instanceof MaxDistanceLimitationDroneCommand) {
+            final boolean target = ((MaxDistanceLimitationDroneCommand) command).enabled;
+            Command.conditionallyExecute(target != state.distanceLimitEnabled, finished, () -> KeyManager.getInstance().setValue(
+                    KeyTools.createKey(FlightControllerKey.KeyDistanceLimitEnabled),
+                    target,
+                    DronelinkDJI2.createCompletionCallback(finished)));
             return null;
         }
 
@@ -528,6 +600,132 @@ public class DJI2DroneAdapter implements DroneAdapter {
             Command.conditionallyExecute(target != state.returnHomeAltitude, finished, () -> KeyManager.getInstance().setValue(
                     KeyTools.createKey(FlightControllerKey.KeyGoHomeHeight), target, DronelinkDJI2.createCompletionCallback(finished)));
             return null;
+        }
+
+        if (command instanceof SeriousLowBatteryWarningThresholdDroneCommand) {
+            final int target = (int)(((SeriousLowBatteryWarningThresholdDroneCommand) command).seriousLowBatteryWarningThreshold * 100);
+            Command.conditionallyExecute(target != state.seriousLowBatteryThreshold, finished, () -> KeyManager.getInstance().setValue(
+                    KeyTools.createKey(FlightControllerKey.KeySeriousLowBatteryWarningThreshold), target, DronelinkDJI2.createCompletionCallback(finished)));
+            return null;
+        }
+
+        if (command instanceof SmartReturnHomeDroneCommand) {
+            final boolean target = ((SmartReturnHomeDroneCommand) command).enabled;
+            if (target) {
+                finished.execute(null);
+                return null;
+            }
+            return new CommandError(context.getString(R.string.MissionDisengageReason_command_value_invalid) + ": " + target);
+        }
+
+        return new CommandError(context.getString(R.string.MissionDisengageReason_command_type_unhandled) + ": " + command.type);
+    }
+
+    private CommandError executeFlightAssistantDroneCommand(final Context context, final FlightAssistantDroneCommand command, final Command.Finisher finished) {
+        if (command instanceof CollisionAvoidanceDroneCommand) {
+          final boolean target = ((CollisionAvoidanceDroneCommand) command).enabled;
+            Command.conditionallyExecute(target != state.obstacleAvoidanceEnabled, finished, () -> KeyManager.getInstance().setValue(
+                    KeyTools.createKey(FlightAssistantKey.KeyObstacleAvoidanceEnabled),
+                    target,
+                    DronelinkDJI2.createCompletionCallback(finished)));
+            return null;
+        }
+
+        if (command instanceof LandingProtectionDroneCommand) {
+            final boolean target = ((LandingProtectionDroneCommand) command).enabled;
+            Command.conditionallyExecute(target != state.landingProtectionEnabled, finished, () -> KeyManager.getInstance().setValue(
+                    KeyTools.createKey(FlightAssistantKey.KeyLandingProtectionEnabled),
+                    target,
+                    DronelinkDJI2.createCompletionCallback(finished)));
+            return null;
+        }
+
+        if (command instanceof PrecisionLandingDroneCommand) {
+            final boolean target = ((PrecisionLandingDroneCommand) command).enabled;
+            Command.conditionallyExecute(target != state.precisionLandingEnabled, finished, () -> KeyManager.getInstance().setValue(
+                    KeyTools.createKey(FlightAssistantKey.KeyPrecisionLandingEnabled),
+                    target,
+                    DronelinkDJI2.createCompletionCallback(finished)));
+            return null;
+        }
+
+        if (command instanceof ReturnHomeObstacleAvoidanceDroneCommand) {
+            final boolean target = ((ReturnHomeObstacleAvoidanceDroneCommand) command).enabled;
+            Command.conditionallyExecute(target != state.returnHomeObstacleAvoidanceEnabled, finished, () -> KeyManager.getInstance().setValue(
+                    KeyTools.createKey(FlightAssistantKey.KeyRTHObstacleAvoidanceEnabled),
+                    target,
+                    DronelinkDJI2.createCompletionCallback(finished)));
+            return null;
+        }
+
+        if (command instanceof ReturnHomeRemoteObstacleAvoidanceDroneCommand) {
+            //TODO
+        }
+
+        if (command instanceof UpwardsAvoidanceDroneCommand) {
+            final boolean target = ((UpwardsAvoidanceDroneCommand) command).enabled;
+            Command.conditionallyExecute(target != state.upwardsAvoidanceEnabled, finished, () -> KeyManager.getInstance().setValue(
+                    KeyTools.createKey(FlightAssistantKey.KeyUpwardsAvoidanceEnable),
+                    target,
+                    DronelinkDJI2.createCompletionCallback(finished)));
+            return null;
+        }
+
+        if (command instanceof VisionAssistedPositioningDroneCommand) {
+            final boolean target = ((VisionAssistedPositioningDroneCommand) command).enabled;
+            Command.conditionallyExecute(target != state.visionPositioningEnabled, finished, () -> KeyManager.getInstance().setValue(
+                    KeyTools.createKey(FlightAssistantKey.KeyVisionPositioningEnabled),
+                    target,
+                    DronelinkDJI2.createCompletionCallback(finished)));
+            return null;
+        }
+
+        return new CommandError(context.getString(R.string.MissionDisengageReason_command_type_unhandled) + ": " + command.type);
+    }
+
+    private CommandError executeOcuSyncDroneCommand(final Context context, final OcuSyncDroneCommand command, final Command.Finisher finished) {
+        if (command instanceof OcuSyncChannelDroneCommand) {
+            //TODO
+//            final int target = ((OcuSyncChannelDroneCommand) command).ocuSyncChannel;
+//            Command.conditionallyExecute(state.ocuSyncChannel == null || target != state.ocuSyncChannel, finished, () -> KeyManager.getInstance().setValue(
+//                    KeyTools.createKey(AirLinkKey.KeyChannelNumber),
+//                    target,
+//                    DronelinkDJI2.createCompletionCallback(finished)));
+//            return null;
+        }
+
+        if (command instanceof OcuSyncChannelSelectionModeDroneCommand) {
+            final ChannelSelectionMode target = DronelinkDJI2.getOcuSyncChannelSelectionMode(((OcuSyncChannelSelectionModeDroneCommand) command).ocuSyncChannelSelectionMode);
+            Command.conditionallyExecute(target != state.ocuSyncChannelSelectionMode, finished, () -> KeyManager.getInstance().setValue(
+                    KeyTools.createKey(AirLinkKey.KeyChannelSelectionMode),
+                    target,
+                    DronelinkDJI2.createCompletionCallback(finished)));
+            return null;
+        }
+
+        if (command instanceof OcuSyncFrequencyBandDroneCommand) {
+            final DroneOcuSyncFrequencyBand target = ((OcuSyncFrequencyBandDroneCommand) command).ocuSyncFrequencyBand;
+            Command.conditionallyExecute(target != state.getOcuSyncFrequencyBand(), finished, () -> KeyManager.getInstance().setValue(
+                    KeyTools.createKey(AirLinkKey.KeyFrequencyBand),
+                    DronelinkDJI2.getOcuSyncFrequencyBand(target),
+                    DronelinkDJI2.createCompletionCallback(finished)));
+            return null;
+        }
+
+        if (command instanceof OcuSyncVideoFeedSourcesDroneCommand) {
+            //TODO
+        }
+
+        return new CommandError(context.getString(R.string.MissionDisengageReason_command_type_unhandled) + ": " + command.type);
+    }
+
+    private CommandError executeAccessoryDroneCommand(final Context context, final AccessoryDroneCommand command, final Command.Finisher finished) {
+        if (command instanceof BeaconDroneCommand) {
+            //TODO
+        }
+
+        if (command instanceof SpotlightDroneCommand || command instanceof SpotlightBrightnessDroneCommand) {
+            //TODO
         }
 
         return new CommandError(context.getString(R.string.MissionDisengageReason_command_type_unhandled) + ": " + command.type);

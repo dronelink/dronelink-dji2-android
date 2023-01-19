@@ -16,6 +16,7 @@ import com.dronelink.core.Convert;
 import com.dronelink.core.Dronelink;
 import com.dronelink.core.command.Command;
 import com.dronelink.core.command.CommandError;
+import com.dronelink.core.kernel.core.GeoCoordinate;
 import com.dronelink.core.kernel.core.Message;
 import com.dronelink.core.kernel.core.enums.CameraAEBCount;
 import com.dronelink.core.kernel.core.enums.CameraAperture;
@@ -44,12 +45,15 @@ import com.dronelink.core.kernel.core.enums.CameraVideoResolution;
 import com.dronelink.core.kernel.core.enums.CameraVideoStandard;
 import com.dronelink.core.kernel.core.enums.CameraVideoStreamSource;
 import com.dronelink.core.kernel.core.enums.CameraWhiteBalancePreset;
+import com.dronelink.core.kernel.core.enums.DroneConnectionFailSafeBehavior;
+import com.dronelink.core.kernel.core.enums.DroneOcuSyncChannelSelectionMode;
 import com.dronelink.core.kernel.core.enums.DroneOcuSyncFrequencyBand;
 import com.dronelink.core.kernel.core.enums.GimbalMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import dji.sdk.keyvalue.value.airlink.ChannelSelectionMode;
 import dji.sdk.keyvalue.value.airlink.FrequencyBand;
 import dji.sdk.keyvalue.value.camera.CameraFlatMode;
 import dji.sdk.keyvalue.value.camera.CameraShootPhotoMode;
@@ -77,6 +81,7 @@ import dji.sdk.keyvalue.value.flightcontroller.AirSenseSystemInformation;
 import dji.sdk.keyvalue.value.flightcontroller.CompassCalibrationState;
 import dji.sdk.keyvalue.value.flightcontroller.CompassSensorState;
 import dji.sdk.keyvalue.value.flightcontroller.FCGoHomeState;
+import dji.sdk.keyvalue.value.flightcontroller.FailsafeAction;
 import dji.sdk.keyvalue.value.flightcontroller.FlightControlAuthorityChangeReason;
 import dji.sdk.keyvalue.value.flightcontroller.FlightMode;
 import dji.sdk.keyvalue.value.flightcontroller.GPSSignalLevel;
@@ -132,6 +137,10 @@ public class DronelinkDJI2 {
                 finisher.execute(new CommandError(error.errorCode()));
             }
         };
+    }
+
+    public static LocationCoordinate2D getCoordinate(final GeoCoordinate value) {
+        return new LocationCoordinate2D(value.latitude, value.longitude);
     }
 
     public static Location getLocation(final @Nullable LocationCoordinate2D value) {
@@ -424,8 +433,8 @@ public class DronelinkDJI2 {
                     details = context.getString(R.string.DronelinkDJI2_DJIWaypointMissionState_value_UPLOADING);
                     level = Message.Level.WARNING;
                     break;
-                case EXECUTING_PRE_PRARING:
-                    details = context.getString(R.string.DronelinkDJI2_DJIWaypointMissionState_value_EXECUTING_PRE_PRARING);
+                case PREPARING:
+                    details = context.getString(R.string.DronelinkDJI2_DJIWaypointMissionState_value_PREPARING);
                     level = Message.Level.WARNING;
                     break;
                 case ENTER_WAYLINE:
@@ -448,8 +457,9 @@ public class DronelinkDJI2 {
                     details = context.getString(R.string.DronelinkDJI2_DJIWaypointMissionState_value_RECOVERING);
                     level = Message.Level.WARNING;
                     break;
+                case IDLE:
                 case DISCONNECTED:
-                case NOT_SUPPORED:
+                case NOT_SUPPORTED:
                 case FINISHED:
                 case UNKNOWN:
                     break;
@@ -542,6 +552,18 @@ public class DronelinkDJI2 {
         return 0;
     }
 
+    public static ChannelSelectionMode getOcuSyncChannelSelectionMode(final DroneOcuSyncChannelSelectionMode value) {
+        switch (value) {
+            case AUTO:
+                return ChannelSelectionMode.AUTO;
+            case MANUAL:
+                return ChannelSelectionMode.MANUAL;
+            case UNKNOWN:
+                return ChannelSelectionMode.UNKNOWN;
+        }
+        return ChannelSelectionMode.UNKNOWN;
+    }
+
     public static DroneOcuSyncFrequencyBand getOcuSyncFrequencyBand(final @Nullable FrequencyBand value) {
         if (value != null) {
             switch (value) {
@@ -560,6 +582,22 @@ public class DronelinkDJI2 {
             }
         }
         return DroneOcuSyncFrequencyBand.UNKNOWN;
+    }
+
+    public static FrequencyBand getOcuSyncFrequencyBand(final DroneOcuSyncFrequencyBand value) {
+        switch (value) {
+            case _2_DOT_4_GHZ:
+                return FrequencyBand.BAND_2_DOT_4G;
+            case _5_DOT_7_GHZ:
+                return FrequencyBand.BAND_5_DOT_7G;
+            case _5_DOT_8_GHZ:
+                return FrequencyBand.BAND_5_DOT_8G;
+            case DUAL:
+                return FrequencyBand.BAND_DUAL;
+            case UNKNOWN:
+                return FrequencyBand.UNKNOWN;
+        }
+        return FrequencyBand.UNKNOWN;
     }
 
     public static CameraMode getCameraMode(final @Nullable dji.sdk.keyvalue.value.camera.CameraMode value) {
@@ -2634,7 +2672,7 @@ public class DronelinkDJI2 {
                     return dji.sdk.keyvalue.value.common.CameraLensType.CAMERA_LENS_THERMAL;
                 case NDVI_CAMERA:
                     return dji.sdk.keyvalue.value.common.CameraLensType.CAMERA_LENS_MS_NDVI;
-                case VISIBLE_CAMERA:
+                case VISION_CAMERA:
                     return dji.sdk.keyvalue.value.common.CameraLensType.CAMERA_LENS_RGB;
                 case MS_G_CAMERA:
                     return dji.sdk.keyvalue.value.common.CameraLensType.CAMERA_LENS_MS_G;
@@ -2664,7 +2702,7 @@ public class DronelinkDJI2 {
                     return CameraVideoStreamSource.THERMAL;
                 case NDVI_CAMERA:
                     return CameraVideoStreamSource.NDVI;
-                case VISIBLE_CAMERA:
+                case VISION_CAMERA:
                     return CameraVideoStreamSource.VISIBLE;
                 case MS_G_CAMERA:
                     return CameraVideoStreamSource.MS_G;
@@ -2676,6 +2714,8 @@ public class DronelinkDJI2 {
                     return CameraVideoStreamSource.MS_NIR;
                 case UNKNOWN:
                     return CameraVideoStreamSource.UNKNOWN;
+                case RGB_CAMERA:
+                    break;
             }
         }
         return CameraVideoStreamSource.UNKNOWN;
@@ -2695,7 +2735,7 @@ public class DronelinkDJI2 {
                 case NDVI:
                     return CameraVideoStreamSourceType.NDVI_CAMERA;
                 case VISIBLE:
-                    return CameraVideoStreamSourceType.VISIBLE_CAMERA;
+                    return CameraVideoStreamSourceType.RGB_CAMERA;
                 case MS_G:
                     return CameraVideoStreamSourceType.MS_G_CAMERA;
                 case MS_R:
@@ -2709,6 +2749,22 @@ public class DronelinkDJI2 {
             }
         }
         return CameraVideoStreamSourceType.UNKNOWN;
+    }
+
+    public static FailsafeAction getDroneConnectionFailSafeBehavior(final @Nullable DroneConnectionFailSafeBehavior value) {
+        if (value != null) {
+            switch (value) {
+                case HOVER:
+                    return FailsafeAction.HOVER;
+                case RETURN_HOME:
+                    return FailsafeAction.GOHOME;
+                case AUTO_LAND:
+                    return FailsafeAction.LANDING;
+                case UNKNOWN:
+                    return FailsafeAction.UNKNOWN;
+            }
+        }
+        return FailsafeAction.UNKNOWN;
     }
 
     public static GimbalMode getGimbalMode(final @Nullable dji.sdk.keyvalue.value.gimbal.GimbalMode value) {
@@ -2779,13 +2835,13 @@ public class DronelinkDJI2 {
                 case DJI_MAVIC_3_ENTERPRISE_SERIES:
                     return context.getString(R.string.DronelinkDJI2_ProductType_value_DJI_MAVIC_3_ENTERPRISE_SERIES);
                 case M30_SERIES:
-                    return context.getString(R.string.DronelinkDJI2_ProductType_value_DronelinkDJI2_ProductType_M30_SERIES);
+                    return context.getString(R.string.DronelinkDJI2_ProductType_value_M30_SERIES);
                 case M300_RTK:
-                    return context.getString(R.string.DronelinkDJI2_ProductType_value_DronelinkDJI2_ProductType_M300_RTK);
+                    return context.getString(R.string.DronelinkDJI2_ProductType_value_M300_RTK);
                 case UNRECOGNIZED:
-                    return context.getString(R.string.DronelinkDJI2_ProductType_value_DronelinkDJI2_ProductType_UNRECOGNIZED);
+                    return context.getString(R.string.DronelinkDJI2_ProductType_value_UNRECOGNIZED);
                 case UNKNOWN:
-                    return context.getString(R.string.DronelinkDJI2_ProductType_value_DronelinkDJI2_ProductType_UNKNOWN);
+                    return context.getString(R.string.DronelinkDJI2_ProductType_value_UNKNOWN);
                 case OSMO:
                 case P4:
                 case MAVIC_PRO:
@@ -2838,7 +2894,7 @@ public class DronelinkDJI2 {
                     return value.name();
             }
         }
-        return context.getString(R.string.DronelinkDJI2_ProductType_value_DronelinkDJI2_ProductType_UNKNOWN);
+        return context.getString(R.string.DronelinkDJI2_ProductType_value_UNKNOWN);
     }
 
     public static boolean isWaypointMissionState(final WaypointMissionExecuteState value, final WaypointMissionExecuteState[] states) {
