@@ -771,8 +771,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
 
     @Override
     public CameraPhotoAspectRatio getAspectRatio() {
-        //TODO doesn't work? return getMode() == CameraMode.PHOTO ? DronelinkDJI2.getCameraPhotoAspectRatio(photoRatio) : CameraPhotoAspectRatio._16_9;
-        return DronelinkDJI2.getCameraPhotoAspectRatio(photoRatio);
+        return getMode() == CameraMode.PHOTO ? DronelinkDJI2.getCameraPhotoAspectRatio(photoRatio) : CameraPhotoAspectRatio._16_9;
     }
 
     public List<EnumElement> getEnumElements(final String parameter) {

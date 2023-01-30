@@ -610,12 +610,7 @@ public class DJI2DroneAdapter implements DroneAdapter {
         }
 
         if (command instanceof SmartReturnHomeDroneCommand) {
-            final boolean target = ((SmartReturnHomeDroneCommand) command).enabled;
-            if (target) {
-                finished.execute(null);
-                return null;
-            }
-            return new CommandError(context.getString(R.string.MissionDisengageReason_command_value_invalid) + ": " + target);
+            //TODO
         }
 
         return new CommandError(context.getString(R.string.MissionDisengageReason_command_type_unhandled) + ": " + command.type);
@@ -623,6 +618,7 @@ public class DJI2DroneAdapter implements DroneAdapter {
 
     private CommandError executeFlightAssistantDroneCommand(final Context context, final FlightAssistantDroneCommand command, final Command.Finisher finished) {
         if (command instanceof CollisionAvoidanceDroneCommand) {
+            //FIXME enabling downward?
           final boolean target = ((CollisionAvoidanceDroneCommand) command).enabled;
             Command.conditionallyExecute(target != state.obstacleAvoidanceEnabled, finished, () -> KeyManager.getInstance().setValue(
                     KeyTools.createKey(FlightAssistantKey.KeyObstacleAvoidanceEnabled),
@@ -663,6 +659,7 @@ public class DJI2DroneAdapter implements DroneAdapter {
         }
 
         if (command instanceof UpwardsAvoidanceDroneCommand) {
+            //FIXME actually turning on downward
             final boolean target = ((UpwardsAvoidanceDroneCommand) command).enabled;
             Command.conditionallyExecute(target != state.upwardsAvoidanceEnabled, finished, () -> KeyManager.getInstance().setValue(
                     KeyTools.createKey(FlightAssistantKey.KeyUpwardsAvoidanceEnable),

@@ -137,7 +137,7 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataLis
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyGoHomeHeight), (oldValue, newValue) -> returnHomeAltitude = newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyHeightLimit), (oldValue, newValue) -> maxAltitude = newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyDistanceLimit), (oldValue, newValue) -> maxDistance = newValue);
-        listeners.init(KeyTools.createKey(FlightControllerKey.KeyDistanceLimitEnabled), (oldValue, newValue) -> distanceLimitEnabled = newValue);
+        listeners.init(KeyTools.createKey(FlightControllerKey.KeyDistanceLimitEnabled), (oldValue, newValue) -> distanceLimitEnabled = newValue != null && newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyIsNearDistanceLimit), (oldValue, newValue) -> isNearDistanceLimit = newValue != null && newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyOutOfDistanceLimit), (oldValue, newValue) -> isOutOfDistanceLimit = newValue != null && newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyIsNearHeightLimit), (oldValue, newValue) -> isNearHeightLimit = newValue != null && newValue);
