@@ -31,6 +31,7 @@ import com.dronelink.core.kernel.command.drone.AccessoryDroneCommand;
 import com.dronelink.core.kernel.command.drone.BeaconDroneCommand;
 import com.dronelink.core.kernel.command.drone.CollisionAvoidanceDroneCommand;
 import com.dronelink.core.kernel.command.drone.ConnectionFailSafeBehaviorDroneCommand;
+import com.dronelink.core.kernel.command.drone.DownwardAvoidanceDroneCommand;
 import com.dronelink.core.kernel.command.drone.DroneCommand;
 import com.dronelink.core.kernel.command.drone.FlightAssistantDroneCommand;
 import com.dronelink.core.kernel.command.drone.HomeLocationDroneCommand;
@@ -618,13 +619,16 @@ public class DJI2DroneAdapter implements DroneAdapter {
 
     private CommandError executeFlightAssistantDroneCommand(final Context context, final FlightAssistantDroneCommand command, final Command.Finisher finished) {
         if (command instanceof CollisionAvoidanceDroneCommand) {
-            //FIXME enabling downward?
           final boolean target = ((CollisionAvoidanceDroneCommand) command).enabled;
-            Command.conditionallyExecute(target != state.obstacleAvoidanceEnabled, finished, () -> KeyManager.getInstance().setValue(
-                    KeyTools.createKey(FlightAssistantKey.KeyObstacleAvoidanceEnabled),
+            Command.conditionallyExecute(target != state.horizontalAvoidanceEnabled, finished, () -> KeyManager.getInstance().setValue(
+                    KeyTools.createKey(FlightAssistantKey.KeyOmniHorizontalObstacleAvoidanceEnabled),
                     target,
                     DronelinkDJI2.createCompletionCallback(finished)));
             return null;
+        }
+
+        if (command instanceof DownwardAvoidanceDroneCommand) {
+            //KeyDownwardsAvoidanceEnable doesn't work, and KeyOmniDownwardsObstacleAvoidanceEnabled does not exist?
         }
 
         if (command instanceof LandingProtectionDroneCommand) {
@@ -659,10 +663,9 @@ public class DJI2DroneAdapter implements DroneAdapter {
         }
 
         if (command instanceof UpwardsAvoidanceDroneCommand) {
-            //FIXME actually turning on downward
             final boolean target = ((UpwardsAvoidanceDroneCommand) command).enabled;
             Command.conditionallyExecute(target != state.upwardsAvoidanceEnabled, finished, () -> KeyManager.getInstance().setValue(
-                    KeyTools.createKey(FlightAssistantKey.KeyUpwardsAvoidanceEnable),
+                    KeyTools.createKey(FlightAssistantKey.KeyOmniUpwardsObstacleAvoidanceEnabled),
                     target,
                     DronelinkDJI2.createCompletionCallback(finished)));
             return null;

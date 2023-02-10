@@ -98,11 +98,11 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataLis
     private AirSenseSystemInformation airSenseSystemInformation;
     public FailsafeAction failSafeAction;
     private ObstacleData obstacleData;
-    public boolean obstacleAvoidanceEnabled = false;
+    public boolean horizontalAvoidanceEnabled = false;
+    public boolean upwardsAvoidanceEnabled = false;
     public boolean landingProtectionEnabled = false;
     public boolean precisionLandingEnabled = false;
     public boolean returnHomeObstacleAvoidanceEnabled = false;
-    public boolean upwardsAvoidanceEnabled = false;
     public boolean visionPositioningEnabled = false;
     private WaypointMissionExecuteState waypointMissionExecuteState;
 
@@ -157,11 +157,11 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataLis
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyWindWarning), (oldValue, newValue) -> windWarning = newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyAirSenseSystemInformation), (oldValue, newValue) -> airSenseSystemInformation = newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyFailsafeAction), (oldValue, newValue) -> failSafeAction = newValue);
-        listeners.init(KeyTools.createKey(FlightAssistantKey.KeyObstacleAvoidanceEnabled), (oldValue, newValue) -> obstacleAvoidanceEnabled = newValue != null && newValue);
+        listeners.init(KeyTools.createKey(FlightAssistantKey.KeyOmniHorizontalObstacleAvoidanceEnabled), (oldValue, newValue) -> horizontalAvoidanceEnabled = newValue != null && newValue);
+        listeners.init(KeyTools.createKey(FlightAssistantKey.KeyOmniUpwardsObstacleAvoidanceEnabled), (oldValue, newValue) -> upwardsAvoidanceEnabled = newValue != null && newValue);
         listeners.init(KeyTools.createKey(FlightAssistantKey.KeyLandingProtectionEnabled), (oldValue, newValue) -> landingProtectionEnabled = newValue != null && newValue);
         listeners.init(KeyTools.createKey(FlightAssistantKey.KeyPrecisionLandingEnabled), (oldValue, newValue) -> precisionLandingEnabled = newValue != null && newValue);
         listeners.init(KeyTools.createKey(FlightAssistantKey.KeyRTHObstacleAvoidanceEnabled), (oldValue, newValue) -> returnHomeObstacleAvoidanceEnabled = newValue != null && newValue);
-        listeners.init(KeyTools.createKey(FlightAssistantKey.KeyUpwardsAvoidanceEnable), (oldValue, newValue) -> upwardsAvoidanceEnabled = newValue != null && newValue);
         listeners.init(KeyTools.createKey(FlightAssistantKey.KeyVisionPositioningEnabled), (oldValue, newValue) -> visionPositioningEnabled = newValue != null && newValue);
         listeners.init(KeyTools.createKey(AirLinkKey.KeyUpLinkQuality), (oldValue, newValue) -> uplinkQuality = newValue);
         listeners.init(KeyTools.createKey(AirLinkKey.KeyDownLinkQuality), (oldValue, newValue) -> downlinkQuality = newValue);
