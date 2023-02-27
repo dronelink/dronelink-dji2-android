@@ -48,6 +48,7 @@ import com.dronelink.core.kernel.core.enums.CameraWhiteBalancePreset;
 import com.dronelink.core.kernel.core.enums.DroneConnectionFailSafeBehavior;
 import com.dronelink.core.kernel.core.enums.DroneOcuSyncChannelSelectionMode;
 import com.dronelink.core.kernel.core.enums.DroneOcuSyncFrequencyBand;
+import com.dronelink.core.kernel.core.enums.DroneRTKReferenceStationSource;
 import com.dronelink.core.kernel.core.enums.GimbalMode;
 
 import java.util.ArrayList;
@@ -87,6 +88,9 @@ import dji.sdk.keyvalue.value.flightcontroller.FlightMode;
 import dji.sdk.keyvalue.value.flightcontroller.GPSSignalLevel;
 import dji.sdk.keyvalue.value.flightcontroller.WindWarning;
 import dji.sdk.keyvalue.value.product.ProductType;
+import dji.sdk.keyvalue.value.rtkbasestation.RTKReferenceStationSource;
+import dji.sdk.keyvalue.value.rtkbasestation.RTKServiceState;
+import dji.sdk.keyvalue.value.rtkmobilestation.RTKError;
 import dji.v5.common.callback.CommonCallbacks;
 import dji.v5.common.error.IDJIError;
 import dji.v5.manager.aircraft.waypoint3.model.WaypointMissionExecuteState;
@@ -415,6 +419,185 @@ public class DronelinkDJI2 {
                 case MOTOR_START:
                 case UNKNOWN:
                     break;
+            }
+        }
+        return null;
+    }
+
+    public static Message getMessage(final Context context, final @Nullable RTKError value) {
+        if (value != null) {
+            String details = null;
+            Message.Level level = null;
+
+            switch (value) {
+                case INTIALIZING:
+                    details = context.getString(R.string.DronelinkDJI2_RTKError_value_INTIALIZING);
+                    level = Message.Level.WARNING;
+                    break;
+                case CANNOT_START:
+                    details = context.getString(R.string.DronelinkDJI2_RTKError_value_CANNOT_START);
+                    level = Message.Level.ERROR;
+                    break;
+                case CONNECTION_BROKEN:
+                    details = context.getString(R.string.DronelinkDJI2_RTKError_value_CONNECTION_BROKEN);
+                    level = Message.Level.ERROR;
+                    break;
+                case BS_ANTENNA_ERROR:
+                    details = context.getString(R.string.DronelinkDJI2_RTKError_value_BS_ANTENNA_ERROR);
+                    level = Message.Level.ERROR;
+                    break;
+                case BS_COORDINATE_RESET:
+                    details = context.getString(R.string.DronelinkDJI2_RTKError_value_BS_COORDINATE_RESET);
+                    level = Message.Level.ERROR;
+                    break;
+                case BASE_STATION_NOT_ACTIVATED:
+                    details = context.getString(R.string.DronelinkDJI2_RTKError_value_BASE_STATION_NOT_ACTIVATED);
+                    level = Message.Level.ERROR;
+                    break;
+                case RTCM_TYPE_CHANGE:
+                    details = context.getString(R.string.DronelinkDJI2_RTKError_value_RTCM_TYPE_CHANGE);
+                    level = Message.Level.ERROR;
+                    break;
+                case BASE_STATION_IS_MOVED:
+                    details = context.getString(R.string.DronelinkDJI2_RTKError_value_BASE_STATION_IS_MOVED);
+                    level = Message.Level.ERROR;
+                    break;
+                case BASE_STATION_FELL:
+                    details = context.getString(R.string.DronelinkDJI2_RTKError_value_BASE_STATION_FELL);
+                    level = Message.Level.ERROR;
+                    break;
+                case NONE:
+                case UNKNOWN:
+                    break;
+            }
+
+            if (level != null) {
+                return new Message(context.getString(R.string.DronelinkDJI2_RTKError_title), details, level);
+            }
+        }
+        return null;
+    }
+
+    public static Message getMessage(final Context context, final @Nullable RTKServiceState value) {
+        if (value != null) {
+            String details = null;
+            Message.Level level = null;
+
+            switch (value) {
+                case RTCM_CONNECTED:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_RTCM_CONNECTED);
+                    level = Message.Level.INFO;
+                    break;
+                case RTCM_NORMAL:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_RTCM_NORMAL);
+                    level = Message.Level.INFO;
+                    break;
+                case RTCM_USER_HAS_ACTIVATE:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_RTCM_USER_HAS_ACTIVATE);
+                    level = Message.Level.INFO;
+                    break;
+                case RTCM_USER_ACCOUNT_EXPIRES_SOON:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_RTCM_USER_ACCOUNT_EXPIRES_SOON);
+                    level = Message.Level.WARNING;
+                    break;
+                case RTCM_USE_DEFAULT_MOUNT_POINT:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_RTCM_USE_DEFAULT_MOUNT_POINT);
+                    level = Message.Level.WARNING;
+                    break;
+                case RTCM_AUTH_FAILED:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_RTCM_AUTH_FAILED);
+                    level = Message.Level.ERROR;
+                    break;
+                case RTCM_USER_NOT_BOUNDED:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_RTCM_USER_NOT_BOUNDED);
+                    level = Message.Level.ERROR;
+                    break;
+                case RTCM_USER_NOT_ACTIVATED:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_RTCM_USER_NOT_ACTIVATED);
+                    level = Message.Level.ERROR;
+                    break;
+                case ACCOUNT_EXPIRED:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_ACCOUNT_EXPIRED);
+                    level = Message.Level.ERROR;
+                    break;
+                case RTCM_ILLEGAL_UTC_TIME:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_RTCM_ILLEGAL_UTC_TIME);
+                    level = Message.Level.ERROR;
+                    break;
+                case RTCM_SET_COORDINATE_FAILURE:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_RTCM_SET_COORDINATE_FAILURE);
+                    level = Message.Level.ERROR;
+                    break;
+                case RTCM_CONNECTING:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_RTCM_CONNECTING);
+                    level = Message.Level.INFO;
+                    break;
+                case RTCM_ACTIVATED_FAILED:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_RTCM_ACTIVATED_FAILED);
+                    level = Message.Level.ERROR;
+                    break;
+                case DISABLED:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_DISABLED);
+                    level = Message.Level.ERROR;
+                    break;
+                case AIRCRAFT_DISCONNECTED:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_AIRCRAFT_DISCONNECTED);
+                    level = Message.Level.ERROR;
+                    break;
+                case CONNECTING:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_CONNECTING);
+                    level = Message.Level.INFO;
+                    break;
+                case TRANSMITTING:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_TRANSMITTING);
+                    level = Message.Level.INFO;
+                    break;
+                case LOGIN_FAILURE:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_LOGIN_FAILURE);
+                    level = Message.Level.ERROR;
+                    break;
+                case INVALID_REQUEST:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_INVALID_REQUEST);
+                    level = Message.Level.ERROR;
+                    break;
+                case ACCOUNT_ERROR:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_ACCOUNT_ERROR);
+                    level = Message.Level.ERROR;
+                    break;
+                case NETWORK_NOT_REACHABLE:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_NETWORK_NOT_REACHABLE);
+                    level = Message.Level.ERROR;
+                    break;
+                case SERVER_NOT_REACHABLE:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_SERVER_NOT_REACHABLE);
+                    level = Message.Level.ERROR;
+                    break;
+                case SERVICE_SUSPENSION:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_SERVICE_SUSPENSION);
+                    level = Message.Level.ERROR;
+                    break;
+                case DISCONNECTED:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_DISCONNECTED);
+                    level = Message.Level.WARNING;
+                    break;
+                case READY:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_READY);
+                    level = Message.Level.INFO;
+                    break;
+                case SEND_GGA_NO_VALID_BASE:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_SEND_GGA_NO_VALID_BASE);
+                    level = Message.Level.ERROR;
+                    break;
+                case RTK_START_PROCESSING:
+                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_RTK_START_PROCESSING);
+                    level = Message.Level.INFO;
+                    break;
+                case UNKNOWN:
+                    break;
+            }
+
+            if (level != null) {
+                return new Message(context.getString(R.string.DronelinkDJI2_RTKServiceState_title), details, level);
             }
         }
         return null;
@@ -2765,6 +2948,34 @@ public class DronelinkDJI2 {
             }
         }
         return FailsafeAction.UNKNOWN;
+    }
+
+    public static DroneRTKReferenceStationSource getDroneRTKReferenceStationSource(final @Nullable RTKReferenceStationSource value) {
+        if (value != null) {
+            switch (value) {
+                case NONE:
+                    return DroneRTKReferenceStationSource.NONE;
+                case QX_NETWORK_SERVICE:
+                    return DroneRTKReferenceStationSource.QX_NETWORK_SERVICE;
+                case BASE_STATION:
+                    return DroneRTKReferenceStationSource.BASE_STATION;
+                case DPS:
+                    return DroneRTKReferenceStationSource.DPS;
+                case CUSTOM_NETWORK_SERVICE:
+                    return DroneRTKReferenceStationSource.CUSTOM_NETWORK_SERVICE;
+                case NTRIP_NETWORK_SERVICE:
+                    return DroneRTKReferenceStationSource.NTRIP_NETWORK_SERVICE;
+                case DOCK_BASE:
+                    return DroneRTKReferenceStationSource.DOCK_BASE;
+                case RSV_RTK_SERVICE2:
+                    return DroneRTKReferenceStationSource.RSV_RTK_SERVICE2;
+                case RSV_RTK_SERVICE3:
+                    return DroneRTKReferenceStationSource.RSV_RTK_SERVICE3;
+                case UNKNOWN:
+                    return DroneRTKReferenceStationSource.UNKNOWN;
+            }
+        }
+        return DroneRTKReferenceStationSource.UNKNOWN;
     }
 
     public static GimbalMode getGimbalMode(final @Nullable dji.sdk.keyvalue.value.gimbal.GimbalMode value) {
