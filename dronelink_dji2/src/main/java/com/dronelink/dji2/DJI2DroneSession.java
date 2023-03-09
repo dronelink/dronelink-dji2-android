@@ -154,10 +154,12 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
                                         if (speedRotation == null) {
                                             speedRotation = new GimbalSpeedRotation();
                                         }
-                                        double yawRelativeToAircraftHeading = Convert.RadiansToDegrees(Convert.AngleDifferenceSigned(
-                                                djiGimbalAdapter.getState().value.getOrientation().getYaw(),
-                                                droneAdapter.getState().value.getOrientation().getYaw()));
-                                        speedRotation.setYaw(Math.min(Math.max(-yawRelativeToAircraftHeading * 1.5, -25.0), 25.0));
+
+                                        //this doesn't work because droneAdapter.getState().value.getOrientation().getYaw() is wrong!
+//                                        double yawRelativeToAircraftHeading = Convert.RadiansToDegrees(Convert.AngleDifferenceSigned(
+//                                                djiGimbalAdapter.getState().value.getOrientation().getYaw(),
+//                                                droneAdapter.getState().value.getOrientation().getYaw()));
+//                                        speedRotation.setYaw(Math.min(Math.max(-yawRelativeToAircraftHeading * 1.5, -25.0), 25.0));
 
                                         if (missionExecutorEngaged) {
                                             //TODO final DatedValue<Integer> remoteControllerGimbalChannel = state.remoteControllerGimbalChannel;
