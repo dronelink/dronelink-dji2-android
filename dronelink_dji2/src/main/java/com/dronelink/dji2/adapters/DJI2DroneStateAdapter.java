@@ -9,7 +9,6 @@ package com.dronelink.dji2.adapters;
 import android.content.Context;
 import android.location.Location;
 
-
 import com.dronelink.core.Convert;
 import com.dronelink.core.DatedValue;
 import com.dronelink.core.adapters.DroneStateAdapter;
@@ -17,7 +16,6 @@ import com.dronelink.core.kernel.core.Message;
 import com.dronelink.core.kernel.core.Orientation3;
 import com.dronelink.core.kernel.core.enums.DroneLightbridgeFrequencyBand;
 import com.dronelink.core.kernel.core.enums.DroneOcuSyncFrequencyBand;
-import com.dronelink.core.kernel.core.enums.DroneRTKReferenceStationSource;
 import com.dronelink.dji2.DJI2ListenerGroup;
 import com.dronelink.dji2.DronelinkDJI2;
 import com.dronelink.dji2.R;
@@ -48,23 +46,12 @@ import dji.sdk.keyvalue.value.flightcontroller.WindWarning;
 import dji.v5.manager.aircraft.perception.PerceptionManager;
 import dji.v5.manager.aircraft.perception.data.ObstacleData;
 import dji.v5.manager.aircraft.perception.listener.ObstacleDataListener;
-import dji.sdk.keyvalue.value.rtkbasestation.RTKServiceState;
-import dji.v5.common.error.IDJIError;
-import dji.v5.manager.aircraft.perception.PerceptionManager;
-import dji.v5.manager.aircraft.perception.data.ObstacleData;
-import dji.v5.manager.aircraft.perception.listener.ObstacleDataListener;
-import dji.v5.manager.aircraft.rtk.RTKCenter;
-import dji.v5.manager.aircraft.rtk.RTKLocationInfo;
-import dji.v5.manager.aircraft.rtk.RTKLocationInfoListener;
-import dji.v5.manager.aircraft.rtk.RTKSystemState;
-import dji.v5.manager.aircraft.rtk.RTKSystemStateListener;
-import dji.v5.manager.aircraft.rtk.network.INetworkServiceInfoListener;
 import dji.v5.manager.aircraft.waypoint3.WaypointMissionExecuteStateListener;
 import dji.v5.manager.aircraft.waypoint3.WaypointMissionManager;
 import dji.v5.manager.aircraft.waypoint3.model.WaypointMissionExecuteState;
 import dji.v5.manager.diagnostic.DeviceStatusManager;
 
-public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataListener, WaypointMissionExecuteStateListener, RTKSystemStateListener, INetworkServiceInfoListener {
+public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataListener, WaypointMissionExecuteStateListener {
     private final DJI2ListenerGroup listeners = new DJI2ListenerGroup();
     private final Context context;
     private final DJI2DroneAdapter drone;
@@ -117,10 +104,6 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataLis
     public boolean returnHomeObstacleAvoidanceEnabled = false;
     public boolean visionPositioningEnabled = false;
     private WaypointMissionExecuteState waypointMissionExecuteState;
-    private RTKSystemState rtkSystemState;
-    private RTKLocationInfoListener rtkLocationInfoListener;
-    private RTKLocationInfo rtkLocationInfo;
-    private RTKServiceState rtkServiceState;
 
     public DJI2DroneStateAdapter(final Context context, final DJI2DroneAdapter drone) {
         this.context = context;
@@ -187,17 +170,12 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataLis
 
         PerceptionManager.getInstance().addObstacleDataListener(this);
         WaypointMissionManager.getInstance().addWaypointMissionExecuteStateListener(this);
-        RTKCenter.getInstance().addRTKSystemStateListener(this);
-        rtkLocationInfoListener = newValue -> rtkLocationInfo = newValue;
-        RTKCenter.getInstance().addRTKLocationInfoListener(rtkLocationInfoListener);
-        RTKCenter.getInstance().getCustomRTKManager().addNetworkRTKServiceInfoListener(this);
     }
+
     public void close() {
         listeners.cancelAll();
         PerceptionManager.getInstance().removeObstacleDataListener(this);
         WaypointMissionManager.getInstance().removeWaypointMissionExecuteStateListener(this);
-        RTKCenter.getInstance().removeRTKSystemStateListener(this);
-        RTKCenter.getInstance().removeRTKLocationInfoListener(rtkLocationInfoListener);
     }
 
     public DatedValue<DroneStateAdapter> asDatedValue() {
@@ -282,11 +260,6 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataLis
         final Message deviceStatusMessage = DronelinkDJI2.getMessage(DeviceStatusManager.getInstance().getCurrentDJIDeviceStatus());
         if (deviceStatusMessage != null) {
             messages.add(deviceStatusMessage);
-        }
-
-        final Message rtkStatusMessage = getRTKMessage();
-        if (rtkStatusMessage != null) {
-            messages.add(rtkStatusMessage);
         }
 
         messages.addAll(drone.getStatusMessages());
@@ -483,36 +456,6 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataLis
     }
 
     @Override
-    public boolean isRTKEnabled() {
-        return rtkSystemState != null && rtkSystemState.getIsRTKEnabled();
-    }
-
-    @Override
-    public boolean isRTKMaintainAccuracyEnabled() {
-        return rtkSystemState != null && rtkSystemState.getRTKMaintainAccuracyEnabled();
-    }
-
-    @Override
-    public DroneRTKReferenceStationSource getRTKReferenceStationSource() {
-        return rtkSystemState == null ? null : DronelinkDJI2.getDroneRTKReferenceStationSource(rtkSystemState.getRtkReferenceStationSource());
-    }
-
-    @Override
-    public boolean isRTKHealthy() {
-        return rtkSystemState != null && rtkSystemState.getRTKHealthy();
-    }
-
-    @Override
-    public Message getRTKMessage() {
-        Message message = rtkSystemState == null ? null : DronelinkDJI2.getMessage(context, rtkSystemState.getError());
-        if (message != null) {
-            return message;
-        }
-
-        return rtkServiceState == null ? null : DronelinkDJI2.getMessage(context, rtkServiceState);
-    }
-
-    @Override
     public Double getUplinkSignalStrength() {
         final Integer uplinkQuality = this.uplinkQuality;
         if (uplinkQuality != null) {
@@ -549,17 +492,4 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataLis
     public void onMissionStateUpdate(final WaypointMissionExecuteState missionState) {
         this.waypointMissionExecuteState = missionState;
     }
-
-    @Override
-    public void onUpdate(final RTKSystemState rtkSystemState) {
-        this.rtkSystemState = rtkSystemState;
-    }
-
-    @Override
-    public void onServiceStateUpdate(final RTKServiceState rtkServiceState) {
-        this.rtkServiceState = rtkServiceState;
-    }
-
-    @Override
-    public void onErrorCodeUpdate(final IDJIError code) {}
 }

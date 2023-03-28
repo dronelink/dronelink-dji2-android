@@ -27,6 +27,8 @@ import com.dronelink.core.adapters.DroneAdapter;
 import com.dronelink.core.adapters.DroneStateAdapter;
 import com.dronelink.core.adapters.GimbalAdapter;
 import com.dronelink.core.adapters.GimbalStateAdapter;
+import com.dronelink.core.adapters.RTKAdapter;
+import com.dronelink.core.adapters.RTKStateAdapter;
 import com.dronelink.core.adapters.RemoteControllerAdapter;
 import com.dronelink.core.adapters.RemoteControllerStateAdapter;
 import com.dronelink.core.command.Command;
@@ -40,11 +42,13 @@ import com.dronelink.core.kernel.command.gimbal.GimbalCommand;
 import com.dronelink.core.kernel.command.gimbal.ModeGimbalCommand;
 import com.dronelink.core.kernel.command.gimbal.OrientationGimbalCommand;
 import com.dronelink.core.kernel.command.remotecontroller.RemoteControllerCommand;
+import com.dronelink.core.kernel.command.rtk.RTKCommand;
 import com.dronelink.core.kernel.core.Message;
 import com.dronelink.core.kernel.core.enums.ExecutionEngine;
 import com.dronelink.dji2.adapters.DJI2CameraAdapter;
 import com.dronelink.dji2.adapters.DJI2DroneAdapter;
 import com.dronelink.dji2.adapters.DJI2GimbalAdapter;
+import com.dronelink.dji2.adapters.DJI2RTKAdapter;
 import com.dronelink.dji2.adapters.DJI2RemoteControllerAdapter;
 
 import java.util.Date;
@@ -62,6 +66,7 @@ import dji.sdk.keyvalue.value.gimbal.GimbalSpeedRotation;
 import dji.v5.common.callback.CommonCallbacks;
 import dji.v5.common.error.IDJIError;
 import dji.v5.manager.KeyManager;
+import dji.v5.manager.aircraft.rtk.RTKCenter;
 
 //TODO onVideoFeedSourceUpdated
 public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFileGeneratedCallback {
@@ -377,6 +382,17 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
                 return ((DJI2RemoteControllerAdapter)remoteController).executeCommand(context, (RemoteControllerCommand) command, finished);
             };
         }
+        else if (command instanceof RTKCommand) {
+            executor = finished -> {
+                onCommandExecuted(command);
+                finished.execute(null);
+                final RTKAdapter rtk = droneAdapter.getRTK();
+                if (rtk == null) {
+                    return new CommandError(context.getString(R.string.MissionDisengageReason_rtk_unavailable_title));
+                }
+                return ((DJI2RTKAdapter)rtk).executeCommand(context, (RTKCommand) command, finished);
+            };
+        }
         else if (command instanceof CameraCommand) {
             executor = finished -> {
                 onCommandExecuted(command);
@@ -418,6 +434,9 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
             }
 
             if (command instanceof DroneCommand) {
+                droneCommands.addCommand(c);
+            }
+            else if (command instanceof RTKCommand) {
                 droneCommands.addCommand(c);
             }
             else if (command instanceof RemoteControllerCommand) {
@@ -478,6 +497,11 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
     @Override
     public DatedValue<BatteryStateAdapter> getBatteryState(final int index) {
         return droneAdapter.getBatteryState(index);
+    }
+
+    @Override
+    public DatedValue<RTKStateAdapter> getRTKState() {
+        return droneAdapter.getRTKState();
     }
 
     @Override

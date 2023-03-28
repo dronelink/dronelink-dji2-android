@@ -23,6 +23,8 @@ import com.dronelink.core.adapters.DroneStateAdapter;
 import com.dronelink.core.adapters.EnumElement;
 import com.dronelink.core.adapters.GimbalAdapter;
 import com.dronelink.core.adapters.GimbalStateAdapter;
+import com.dronelink.core.adapters.RTKAdapter;
+import com.dronelink.core.adapters.RTKStateAdapter;
 import com.dronelink.core.adapters.RemoteControllerAdapter;
 import com.dronelink.core.adapters.RemoteControllerStateAdapter;
 import com.dronelink.core.command.Command;
@@ -114,6 +116,7 @@ public class DJI2DroneAdapter implements DroneAdapter {
     private final Map<ComponentIndexType, CameraAdapter> cameras = new HashMap<>();
     private final Map<ComponentIndexType, GimbalAdapter> gimbals = new HashMap<>();
     private final Map<Integer, DJI2BatteryAdapter> batteries = new HashMap<>();
+    private final DJI2RTKAdapter rtk;
 
     public DJI2DroneAdapter(final Context context, final CommonCallbacks.CompletionCallbackWithParam<String> onSerialNumber, final CameraFileGeneratedCallback cameraFileReceiver) {
         state = new DJI2DroneStateAdapter(context, this);
@@ -237,6 +240,8 @@ public class DJI2DroneAdapter implements DroneAdapter {
                 }
             });
         }
+
+        rtk = new DJI2RTKAdapter(context, this);
     }
 
     public void close() {
@@ -266,6 +271,15 @@ public class DJI2DroneAdapter implements DroneAdapter {
 
         for (final CameraAdapter camera : getCameras()) {
             messages.addAll(((DJI2CameraAdapter)camera).getStatusMessages());
+        }
+
+        final DatedValue<RTKStateAdapter> rtkState = getRTKState();
+        if (rtkState != null && rtkState.value != null && rtkState.value.isEnabled()) {
+            for (final Message message : rtkState.value.getStatusMessages()) {
+                if (message.level != Message.Level.INFO) {
+                    messages.add(message);
+                }
+            }
         }
 
         return messages;
@@ -344,6 +358,11 @@ public class DJI2DroneAdapter implements DroneAdapter {
             }
             return null;
         }
+    }
+
+    @Override
+    public RTKAdapter getRTK() {
+        return rtk;
     }
 
     private boolean isYawControlModeAngleAvailable() {
@@ -505,6 +524,14 @@ public class DJI2DroneAdapter implements DroneAdapter {
         final DJI2BatteryAdapter battery = (DJI2BatteryAdapter) getBattery(index);
         if (battery != null) {
             return battery.getState();
+        }
+        return null;
+    }
+
+    public DatedValue<RTKStateAdapter> getRTKState() {
+        final DJI2RTKAdapter rtk = (DJI2RTKAdapter)getRTK();
+        if (rtk != null) {
+            return rtk.getState();
         }
         return null;
     }

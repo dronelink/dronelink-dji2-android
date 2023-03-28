@@ -48,8 +48,9 @@ import com.dronelink.core.kernel.core.enums.CameraWhiteBalancePreset;
 import com.dronelink.core.kernel.core.enums.DroneConnectionFailSafeBehavior;
 import com.dronelink.core.kernel.core.enums.DroneOcuSyncChannelSelectionMode;
 import com.dronelink.core.kernel.core.enums.DroneOcuSyncFrequencyBand;
-import com.dronelink.core.kernel.core.enums.DroneRTKReferenceStationSource;
+import com.dronelink.core.kernel.core.enums.RTKReferenceStationSource;
 import com.dronelink.core.kernel.core.enums.GimbalMode;
+import com.dronelink.core.kernel.core.enums.RTKServiceState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,9 +89,8 @@ import dji.sdk.keyvalue.value.flightcontroller.FlightMode;
 import dji.sdk.keyvalue.value.flightcontroller.GPSSignalLevel;
 import dji.sdk.keyvalue.value.flightcontroller.WindWarning;
 import dji.sdk.keyvalue.value.product.ProductType;
-import dji.sdk.keyvalue.value.rtkbasestation.RTKReferenceStationSource;
-import dji.sdk.keyvalue.value.rtkbasestation.RTKServiceState;
 import dji.sdk.keyvalue.value.rtkmobilestation.RTKError;
+import dji.sdk.keyvalue.value.rtkmobilestation.RTKPositioningSolution;
 import dji.v5.common.callback.CommonCallbacks;
 import dji.v5.common.error.IDJIError;
 import dji.v5.manager.aircraft.waypoint3.model.WaypointMissionExecuteState;
@@ -478,7 +478,14 @@ public class DronelinkDJI2 {
         return null;
     }
 
-    public static Message getMessage(final Context context, final @Nullable RTKServiceState value) {
+    public static Message getMessage(final Context context, final @Nullable IDJIError value) {
+        if (value != null) {
+            return new Message(context.getString(R.string.DronelinkDJI2_RTKError_title), value.description(), Message.Level.ERROR);
+        }
+        return null;
+    }
+
+    public static Message getMessage(final Context context, final @Nullable dji.sdk.keyvalue.value.rtkbasestation.RTKServiceState value) {
         if (value != null) {
             String details = null;
             Message.Level level = null;
@@ -598,6 +605,40 @@ public class DronelinkDJI2 {
 
             if (level != null) {
                 return new Message(context.getString(R.string.DronelinkDJI2_RTKServiceState_title), details, level);
+            }
+        }
+        return null;
+    }
+    public static Message getMessage(final Context context, final @Nullable RTKPositioningSolution value) {
+        if (value != null) {
+            String details = null;
+            Message.Level level = null;
+
+            switch (value) {
+                case NONE:
+                    details = context.getString(R.string.DronelinkDJI2_RTKPositioningSolution_value_NONE);
+                    level = Message.Level.ERROR;
+                    break;
+                case FLOAT:
+                    details = context.getString(R.string.DronelinkDJI2_RTKPositioningSolution_value_FLOAT);
+                    level = Message.Level.WARNING;
+                    break;
+                case SINGLE_POINT:
+                    details = context.getString(R.string.DronelinkDJI2_RTKPositioningSolution_value_SINGLE_POINT);
+                    level = Message.Level.WARNING;
+                    break;
+                case FIXED_POINT:
+                    details = context.getString(R.string.DronelinkDJI2_RTKPositioningSolution_value_FIXED_POINT);
+                    level = Message.Level.INFO;
+                    break;
+                case UNKNOWN:
+                    details = context.getString(R.string.DronelinkDJI2_RTKPositioningSolution_value_UNKNOWN);
+                    level = Message.Level.ERROR;
+                    break;
+            }
+
+            if (level != null) {
+                return new Message(context.getString(R.string.DronelinkDJI2_RTKPositioningSolution_title), details, level);
             }
         }
         return null;
@@ -2950,34 +2991,6 @@ public class DronelinkDJI2 {
         return FailsafeAction.UNKNOWN;
     }
 
-    public static DroneRTKReferenceStationSource getDroneRTKReferenceStationSource(final @Nullable RTKReferenceStationSource value) {
-        if (value != null) {
-            switch (value) {
-                case NONE:
-                    return DroneRTKReferenceStationSource.NONE;
-                case QX_NETWORK_SERVICE:
-                    return DroneRTKReferenceStationSource.QX_NETWORK_SERVICE;
-                case BASE_STATION:
-                    return DroneRTKReferenceStationSource.BASE_STATION;
-                case DPS:
-                    return DroneRTKReferenceStationSource.DPS;
-                case CUSTOM_NETWORK_SERVICE:
-                    return DroneRTKReferenceStationSource.CUSTOM_NETWORK_SERVICE;
-                case NTRIP_NETWORK_SERVICE:
-                    return DroneRTKReferenceStationSource.NTRIP_NETWORK_SERVICE;
-                case DOCK_BASE:
-                    return DroneRTKReferenceStationSource.DOCK_BASE;
-                case RSV_RTK_SERVICE2:
-                    return DroneRTKReferenceStationSource.RSV_RTK_SERVICE2;
-                case RSV_RTK_SERVICE3:
-                    return DroneRTKReferenceStationSource.RSV_RTK_SERVICE3;
-                case UNKNOWN:
-                    return DroneRTKReferenceStationSource.UNKNOWN;
-            }
-        }
-        return DroneRTKReferenceStationSource.UNKNOWN;
-    }
-
     public static GimbalMode getGimbalMode(final @Nullable dji.sdk.keyvalue.value.gimbal.GimbalMode value) {
         if (value != null) {
             switch (value) {
@@ -3081,7 +3094,6 @@ public class DronelinkDJI2 {
                 case FPV_SERIAL_2:
                 case DJI_AIR_2S:
                 case MAVIC_MINI_2:
-                case NOT_SUPPORTED_0:
                 case OSMO_MOBILE5:
                 case OSMO_ACTION_2:
                 case OSMO_ACTION_2_HASSELBLAD:
@@ -3092,14 +3104,14 @@ public class DronelinkDJI2 {
                 case NOT_SUPPORTED_2:
                 case NOT_SUPPORTED_3:
                 case NOT_SUPPORTED_4:
+                case NOT_SUPPORTED_5:
+                case NOT_SUPPORTED_6:
                 case OSMO_POCKET2:
                 case OSMO_MOBILE4:
                 case OSMO_MOBILE6:
                 case OSMO_MOBILE5_SE:
                 case DJI_MAVIC_3:
-                case NOT_SUPPORTED_5:
                 case MAVIC_MINI_SE:
-                case NOT_SUPPORTED_6:
                 case TA101:
                 case EA210:
                     return value.name();
@@ -3149,5 +3161,124 @@ public class DronelinkDJI2 {
             }
         }
         return context.getString(R.string.DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN);
+    }
+
+    public static RTKReferenceStationSource getRTKReferenceStationSource(final @Nullable dji.sdk.keyvalue.value.rtkbasestation.RTKReferenceStationSource value) {
+        if (value != null) {
+            switch (value) {
+                case NONE:
+                    return RTKReferenceStationSource.NONE;
+                case QX_NETWORK_SERVICE:
+                    return RTKReferenceStationSource.QX_NETWORK_SERVICE;
+                case BASE_STATION:
+                    return RTKReferenceStationSource.BASE_STATION;
+                case DPS:
+                    return RTKReferenceStationSource.DPS;
+                case CUSTOM_NETWORK_SERVICE:
+                    return RTKReferenceStationSource.CUSTOM_NETWORK_SERVICE;
+                case NTRIP_NETWORK_SERVICE:
+                    return RTKReferenceStationSource.NTRIP_NETWORK_SERVICE;
+                case DOCK_BASE:
+                    return RTKReferenceStationSource.DOCK_BASE;
+                case RSV_RTK_SERVICE2:
+                    return RTKReferenceStationSource.RSV_RTK_SERVICE2;
+                case RSV_RTK_SERVICE3:
+                    return RTKReferenceStationSource.RSV_RTK_SERVICE3;
+                case UNKNOWN:
+                    return RTKReferenceStationSource.UNKNOWN;
+            }
+        }
+        return RTKReferenceStationSource.UNKNOWN;
+    }
+
+    public static dji.sdk.keyvalue.value.rtkbasestation.RTKReferenceStationSource getRTKReferenceStationSource(final @Nullable RTKReferenceStationSource value) {
+        if (value != null) {
+            switch (value) {
+                case NONE:
+                    return dji.sdk.keyvalue.value.rtkbasestation.RTKReferenceStationSource.NONE;
+                case QX_NETWORK_SERVICE:
+                    return dji.sdk.keyvalue.value.rtkbasestation.RTKReferenceStationSource.QX_NETWORK_SERVICE;
+                case BASE_STATION:
+                    return dji.sdk.keyvalue.value.rtkbasestation.RTKReferenceStationSource.BASE_STATION;
+                case DPS:
+                    return dji.sdk.keyvalue.value.rtkbasestation.RTKReferenceStationSource.DPS;
+                case CUSTOM_NETWORK_SERVICE:
+                    return dji.sdk.keyvalue.value.rtkbasestation.RTKReferenceStationSource.CUSTOM_NETWORK_SERVICE;
+                case NTRIP_NETWORK_SERVICE:
+                    return dji.sdk.keyvalue.value.rtkbasestation.RTKReferenceStationSource.NTRIP_NETWORK_SERVICE;
+                case DOCK_BASE:
+                    return dji.sdk.keyvalue.value.rtkbasestation.RTKReferenceStationSource.DOCK_BASE;
+                case RSV_RTK_SERVICE2:
+                    return dji.sdk.keyvalue.value.rtkbasestation.RTKReferenceStationSource.RSV_RTK_SERVICE2;
+                case RSV_RTK_SERVICE3:
+                    return dji.sdk.keyvalue.value.rtkbasestation.RTKReferenceStationSource.RSV_RTK_SERVICE3;
+                case UNKNOWN:
+                    return dji.sdk.keyvalue.value.rtkbasestation.RTKReferenceStationSource.UNKNOWN;
+            }
+        }
+        return dji.sdk.keyvalue.value.rtkbasestation.RTKReferenceStationSource.UNKNOWN;
+    }
+    public static RTKServiceState getRTKServiceState(final @Nullable dji.sdk.keyvalue.value.rtkbasestation.RTKServiceState value) {
+        if (value != null) {
+            switch (value) {
+                case RTCM_CONNECTED:
+                    return RTKServiceState.RTCM_CONNECTED;
+                case RTCM_NORMAL:
+                    return RTKServiceState.RTCM_NORMAL;
+                case RTCM_USER_HAS_ACTIVATE:
+                    return RTKServiceState.RTCM_USER_HAS_ACTIVATE;
+                case RTCM_USER_ACCOUNT_EXPIRES_SOON:
+                    return RTKServiceState.RTCM_USER_ACCOUNT_EXPIRES_SOON;
+                case RTCM_USE_DEFAULT_MOUNT_POINT:
+                    return RTKServiceState.RTCM_USE_DEFAULT_MOUNT_POINT;
+                case RTCM_AUTH_FAILED:
+                    return RTKServiceState.RTCM_AUTH_FAILED;
+                case RTCM_USER_NOT_BOUNDED:
+                    return RTKServiceState.RTCM_USER_NOT_BOUNDED;
+                case RTCM_USER_NOT_ACTIVATED:
+                    return RTKServiceState.RTCM_USER_NOT_ACTIVATED;
+                case ACCOUNT_EXPIRED:
+                    return RTKServiceState.ACCOUNT_EXPIRED;
+                case RTCM_ILLEGAL_UTC_TIME:
+                    return RTKServiceState.RTCM_ILLEGAL_UTC_TIME;
+                case RTCM_SET_COORDINATE_FAILURE:
+                    return RTKServiceState.RTCM_SET_COORDINATE_FAILURE;
+                case RTCM_CONNECTING:
+                    return RTKServiceState.RTCM_CONNECTING;
+                case RTCM_ACTIVATED_FAILED:
+                    return RTKServiceState.RTCM_ACTIVATED_FAILED;
+                case DISABLED:
+                    return RTKServiceState.DISABLED;
+                case AIRCRAFT_DISCONNECTED:
+                    return RTKServiceState.AIRCRAFT_DISCONNECTED;
+                case CONNECTING:
+                    return RTKServiceState.CONNECTING;
+                case TRANSMITTING:
+                    return RTKServiceState.TRANSMITTING;
+                case LOGIN_FAILURE:
+                    return RTKServiceState.LOGIN_FAILURE;
+                case INVALID_REQUEST:
+                    return RTKServiceState.INVALID_REQUEST;
+                case ACCOUNT_ERROR:
+                    return RTKServiceState.ACCOUNT_ERROR;
+                case NETWORK_NOT_REACHABLE:
+                    return RTKServiceState.NETWORK_NOT_REACHABLE;
+                case SERVER_NOT_REACHABLE:
+                    return RTKServiceState.SERVER_NOT_REACHABLE;
+                case SERVICE_SUSPENSION:
+                    return RTKServiceState.SERVICE_SUSPENSION;
+                case DISCONNECTED:
+                    return RTKServiceState.DISCONNECTED;
+                case READY:
+                    return RTKServiceState.READY;
+                case SEND_GGA_NO_VALID_BASE:
+                    return RTKServiceState.SEND_GGA_NO_VALID_BASE;
+                case RTK_START_PROCESSING:
+                    return RTKServiceState.RTK_START_PROCESSING;
+                case UNKNOWN:
+                    return RTKServiceState.UNKNOWN;
+            }
+        }
+        return RTKServiceState.UNKNOWN;
     }
 }

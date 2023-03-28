@@ -8,6 +8,8 @@
     <string name="MissionDisengageReason_drone_max_distance_title">Max Distance Reached</string>
     <string name="MissionDisengageReason_drone_max_distance_details">Increase the max distance setting to continue.</string>
     <string name="MissionDisengageReason_drone_remote_controller_unavailable_title">Remote Controller Unavailable</string>
+    <string name="MissionDisengageReason_rtk_unavailable_title">RTK Unavailable</string>
+    <string name="MissionDisengageReason_rtk_custom_network_unavailable_title">Custom Network RTK Unavailable</string>
     <string name="MissionDisengageReason_drone_camera_unavailable_title">Camera Unavailable</string>
     <string name="MissionDisengageReason_drone_gimbal_unavailable_title">Gimbal Unavailable</string>
     <string name="MissionDisengageReason_command_type_unhandled">Unhandled Command Type</string>
@@ -24,6 +26,10 @@
     <string name="DJI2DroneStateAdapter_statusMessages_locationUnavailable_title">GPS Signal Unavailable</string>
     <string name="DJI2DroneStateAdapter_statusMessages_locationUnavailable_details">Please wait for a strong GPS signal lock to continue.</string>
     <string name="DJI2DroneStateAdapter_statusMessages_homeLocationNotSet_title">Home Location Not Set</string>
+    <string name="DJI2RTKStateAdapter_rtk">RTK</string>
+    <string name="DJI2RTKStateAdapter_custom_network">Custom Network RTK</string>
+    <string name="DJI2RTKStateAdapter_custom_network_location">RTK Location</string>
+    <string name="DJI2RTKStateAdapter_custom_network_location_unavailable">Location Unavailable</string>
     <string name="DJI2CameraAdapter_cameraCommand_stop_capture_error">Camera still capturing</string>
     <string name="DJI2CameraAdapter_cameraCommand_start_shoot_photo_no_file">Media File Not Created</string>
     <string name="DJI2CameraStateAdapter_cameraCommand_focus_target_error">Camera Busy</string>
@@ -70,7 +76,7 @@
     <string name="DronelinkDJI2_RTKError_value_RTCM_TYPE_CHANGE">RTCM Type Changed</string>
     <string name="DronelinkDJI2_RTKError_value_BASE_STATION_IS_MOVED">Base Station Moved</string>
     <string name="DronelinkDJI2_RTKError_value_BASE_STATION_FELL">Base Station Fell</string>
-    <string name="DronelinkDJI2_RTKServiceState_title">Network RTK</string>
+    <string name="DronelinkDJI2_RTKServiceState_title">Custom Network RTK Status</string>
     <string name="DronelinkDJI2_RTKServiceState_value_RTCM_CONNECTED">RTCM Connected</string>
     <string name="DronelinkDJI2_RTKServiceState_value_RTCM_NORMAL">RTCM Normal</string>
     <string name="DronelinkDJI2_RTKServiceState_value_RTCM_USER_HAS_ACTIVATE">RTCM User Activated</string>
@@ -98,6 +104,12 @@
     <string name="DronelinkDJI2_RTKServiceState_value_READY">Ready</string>
     <string name="DronelinkDJI2_RTKServiceState_value_SEND_GGA_NO_VALID_BASE">Send GGA No Valid Base</string>
     <string name="DronelinkDJI2_RTKServiceState_value_RTK_START_PROCESSING">RTK Start Processing</string>
+    <string name="DronelinkDJI2_RTKPositioningSolution_title">RTK Positioning Solution</string>
+    <string name="DronelinkDJI2_RTKPositioningSolution_value_NONE">None</string>
+    <string name="DronelinkDJI2_RTKPositioningSolution_value_FLOAT">Float</string>
+    <string name="DronelinkDJI2_RTKPositioningSolution_value_SINGLE_POINT">Single Point</string>
+    <string name="DronelinkDJI2_RTKPositioningSolution_value_FIXED_POINT">Fixed Point</string>
+    <string name="DronelinkDJI2_RTKPositioningSolution_value_UNKNOWN">Unknown</string>
     <string name="DronelinkDJI2_WindWarning_title">Wind Warning</string>
     <string name="DronelinkDJI2_WindWarning_LEVEL_1">Strong Wind</string>
     <string name="DronelinkDJI2_WindWarning_LEVEL_2">Very Strong Wind</string>
