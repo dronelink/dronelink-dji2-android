@@ -190,7 +190,7 @@ public class DJI2GimbalAdapter implements GimbalAdapter {
             final GimbalAngleRotation rotation = new GimbalAngleRotation();
             //rotation.setDuration(DronelinkDJI2.GimbalRotationMinTime);
 
-            Double pitch = orientation.getPitch() == null ? null : Convert.RadiansToDegrees(orientation.getPitch());
+            Double pitch = orientation.getPitch() == null ? null : (double)Math.round(Convert.RadiansToDegrees(orientation.getPitch()));
             Double roll = orientation.getRoll() == null ? null : Convert.RadiansToDegrees(orientation.getRoll());
             Double yaw = orientation.getYaw();
             if (yaw != null && !(state.getMode() == GimbalMode.FREE && isAdjustYaw360Supported())) {

@@ -193,47 +193,49 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataLis
 
         final Message fcGoHomeStateMessage = DronelinkDJI2.getMessage(context, fcGoHomeState);
         if (fcGoHomeStateMessage != null) {
-            if (!isLanding()) {
-                messages.add(fcGoHomeStateMessage);
-            }
+            messages.add(fcGoHomeStateMessage);
         }
         else {
-            if (isSeriousLowBatteryWarning) {
-                messages.add(new Message(context.getString(R.string.DJI2DroneStateAdapter_statusMessages_isSeriousLowBatteryWarning_title), Message.Level.WARNING));
+            final Message goHomeStatusMessage = DronelinkDJI2.getMessage(context, goHomeState);
+            if (goHomeStatusMessage != null) {
+                messages.add(goHomeStatusMessage);
             }
-            else if (isLowBatteryWarning) {
-                messages.add(new Message(context.getString(R.string.DJI2DroneStateAdapter_statusMessages_isLowBatteryWarning_title), Message.Level.WARNING));
-            }
-
-            if (isOutOfDistanceLimit) {
-                messages.add(new Message(context.getString(R.string.DJI2DroneStateAdapter_statusMessages_isOutOfDistanceLimit_title), Message.Level.WARNING));
-            }
-            else if (isNearDistanceLimit) {
-                messages.add(new Message(context.getString(R.string.DJI2DroneStateAdapter_statusMessages_isNearDistanceLimit_title), Message.Level.WARNING));
-            }
-
-            if (isNearHeightLimit) {
-                messages.add(new Message(context.getString(R.string.DJI2DroneStateAdapter_statusMessages_isNearHeightLimit_title), Message.Level.WARNING));
-            }
-
-            if (DronelinkDJI2.isWaypointMissionState(waypointMissionExecuteState, new WaypointMissionExecuteState[] { WaypointMissionExecuteState.UPLOADING })) {
-                final Message message = DronelinkDJI2.getMessage(context, waypointMissionExecuteState);
-                if (message != null) {
-                    messages.add(message);
+            else {
+                if (isSeriousLowBatteryWarning) {
+                    messages.add(new Message(context.getString(R.string.DJI2DroneStateAdapter_statusMessages_isSeriousLowBatteryWarning_title), Message.Level.WARNING));
+                } else if (isLowBatteryWarning) {
+                    messages.add(new Message(context.getString(R.string.DJI2DroneStateAdapter_statusMessages_isLowBatteryWarning_title), Message.Level.WARNING));
                 }
-            }
 
-            final Message flightModeMessage = DronelinkDJI2.getMessage(context, flightMode, waypointMissionExecuteState);
-            if (flightModeMessage != null) {
-                messages.add(flightModeMessage);
-            }
+                if (isOutOfDistanceLimit) {
+                    messages.add(new Message(context.getString(R.string.DJI2DroneStateAdapter_statusMessages_isOutOfDistanceLimit_title), Message.Level.WARNING));
+                } else if (isNearDistanceLimit) {
+                    messages.add(new Message(context.getString(R.string.DJI2DroneStateAdapter_statusMessages_isNearDistanceLimit_title), Message.Level.WARNING));
+                }
 
-            if (getLocation() == null) {
-                messages.add(new Message(context.getString(R.string.DJI2DroneStateAdapter_statusMessages_locationUnavailable_title), context.getString(R.string.DJI2DroneStateAdapter_statusMessages_locationUnavailable_details), Message.Level.DANGER));
-            }
+                if (isNearHeightLimit) {
+                    messages.add(new Message(context.getString(R.string.DJI2DroneStateAdapter_statusMessages_isNearHeightLimit_title), Message.Level.WARNING));
+                }
 
-            if (!isHomeLocationSet) {
-                messages.add(new Message(context.getString(R.string.DJI2DroneStateAdapter_statusMessages_homeLocationNotSet_title), Message.Level.DANGER));
+                if (DronelinkDJI2.isWaypointMissionState(waypointMissionExecuteState, new WaypointMissionExecuteState[]{WaypointMissionExecuteState.UPLOADING})) {
+                    final Message message = DronelinkDJI2.getMessage(context, waypointMissionExecuteState);
+                    if (message != null) {
+                        messages.add(message);
+                    }
+                }
+
+                final Message flightModeMessage = DronelinkDJI2.getMessage(context, flightMode, waypointMissionExecuteState);
+                if (flightModeMessage != null) {
+                    messages.add(flightModeMessage);
+                }
+
+                if (getLocation() == null) {
+                    messages.add(new Message(context.getString(R.string.DJI2DroneStateAdapter_statusMessages_locationUnavailable_title), context.getString(R.string.DJI2DroneStateAdapter_statusMessages_locationUnavailable_details), Message.Level.DANGER));
+                }
+
+                if (!isHomeLocationSet) {
+                    messages.add(new Message(context.getString(R.string.DJI2DroneStateAdapter_statusMessages_homeLocationNotSet_title), Message.Level.DANGER));
+                }
             }
         }
 
@@ -269,7 +271,7 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataLis
 
     @Override
     public String getMode() {
-        return flightModeString;
+        return flightMode != null ? DronelinkDJI2.getString(context, flightMode) : flightModeString;
     }
 
     @Override

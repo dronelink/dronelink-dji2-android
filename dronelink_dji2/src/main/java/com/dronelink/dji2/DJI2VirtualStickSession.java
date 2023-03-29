@@ -64,6 +64,7 @@ public class DJI2VirtualStickSession implements DroneControlSession, VirtualStic
         return ExecutionEngine.DRONELINK_KERNEL;
     }
 
+    @Override
     public Message getDisengageReason() {
         if (attemptDisengageReason != null) {
             return attemptDisengageReason;
@@ -79,6 +80,7 @@ public class DJI2VirtualStickSession implements DroneControlSession, VirtualStic
                 return new Message(context.getString(R.string.MissionDisengageReason_drone_control_override_title), droneAdapter.state.getMode());
             }
         }
+
         return null;
     }
 
@@ -87,6 +89,7 @@ public class DJI2VirtualStickSession implements DroneControlSession, VirtualStic
         return false;
     }
 
+    @Override
     public Boolean activate() {
         switch (state) {
             case TAKEOFF_START:
@@ -200,6 +203,7 @@ public class DJI2VirtualStickSession implements DroneControlSession, VirtualStic
         return false;
     }
 
+    @Override
     public void deactivate() {
         VirtualStickManager.getInstance().removeVirtualStickStateListener(this);
         droneAdapter.sendResetVelocityCommand();

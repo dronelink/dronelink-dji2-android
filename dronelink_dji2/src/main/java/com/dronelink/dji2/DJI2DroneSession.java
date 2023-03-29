@@ -62,6 +62,8 @@ import dji.sdk.errorcode.DJIErrorCode;
 import dji.sdk.keyvalue.key.FlightControllerKey;
 import dji.sdk.keyvalue.key.GimbalKey;
 import dji.sdk.keyvalue.key.KeyTools;
+import dji.sdk.keyvalue.value.flightcontroller.FlightControlAuthorityChangeReason;
+import dji.sdk.keyvalue.value.flightcontroller.FlightMode;
 import dji.sdk.keyvalue.value.gimbal.GimbalSpeedRotation;
 import dji.v5.common.callback.CommonCallbacks;
 import dji.v5.common.error.IDJIError;
@@ -272,6 +274,19 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
 
         if (droneAdapter.state.isOutOfDistanceLimit) {
             return new Message(context.getString(R.string.MissionDisengageReason_drone_max_distance_title), context.getString(R.string.MissionDisengageReason_drone_max_distance_details));
+        }
+
+        switch (droneAdapter.state.flightMode) {
+            case VIRTUAL_STICK:
+            case GPS_NORMAL:
+                break;
+
+            case GPS_SPORT:
+            case GPS_TRIPOD:
+                return new Message(context.getString(R.string.MissionDisengageReason_take_control_failed_title), context.getString(R.string.MissionDisengageReason_take_control_failed_rc_mode_details));
+
+            default:
+                return new Message(context.getString(R.string.MissionDisengageReason_take_control_failed_title), context.getString(R.string.MissionDisengageReason_take_control_failed_flight_mode_details));
         }
 
         return null;

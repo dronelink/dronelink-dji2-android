@@ -87,6 +87,7 @@ import dji.sdk.keyvalue.value.flightcontroller.FailsafeAction;
 import dji.sdk.keyvalue.value.flightcontroller.FlightControlAuthorityChangeReason;
 import dji.sdk.keyvalue.value.flightcontroller.FlightMode;
 import dji.sdk.keyvalue.value.flightcontroller.GPSSignalLevel;
+import dji.sdk.keyvalue.value.flightcontroller.GoHomeState;
 import dji.sdk.keyvalue.value.flightcontroller.WindWarning;
 import dji.sdk.keyvalue.value.product.ProductType;
 import dji.sdk.keyvalue.value.rtkmobilestation.RTKError;
@@ -377,7 +378,38 @@ public class DronelinkDJI2 {
                     level = Message.Level.WARNING;
                     break;
             }
-            return new Message(context.getString(R.string.DronelinkDJI2_FCGoHomeState_title), details, level);
+
+            if (level != null) {
+                return new Message(context.getString(R.string.DronelinkDJI2_FCGoHomeState_title), details, level);
+            }
+        }
+        return null;
+    }
+
+    public static Message getMessage(final Context context, final @Nullable GoHomeState value) {
+        if (value != null) {
+            String details = null;
+            Message.Level level = null;
+            switch (value) {
+                case IDLE:
+                case COMPLETED:
+                case UNKNOWN:
+                    break;
+
+                case RETURNING_TO_HOME:
+                    details = context.getString(R.string.DronelinkDJI2_GoHomeState_value_RETURNING_TO_HOME);
+                    level = Message.Level.WARNING;
+                    break;
+
+                case LANDING:
+                    details = context.getString(R.string.DronelinkDJI2_GoHomeState_value_LANDING);
+                    level = Message.Level.WARNING;
+                    break;
+            }
+
+            if (level != null) {
+                return new Message(context.getString(R.string.DronelinkDJI2_FCGoHomeState_title), details, level);
+            }
         }
         return null;
     }
@@ -3062,6 +3094,10 @@ public class DronelinkDJI2 {
                     return context.getString(R.string.DronelinkDJI2_ProductType_value_M30_SERIES);
                 case M300_RTK:
                     return context.getString(R.string.DronelinkDJI2_ProductType_value_M300_RTK);
+                case DJI_MINI_3:
+                    return context.getString(R.string.DronelinkDJI2_ProductType_value_DJI_MINI_3);
+                case DJI_MINI_3_PRO:
+                    return context.getString(R.string.DronelinkDJI2_ProductType_value_DJI_MINI_3_PRO);
                 case UNRECOGNIZED:
                     return context.getString(R.string.DronelinkDJI2_ProductType_value_UNRECOGNIZED);
                 case UNKNOWN:
@@ -3118,6 +3154,74 @@ public class DronelinkDJI2 {
             }
         }
         return context.getString(R.string.DronelinkDJI2_ProductType_value_UNKNOWN);
+    }
+
+    public static String getString(final Context context, final @Nullable FlightMode value) {
+        if (value != null) {
+            switch (value) {
+                case MANUAL:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_MANUAL);
+                case ATTI:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_ATTI);
+                case GPS_NORMAL:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_GPS_NORMAL);
+                case POI:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_POI);
+                case TAKE_OFF_READY:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_TAKE_OFF_READY);
+                case AUTO_TAKE_OFF:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_AUTO_TAKE_OFF);
+                case AUTO_LANDING:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_AUTO_LANDING);
+                case WAYPOINT:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_WAYPOINT);
+                case GO_HOME:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_GO_HOME);
+                case VIRTUAL_STICK:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_VIRTUAL_STICK);
+                case SMART_FLIGHT:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_SMART_FLIGHT);
+                case PANO:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_PANO);
+                case GPS_SPORT:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_GPS_SPORT);
+                case GPS_TRIPOD:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_GPS_TRIPOD);
+                case AUTO_AVOIDANCE:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_AUTO_AVOIDANCE);
+                case SMART_FLY:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_SMART_FLY);
+                case FORCE_LANDING:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_FORCE_LANDING);
+                case ATTI_LANDING:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_ATTI_LANDING);
+                case CLICK_GO:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_CLICK_GO);
+                case CINEMATIC:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_CINEMATIC);
+                case DRAW:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_DRAW);
+                case FOLLOW_ME:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_FOLLOW_ME);
+                case GPS_NOVICE:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_GPS_NOVICE);
+                case QUICK_MOVIE:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_QUICK_MOVIE);
+                case TAP_FLY:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_TAP_FLY);
+                case MASTER_SHOT:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_MASTER_SHOT);
+                case APAS:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_APAS);
+                case TIME_LAPSE:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_TIME_LAPSE);
+                case MOTOR_START:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_MOTOR_START);
+                case UNKNOWN:
+                    return context.getString(R.string.DronelinkDJI2_FlightMode_value_UNKNOWN);
+            }
+        }
+        return context.getString(R.string.DronelinkDJI2_CameraLensType_CAMERA_LENS_UNKNOWN);
     }
 
     public static boolean isWaypointMissionState(final WaypointMissionExecuteState value, final WaypointMissionExecuteState[] states) {
