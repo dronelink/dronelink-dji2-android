@@ -98,7 +98,7 @@ import dji.sdk.keyvalue.key.DJIKeyInfo;
 import dji.sdk.keyvalue.key.KeyTools;
 import dji.sdk.keyvalue.value.camera.CameraExposureSettings;
 import dji.sdk.keyvalue.value.camera.CameraVideoStreamSourceType;
-import dji.sdk.keyvalue.value.camera.CameraWhiteBalance;
+import dji.sdk.keyvalue.value.camera.CameraWhiteBalanceInfo;
 import dji.sdk.keyvalue.value.camera.CameraWhiteBalanceMode;
 import dji.sdk.keyvalue.value.camera.PhotoAEBExposureOffset;
 import dji.sdk.keyvalue.value.camera.PhotoAEBSettings;
@@ -180,7 +180,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
     private dji.sdk.keyvalue.value.camera.CameraISO iso;
     private dji.sdk.keyvalue.value.camera.CameraShutterSpeed shutterSpeed;
     private dji.sdk.keyvalue.value.camera.CameraAperture aperture;
-    private CameraWhiteBalance whiteBalance;
+    private CameraWhiteBalanceInfo whiteBalance;
     private short[] histogram;
     private dji.sdk.keyvalue.value.camera.CameraFocusMode focusMode;
     private Integer focusRingValue;
@@ -710,16 +710,16 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
 
     @Override
     public CameraWhiteBalancePreset getWhiteBalancePreset() {
-        final CameraWhiteBalance whiteBalance = this.whiteBalance;
+        final CameraWhiteBalanceInfo whiteBalance = this.whiteBalance;
         if (whiteBalance != null) {
-            return DronelinkDJI2.getCameraWhiteBalancePreset(whiteBalance.mode);
+            return DronelinkDJI2.getCameraWhiteBalancePreset(whiteBalance.whiteBalanceMode);
         }
         return null;
     }
 
     @Override
     public Integer getWhiteBalanceColorTemperature() {
-        final CameraWhiteBalance whiteBalance = this.whiteBalance;
+        final CameraWhiteBalanceInfo whiteBalance = this.whiteBalance;
         if (whiteBalance != null) {
             return whiteBalance.colorTemperature;
         }
@@ -1098,11 +1098,11 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
 
         if (command instanceof WhiteBalanceCustomCameraCommand) {
             final int target = ((WhiteBalanceCustomCameraCommand) command).whiteBalanceCustom;
-            final CameraWhiteBalance whiteBalance = this.whiteBalance;
+            final CameraWhiteBalanceInfo whiteBalance = this.whiteBalance;
             final Integer current = whiteBalance == null ? null : whiteBalance.colorTemperature;
             Command.conditionallyExecute(getWhiteBalancePreset() != CameraWhiteBalancePreset.CUSTOM || current == null || current != target, finished, () -> KeyManager.getInstance().setValue(
                     createLensKey(CameraKey.KeyWhiteBalance),
-                    new CameraWhiteBalance(CameraWhiteBalanceMode.MANUAL, target),
+                    new CameraWhiteBalanceInfo(CameraWhiteBalanceMode.MANUAL, target),
                     DronelinkDJI2.createCompletionCallback(finished)));
             return null;
         }
@@ -1111,7 +1111,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
             final CameraWhiteBalancePreset target = ((WhiteBalancePresetCameraCommand) command).whiteBalancePreset;
             Command.conditionallyExecute(target != getWhiteBalancePreset(), finished, () -> KeyManager.getInstance().setValue(
                     createLensKey(CameraKey.KeyWhiteBalance),
-                    new CameraWhiteBalance(DronelinkDJI2.getCameraWhiteBalancePreset(target), null),
+                    new CameraWhiteBalanceInfo(DronelinkDJI2.getCameraWhiteBalancePreset(target), null),
                     DronelinkDJI2.createCompletionCallback(finished)));
             return null;
         }

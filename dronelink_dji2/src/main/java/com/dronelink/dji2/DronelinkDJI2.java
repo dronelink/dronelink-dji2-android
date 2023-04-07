@@ -823,16 +823,18 @@ public class DronelinkDJI2 {
     public static DroneOcuSyncFrequencyBand getOcuSyncFrequencyBand(final @Nullable FrequencyBand value) {
         if (value != null) {
             switch (value) {
-                case BAND_DUAL:
-                    return DroneOcuSyncFrequencyBand.DUAL;
-                case BAND_2_DOT_4G:
-                    return DroneOcuSyncFrequencyBand._2_DOT_4_GHZ;
-                case BAND_5_DOT_8G:
-                    return DroneOcuSyncFrequencyBand._5_DOT_8_GHZ;
-                case BAND_5_DOT_7G:
-                    return DroneOcuSyncFrequencyBand._5_DOT_7_GHZ;
                 case BAND_1_DOT_4G:
                     return DroneOcuSyncFrequencyBand._1_DOT_4_GHZ;
+                case BAND_2_DOT_4G:
+                    return DroneOcuSyncFrequencyBand._2_DOT_4_GHZ;
+                case BAND_5_DOT_2G:
+                    return DroneOcuSyncFrequencyBand._5_DOT_2_GHZ;
+                case BAND_5_DOT_7G:
+                    return DroneOcuSyncFrequencyBand._5_DOT_7_GHZ;
+                case BAND_5_DOT_8G:
+                    return DroneOcuSyncFrequencyBand._5_DOT_8_GHZ;
+                case BAND_DUAL:
+                    return DroneOcuSyncFrequencyBand.DUAL;
                 case UNKNOWN:
                     return DroneOcuSyncFrequencyBand.UNKNOWN;
             }
@@ -842,8 +844,12 @@ public class DronelinkDJI2 {
 
     public static FrequencyBand getOcuSyncFrequencyBand(final DroneOcuSyncFrequencyBand value) {
         switch (value) {
+            case _1_DOT_4_GHZ:
+                return FrequencyBand.BAND_1_DOT_4G;
             case _2_DOT_4_GHZ:
                 return FrequencyBand.BAND_2_DOT_4G;
+            case _5_DOT_2_GHZ:
+                return FrequencyBand.BAND_5_DOT_2G;
             case _5_DOT_7_GHZ:
                 return FrequencyBand.BAND_5_DOT_7G;
             case _5_DOT_8_GHZ:

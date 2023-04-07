@@ -62,13 +62,10 @@ import dji.sdk.errorcode.DJIErrorCode;
 import dji.sdk.keyvalue.key.FlightControllerKey;
 import dji.sdk.keyvalue.key.GimbalKey;
 import dji.sdk.keyvalue.key.KeyTools;
-import dji.sdk.keyvalue.value.flightcontroller.FlightControlAuthorityChangeReason;
-import dji.sdk.keyvalue.value.flightcontroller.FlightMode;
 import dji.sdk.keyvalue.value.gimbal.GimbalSpeedRotation;
 import dji.v5.common.callback.CommonCallbacks;
 import dji.v5.common.error.IDJIError;
 import dji.v5.manager.KeyManager;
-import dji.v5.manager.aircraft.rtk.RTKCenter;
 
 //TODO onVideoFeedSourceUpdated
 public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFileGeneratedCallback {
@@ -216,6 +213,11 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
     @Override
     public String getId() {
         return id;
+    }
+
+    @Override
+    public String getAdapterName() {
+        return "dji2";
     }
 
     @Override
