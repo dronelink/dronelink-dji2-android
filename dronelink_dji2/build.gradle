@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
 
 android {
+    namespace 'com.dronelink.dji2'
     compileSdkVersion 33
 
     defaultConfig {

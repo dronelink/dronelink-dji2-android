@@ -869,12 +869,15 @@ public class DronelinkDJI2 {
                     return CameraMode.PHOTO;
                 case VIDEO_NORMAL:
                     return CameraMode.VIDEO;
+                case PHOTO_AEB:
+                case PHOTO_BURST:
                 case PHOTO_INTERVAL:
                 case PHOTO_HYPER_LIGHT:
                 case PHOTO_PANORAMA:
+                case PHOTO_HIGH_RESOLUTION:
                 case PHOTO_SUPER_RESOLUTION:
                 case UNKNOWN:
-                    return CameraMode.UNKNOWN;
+                    break;
             }
         }
         return CameraMode.UNKNOWN;
@@ -1407,15 +1410,15 @@ public class DronelinkDJI2 {
         if (value != null) {
             switch (value) {
                 case PROGRAM:
-                    return CameraExposureMode.PROGRAM;
+                    break;
                 case SHUTTER_PRIORITY:
-                    return CameraExposureMode.SHUTTER_PRIORITY;
+                    break;
                 case APERTURE_PRIORITY:
-                    return CameraExposureMode.APERTURE_PRIORITY;
+                    break;
                 case MANUAL:
-                    return CameraExposureMode.MANUAL;
+                    break;
                 case UNKNOWN:
-                    return CameraExposureMode.UNKNOWN;
+                    break;
             }
         }
         return CameraExposureMode.UNKNOWN;
