@@ -45,6 +45,7 @@ import com.dronelink.core.kernel.core.enums.CameraVideoResolution;
 import com.dronelink.core.kernel.core.enums.CameraVideoStandard;
 import com.dronelink.core.kernel.core.enums.CameraVideoStreamSource;
 import com.dronelink.core.kernel.core.enums.CameraWhiteBalancePreset;
+import com.dronelink.core.kernel.core.enums.DroneAuxiliaryLightMode;
 import com.dronelink.core.kernel.core.enums.DroneConnectionFailSafeBehavior;
 import com.dronelink.core.kernel.core.enums.DroneOcuSyncChannelSelectionMode;
 import com.dronelink.core.kernel.core.enums.DroneOcuSyncFrequencyBand;
@@ -78,6 +79,7 @@ import dji.sdk.keyvalue.value.camera.VideoStandard;
 import dji.sdk.keyvalue.value.common.EmptyMsg;
 import dji.sdk.keyvalue.value.common.LocationCoordinate2D;
 import dji.sdk.keyvalue.value.common.LocationCoordinate3D;
+import dji.sdk.keyvalue.value.flightassistant.AuxiliaryLightMode;
 import dji.sdk.keyvalue.value.flightcontroller.AirSenseAirplaneState;
 import dji.sdk.keyvalue.value.flightcontroller.AirSenseSystemInformation;
 import dji.sdk.keyvalue.value.flightcontroller.CompassCalibrationState;
@@ -1410,15 +1412,15 @@ public class DronelinkDJI2 {
         if (value != null) {
             switch (value) {
                 case PROGRAM:
-                    break;
+                    return CameraExposureMode.PROGRAM;
                 case SHUTTER_PRIORITY:
-                    break;
+                    return CameraExposureMode.SHUTTER_PRIORITY;
                 case APERTURE_PRIORITY:
-                    break;
+                    return CameraExposureMode.APERTURE_PRIORITY;
                 case MANUAL:
-                    break;
+                    return CameraExposureMode.MANUAL;
                 case UNKNOWN:
-                    break;
+                    return CameraExposureMode.UNKNOWN;
             }
         }
         return CameraExposureMode.UNKNOWN;
@@ -3030,6 +3032,24 @@ public class DronelinkDJI2 {
             }
         }
         return FailsafeAction.UNKNOWN;
+    }
+
+    public static AuxiliaryLightMode getDroneAuxiliaryLightMode(final @Nullable DroneAuxiliaryLightMode value) {
+        if (value != null) {
+            switch (value) {
+                case AUTO:
+                    return AuxiliaryLightMode.AUTO;
+                case ON:
+                    return AuxiliaryLightMode.ON;
+                case OFF:
+                    return AuxiliaryLightMode.OFF;
+                case BEACON:
+                    return AuxiliaryLightMode.BEACON;
+                case UNKNOWN:
+                    return AuxiliaryLightMode.UNKNOWN;
+            }
+        }
+        return AuxiliaryLightMode.UNKNOWN;
     }
 
     public static GimbalMode getGimbalMode(final @Nullable dji.sdk.keyvalue.value.gimbal.GimbalMode value) {

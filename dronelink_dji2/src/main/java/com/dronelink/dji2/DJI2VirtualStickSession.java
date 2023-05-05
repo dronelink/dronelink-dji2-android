@@ -76,8 +76,14 @@ public class DJI2VirtualStickSession implements DroneControlSession, VirtualStic
                 return new Message(context.getString(R.string.MissionDisengageReason_drone_control_override_title), DronelinkDJI2.getString(context, reason));
             }
 
-            if (droneAdapter.state.flightMode != FlightMode.VIRTUAL_STICK && droneAdapter.state.flightMode != FlightMode.GPS_NORMAL) {
-                return new Message(context.getString(R.string.MissionDisengageReason_drone_control_override_title), droneAdapter.state.getMode());
+            switch (droneAdapter.state.flightMode) {
+                case VIRTUAL_STICK:
+                case GPS_NORMAL:
+                case APAS:
+                    break;
+
+                default:
+                    return new Message(context.getString(R.string.MissionDisengageReason_drone_control_override_title), droneAdapter.state.getMode());
             }
         }
 

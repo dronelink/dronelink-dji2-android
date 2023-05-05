@@ -23,6 +23,8 @@ import com.dronelink.core.adapters.DroneStateAdapter;
 import com.dronelink.core.adapters.EnumElement;
 import com.dronelink.core.adapters.GimbalAdapter;
 import com.dronelink.core.adapters.GimbalStateAdapter;
+import com.dronelink.core.adapters.LiveStreamingAdapter;
+import com.dronelink.core.adapters.LiveStreamingStateAdapter;
 import com.dronelink.core.adapters.RTKAdapter;
 import com.dronelink.core.adapters.RTKStateAdapter;
 import com.dronelink.core.adapters.RemoteControllerAdapter;
@@ -30,6 +32,7 @@ import com.dronelink.core.adapters.RemoteControllerStateAdapter;
 import com.dronelink.core.command.Command;
 import com.dronelink.core.command.CommandError;
 import com.dronelink.core.kernel.command.drone.AccessoryDroneCommand;
+import com.dronelink.core.kernel.command.drone.AuxiliaryLightModeDroneCommand;
 import com.dronelink.core.kernel.command.drone.BeaconDroneCommand;
 import com.dronelink.core.kernel.command.drone.CollisionAvoidanceDroneCommand;
 import com.dronelink.core.kernel.command.drone.ConnectionFailSafeBehaviorDroneCommand;
@@ -63,6 +66,7 @@ import com.dronelink.core.kernel.core.GeoCoordinate;
 import com.dronelink.core.kernel.core.Message;
 import com.dronelink.core.kernel.core.Orientation3;
 import com.dronelink.core.kernel.core.Vector2;
+import com.dronelink.core.kernel.core.enums.DroneAuxiliaryLightMode;
 import com.dronelink.core.kernel.core.enums.DroneOcuSyncFrequencyBand;
 import com.dronelink.core.kernel.core.enums.GimbalMode;
 import com.dronelink.dji2.DJI2CameraFile;
@@ -86,6 +90,7 @@ import dji.sdk.keyvalue.key.KeyTools;
 import dji.sdk.keyvalue.key.ProductKey;
 import dji.sdk.keyvalue.value.airlink.ChannelSelectionMode;
 import dji.sdk.keyvalue.value.common.ComponentIndexType;
+import dji.sdk.keyvalue.value.flightassistant.AuxiliaryLightMode;
 import dji.sdk.keyvalue.value.flightcontroller.FailsafeAction;
 import dji.sdk.keyvalue.value.flightcontroller.FlightCoordinateSystem;
 import dji.sdk.keyvalue.value.flightcontroller.RollPitchControlMode;
@@ -97,6 +102,12 @@ import dji.v5.common.callback.CommonCallbacks;
 import dji.v5.manager.KeyManager;
 import dji.v5.manager.aircraft.virtualstick.VirtualStickManager;
 import dji.v5.manager.aircraft.virtualstick.VirtualStickRange;
+import dji.v5.manager.datacenter.MediaDataCenter;
+import dji.v5.manager.datacenter.livestream.LiveStreamSettings;
+import dji.v5.manager.datacenter.livestream.LiveStreamType;
+import dji.v5.manager.datacenter.livestream.LiveVideoBitrateMode;
+import dji.v5.manager.datacenter.livestream.StreamQuality;
+import dji.v5.manager.datacenter.livestream.settings.RtmpSettings;
 
 public class DJI2DroneAdapter implements DroneAdapter {
     public interface CameraFileGeneratedCallback {
@@ -117,6 +128,7 @@ public class DJI2DroneAdapter implements DroneAdapter {
     private final Map<ComponentIndexType, GimbalAdapter> gimbals = new HashMap<>();
     private final Map<Integer, DJI2BatteryAdapter> batteries = new HashMap<>();
     private final DJI2RTKAdapter rtk;
+    private final DJI2LiveStreamingAdapter liveStreaming;
 
     public DJI2DroneAdapter(final Context context, final CommonCallbacks.CompletionCallbackWithParam<String> onSerialNumber, final CameraFileGeneratedCallback cameraFileReceiver) {
         state = new DJI2DroneStateAdapter(context, this);
@@ -242,6 +254,7 @@ public class DJI2DroneAdapter implements DroneAdapter {
         }
 
         rtk = new DJI2RTKAdapter(context, this);
+        liveStreaming = new DJI2LiveStreamingAdapter(context, this);
     }
 
     public void close() {
@@ -276,6 +289,15 @@ public class DJI2DroneAdapter implements DroneAdapter {
         final DatedValue<RTKStateAdapter> rtkState = getRTKState();
         if (rtkState != null && rtkState.value != null && rtkState.value.isEnabled()) {
             for (final Message message : rtkState.value.getStatusMessages()) {
+                if (message.level != Message.Level.INFO) {
+                    messages.add(message);
+                }
+            }
+        }
+
+        final DatedValue<LiveStreamingStateAdapter> liveStreamingState = getLiveStreamingState();
+        if (liveStreamingState != null && liveStreamingState.value != null && liveStreamingState.value.isEnabled()) {
+            for (final Message message : liveStreamingState.value.getStatusMessages()) {
                 if (message.level != Message.Level.INFO) {
                     messages.add(message);
                 }
@@ -363,6 +385,11 @@ public class DJI2DroneAdapter implements DroneAdapter {
     @Override
     public RTKAdapter getRTK() {
         return rtk;
+    }
+
+    @Override
+    public LiveStreamingAdapter getLiveStreaming() {
+        return liveStreaming;
     }
 
     private boolean isYawControlModeAngleAvailable() {
@@ -536,6 +563,14 @@ public class DJI2DroneAdapter implements DroneAdapter {
         return null;
     }
 
+    public DatedValue<LiveStreamingStateAdapter> getLiveStreamingState() {
+        final DJI2LiveStreamingAdapter liveStreaming = (DJI2LiveStreamingAdapter)getLiveStreaming();
+        if (liveStreaming != null) {
+            return liveStreaming.getState();
+        }
+        return null;
+    }
+
     public void sendResetVelocityCommand() {
         final VirtualStickFlightControlParam param = new VirtualStickFlightControlParam();
         param.setRollPitchControlMode(RollPitchControlMode.VELOCITY);
@@ -641,10 +676,34 @@ public class DJI2DroneAdapter implements DroneAdapter {
             //TODO
         }
 
+        final LiveStreamSettings.Builder liveStreamSettings = new LiveStreamSettings.Builder();
+        liveStreamSettings.setLiveStreamType(LiveStreamType.RTMP);
+        final RtmpSettings.Builder rtmpSettings = new RtmpSettings.Builder();
+        rtmpSettings.setUrl("");
+        liveStreamSettings.setRtmpSettings(rtmpSettings.build());
+        MediaDataCenter.getInstance().getLiveStreamManager().setLiveStreamSettings(liveStreamSettings.build());
+//        MediaDataCenter.getInstance().getLiveStreamManager().setLiveStreamQuality(StreamQuality.FULL_HD);
+//        MediaDataCenter.getInstance().getLiveStreamManager().setLiveVideoBitrateMode(LiveVideoBitrateMode.AUTO);
+//        MediaDataCenter.getInstance().getLiveStreamManager().setLiveVideoBitrate(0);
+
         return new CommandError(context.getString(R.string.MissionDisengageReason_command_type_unhandled) + ": " + command.type);
     }
 
     private CommandError executeFlightAssistantDroneCommand(final Context context, final FlightAssistantDroneCommand command, final Command.Finisher finished) {
+        if (command instanceof AuxiliaryLightModeDroneCommand) {
+            final AuxiliaryLightMode target = DronelinkDJI2.getDroneAuxiliaryLightMode(((AuxiliaryLightModeDroneCommand) command).auxiliaryLightMode);
+            switch (((AuxiliaryLightModeDroneCommand) command).auxiliaryLightPosition) {
+                case BOTTOM:
+                    KeyManager.getInstance().setValue(KeyTools.createKey(FlightAssistantKey.KeyBottomAuxiliaryLightMode), target, DronelinkDJI2.createCompletionCallback(finished));
+                    return null;
+                case TOP:
+                    KeyManager.getInstance().setValue(KeyTools.createKey(FlightAssistantKey.KeyTopAuxiliaryLightMode), target, DronelinkDJI2.createCompletionCallback(finished));
+                    return null;
+                case UNKNOWN:
+                    break;
+            }
+        }
+
         if (command instanceof CollisionAvoidanceDroneCommand) {
           final boolean target = ((CollisionAvoidanceDroneCommand) command).enabled;
             Command.conditionallyExecute(target != state.horizontalAvoidanceEnabled, finished, () -> KeyManager.getInstance().setValue(

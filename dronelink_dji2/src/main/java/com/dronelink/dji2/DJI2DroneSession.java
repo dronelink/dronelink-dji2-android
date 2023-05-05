@@ -26,6 +26,8 @@ import com.dronelink.core.adapters.DroneAdapter;
 import com.dronelink.core.adapters.DroneStateAdapter;
 import com.dronelink.core.adapters.GimbalAdapter;
 import com.dronelink.core.adapters.GimbalStateAdapter;
+import com.dronelink.core.adapters.LiveStreamingAdapter;
+import com.dronelink.core.adapters.LiveStreamingStateAdapter;
 import com.dronelink.core.adapters.RTKAdapter;
 import com.dronelink.core.adapters.RTKStateAdapter;
 import com.dronelink.core.adapters.RemoteControllerAdapter;
@@ -40,6 +42,7 @@ import com.dronelink.core.kernel.command.drone.DroneCommand;
 import com.dronelink.core.kernel.command.gimbal.GimbalCommand;
 import com.dronelink.core.kernel.command.gimbal.ModeGimbalCommand;
 import com.dronelink.core.kernel.command.gimbal.OrientationGimbalCommand;
+import com.dronelink.core.kernel.command.livestreaming.LiveStreamingCommand;
 import com.dronelink.core.kernel.command.remotecontroller.RemoteControllerCommand;
 import com.dronelink.core.kernel.command.rtk.RTKCommand;
 import com.dronelink.core.kernel.core.Message;
@@ -47,6 +50,7 @@ import com.dronelink.core.kernel.core.enums.ExecutionEngine;
 import com.dronelink.dji2.adapters.DJI2CameraAdapter;
 import com.dronelink.dji2.adapters.DJI2DroneAdapter;
 import com.dronelink.dji2.adapters.DJI2GimbalAdapter;
+import com.dronelink.dji2.adapters.DJI2LiveStreamingAdapter;
 import com.dronelink.dji2.adapters.DJI2RTKAdapter;
 import com.dronelink.dji2.adapters.DJI2RemoteControllerAdapter;
 
@@ -280,6 +284,7 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
         switch (droneAdapter.state.flightMode) {
             case VIRTUAL_STICK:
             case GPS_NORMAL:
+            case APAS:
                 break;
 
             case GPS_SPORT:
@@ -409,6 +414,17 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
                 return ((DJI2RTKAdapter)rtk).executeCommand(context, (RTKCommand) command, finished);
             };
         }
+        else if (command instanceof LiveStreamingCommand) {
+            executor = finished -> {
+                onCommandExecuted(command);
+                finished.execute(null);
+                final LiveStreamingAdapter liveStreaming = droneAdapter.getLiveStreaming();
+                if (liveStreaming == null) {
+                    return new CommandError(context.getString(R.string.MissionDisengageReason_live_streaming_unavailable_title));
+                }
+                return ((DJI2LiveStreamingAdapter)liveStreaming).executeCommand(context, (LiveStreamingCommand) command, finished);
+            };
+        }
         else if (command instanceof CameraCommand) {
             executor = finished -> {
                 onCommandExecuted(command);
@@ -453,6 +469,9 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
                 droneCommands.addCommand(c);
             }
             else if (command instanceof RTKCommand) {
+                droneCommands.addCommand(c);
+            }
+            else if (command instanceof LiveStreamingCommand) {
                 droneCommands.addCommand(c);
             }
             else if (command instanceof RemoteControllerCommand) {
@@ -518,6 +537,11 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
     @Override
     public DatedValue<RTKStateAdapter> getRTKState() {
         return droneAdapter.getRTKState();
+    }
+
+    @Override
+    public DatedValue<LiveStreamingStateAdapter> getLiveStreamingState() {
+        return droneAdapter.getLiveStreamingState();
     }
 
     @Override

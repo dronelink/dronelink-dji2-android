@@ -109,6 +109,7 @@ public class DJI2RTKAdapter implements RTKAdapter {
         if (command instanceof CustomNetworkSettingsRTKCommand) {
             final CustomNetworkSettingsRTKCommand target = (CustomNetworkSettingsRTKCommand) command;
             networkRTKManager.setCustomNetworkRTKSettings(new RTKCustomNetworkSetting(target.serverAddress, target.port, target.username, target.password, target.mountPoint));
+            finished.execute(null);
             return null;
         }
 

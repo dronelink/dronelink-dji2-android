@@ -12,6 +12,8 @@
     <string name="MissionDisengageReason_drone_remote_controller_unavailable_title">Remote Controller Unavailable</string>
     <string name="MissionDisengageReason_rtk_unavailable_title">RTK Unavailable</string>
     <string name="MissionDisengageReason_rtk_custom_network_unavailable_title">Custom Network RTK Unavailable</string>
+    <string name="MissionDisengageReason_live_streaming_unavailable_title">Live Streaming Unavailable</string>
+    <string name="MissionDisengageReason_live_streaming_rtmp_unavailable_title">RTMP Live Streaming Unavailable</string>
     <string name="MissionDisengageReason_drone_camera_unavailable_title">Camera Unavailable</string>
     <string name="MissionDisengageReason_drone_gimbal_unavailable_title">Gimbal Unavailable</string>
     <string name="MissionDisengageReason_command_type_unhandled">Unhandled Command Type</string>
