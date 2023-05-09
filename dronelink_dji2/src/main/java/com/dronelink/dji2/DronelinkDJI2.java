@@ -92,6 +92,7 @@ import dji.sdk.keyvalue.value.flightcontroller.GPSSignalLevel;
 import dji.sdk.keyvalue.value.flightcontroller.GoHomeState;
 import dji.sdk.keyvalue.value.flightcontroller.WindWarning;
 import dji.sdk.keyvalue.value.product.ProductType;
+import dji.sdk.keyvalue.value.remotecontroller.RcGPSInfo;
 import dji.sdk.keyvalue.value.rtkmobilestation.RTKError;
 import dji.sdk.keyvalue.value.rtkmobilestation.RTKPositioningSolution;
 import dji.v5.common.callback.CommonCallbacks;
@@ -169,6 +170,22 @@ public class DronelinkDJI2 {
         final Location location = new Location("");
         location.setLatitude(value.getLatitude());
         location.setLongitude(value.getLongitude());
+        return location;
+    }
+
+    public static Location getLocation(final @Nullable RcGPSInfo value) {
+        if (value == null) {
+            return null;
+        }
+
+        final LocationCoordinate2D coordinate = value.getLocation();
+        if (coordinate == null) {
+            return null;
+        }
+
+        final Location location = new Location("");
+        location.setLatitude(coordinate.getLatitude());
+        location.setLongitude(coordinate.getLongitude());
         return location;
     }
 
@@ -3050,6 +3067,24 @@ public class DronelinkDJI2 {
             }
         }
         return AuxiliaryLightMode.UNKNOWN;
+    }
+
+    public static DroneAuxiliaryLightMode getDroneAuxiliaryLightMode(final @Nullable AuxiliaryLightMode value) {
+        if (value != null) {
+            switch (value) {
+                case AUTO:
+                    return DroneAuxiliaryLightMode.AUTO;
+                case ON:
+                    return DroneAuxiliaryLightMode.ON;
+                case OFF:
+                    return DroneAuxiliaryLightMode.OFF;
+                case BEACON:
+                    return DroneAuxiliaryLightMode.BEACON;
+                case UNKNOWN:
+                    return DroneAuxiliaryLightMode.UNKNOWN;
+            }
+        }
+        return DroneAuxiliaryLightMode.UNKNOWN;
     }
 
     public static GimbalMode getGimbalMode(final @Nullable dji.sdk.keyvalue.value.gimbal.GimbalMode value) {

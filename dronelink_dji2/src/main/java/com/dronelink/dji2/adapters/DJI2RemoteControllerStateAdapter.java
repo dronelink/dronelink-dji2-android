@@ -6,12 +6,15 @@
 //
 package com.dronelink.dji2.adapters;
 
+import android.location.Location;
+
 import com.dronelink.core.DatedValue;
 import com.dronelink.core.adapters.RemoteControllerStateAdapter;
 import com.dronelink.core.kernel.core.RemoteControllerButton;
 import com.dronelink.core.kernel.core.RemoteControllerStick;
 import com.dronelink.core.kernel.core.RemoteControllerWheel;
 import com.dronelink.dji2.DJI2ListenerGroup;
+import com.dronelink.dji2.DronelinkDJI2;
 
 import java.util.Date;
 
@@ -19,30 +22,42 @@ import dji.sdk.keyvalue.key.DJIKey;
 import dji.sdk.keyvalue.key.DJIKeyInfo;
 import dji.sdk.keyvalue.key.KeyTools;
 import dji.sdk.keyvalue.key.RemoteControllerKey;
+import dji.sdk.keyvalue.value.remotecontroller.FiveDimensionPressedStatus;
+import dji.sdk.keyvalue.value.remotecontroller.RcGPSInfo;
 
 public class DJI2RemoteControllerStateAdapter implements RemoteControllerStateAdapter {
     private final DJI2ListenerGroup listeners = new DJI2ListenerGroup();
 
+    private RcGPSInfo gpsInfo;
     private int dialLeft;
     private int stickLeftHorizontal;
     private int stickLeftVertical;
     private int stickRightHorizontal;
     private int stickRightVertical;
-    private boolean pauseButtonDown;
-    private boolean goHomeButtonDown;
-    private boolean custom1ButtonDown;
-    private boolean custom2ButtonDown;
+    private Boolean shutterButtonDown;
+    private Boolean videoButtonDown;
+    private Boolean pauseButtonDown;
+    private Boolean returnHomeButtonDown;
+    private Boolean c1ButtonDown;
+    private Boolean c2ButtonDown;
+    private Boolean c3ButtonDown;
+    private FiveDimensionPressedStatus fiveDimensionPressedStatus;
 
     public DJI2RemoteControllerStateAdapter() {
+        listeners.init(KeyTools.createKey(RemoteControllerKey.KeyRcGPSInfo), (oldValue, newValue) -> gpsInfo = newValue);
         listeners.init(KeyTools.createKey(RemoteControllerKey.KeyLeftDial), (oldValue, newValue) -> dialLeft = newValue != null ? newValue : 0);
         listeners.init(KeyTools.createKey(RemoteControllerKey.KeyStickLeftHorizontal), (oldValue, newValue) -> stickLeftHorizontal = newValue != null ? newValue : 0);
         listeners.init(KeyTools.createKey(RemoteControllerKey.KeyStickLeftVertical), (oldValue, newValue) -> stickLeftVertical = newValue != null ? newValue : 0);
         listeners.init(KeyTools.createKey(RemoteControllerKey.KeyStickRightHorizontal), (oldValue, newValue) -> stickRightHorizontal = newValue != null ? newValue : 0);
         listeners.init(KeyTools.createKey(RemoteControllerKey.KeyStickRightVertical), (oldValue, newValue) -> stickRightVertical = newValue != null ? newValue : 0);
-        listeners.init(KeyTools.createKey(RemoteControllerKey.KeyPauseButtonDown), (oldValue, newValue) -> pauseButtonDown = newValue != null && newValue);
-        listeners.init(KeyTools.createKey(RemoteControllerKey.KeyGoHomeButtonDown), (oldValue, newValue) -> goHomeButtonDown = newValue != null && newValue);
-        listeners.init(KeyTools.createKey(RemoteControllerKey.KeyCustomButton1Down), (oldValue, newValue) -> custom1ButtonDown = newValue != null && newValue);
-        listeners.init(KeyTools.createKey(RemoteControllerKey.KeyCustomButton2Down), (oldValue, newValue) -> custom2ButtonDown = newValue != null && newValue);
+        listeners.init(KeyTools.createKey(RemoteControllerKey.KeyShutterButtonDown), (oldValue, newValue) -> shutterButtonDown = newValue);
+        listeners.init(KeyTools.createKey(RemoteControllerKey.KeyRecordButtonDown), (oldValue, newValue) -> videoButtonDown = newValue);
+        listeners.init(KeyTools.createKey(RemoteControllerKey.KeyPauseButtonDown), (oldValue, newValue) -> pauseButtonDown = newValue);
+        listeners.init(KeyTools.createKey(RemoteControllerKey.KeyGoHomeButtonDown), (oldValue, newValue) -> returnHomeButtonDown = newValue);
+        listeners.init(KeyTools.createKey(RemoteControllerKey.KeyCustomButton1Down), (oldValue, newValue) -> c1ButtonDown = newValue);
+        listeners.init(KeyTools.createKey(RemoteControllerKey.KeyCustomButton2Down), (oldValue, newValue) -> c2ButtonDown = newValue);
+        listeners.init(KeyTools.createKey(RemoteControllerKey.KeyCustomButton3Down), (oldValue, newValue) -> c3ButtonDown = newValue);
+        listeners.init(KeyTools.createKey(RemoteControllerKey.KeyFiveDimensionPressedStatus), (oldValue, newValue) -> fiveDimensionPressedStatus = newValue);
     }
 
     public void close() {
@@ -57,6 +72,11 @@ public class DJI2RemoteControllerStateAdapter implements RemoteControllerStateAd
         return KeyTools.createKey(keyInfo);
     }
 
+    @Override
+    public Location getLocation() {
+        return DronelinkDJI2.getLocation(gpsInfo);
+    }
+
     public RemoteControllerStick getLeftStick() {
         return new RemoteControllerStick((double)stickLeftHorizontal / 660.0, (double)stickLeftVertical / 660.0);
     }
@@ -69,19 +89,94 @@ public class DJI2RemoteControllerStateAdapter implements RemoteControllerStateAd
         return new RemoteControllerStick((double)stickRightHorizontal / 660.0, (double)stickRightVertical / 660.0);
     }
 
+    @Override
+    public RemoteControllerButton getCaptureButton() {
+        return new RemoteControllerButton(shutterButtonDown != null, shutterButtonDown != null && shutterButtonDown);
+    }
+
+    @Override
+    public RemoteControllerButton getVideoButton() {
+        return new RemoteControllerButton(videoButtonDown != null, videoButtonDown != null && videoButtonDown);
+    }
+
+    @Override
+    public RemoteControllerButton getPhotoButton() {
+        return null;
+    }
+
     public RemoteControllerButton getPauseButton() {
-        return new RemoteControllerButton(true, pauseButtonDown);
+        return new RemoteControllerButton(pauseButtonDown != null, pauseButtonDown != null && pauseButtonDown);
     }
 
     public RemoteControllerButton getReturnHomeButton() {
-        return new RemoteControllerButton(true, goHomeButtonDown);
+        return new RemoteControllerButton(returnHomeButtonDown != null, returnHomeButtonDown != null && returnHomeButtonDown);
+    }
+
+    @Override
+    public RemoteControllerButton getFunctionButton() {
+        return null;
     }
 
     public RemoteControllerButton getC1Button() {
-        return new RemoteControllerButton(true, custom1ButtonDown);
+        return new RemoteControllerButton(c1ButtonDown != null, c1ButtonDown != null && c1ButtonDown);
     }
 
     public RemoteControllerButton getC2Button() {
-        return new RemoteControllerButton(true, custom2ButtonDown);
+        return new RemoteControllerButton(c2ButtonDown != null, c2ButtonDown != null && c2ButtonDown);
+    }
+
+    @Override
+    public RemoteControllerButton getC3Button() {
+        return new RemoteControllerButton(c3ButtonDown != null, c3ButtonDown != null && c3ButtonDown);
+    }
+
+    @Override
+    public RemoteControllerButton getUpButton() {
+        return new RemoteControllerButton(fiveDimensionPressedStatus != null, fiveDimensionPressedStatus != null && fiveDimensionPressedStatus.upwards != null && fiveDimensionPressedStatus.upwards);
+    }
+
+    @Override
+    public RemoteControllerButton getDownButton() {
+        return new RemoteControllerButton(fiveDimensionPressedStatus != null, fiveDimensionPressedStatus != null && fiveDimensionPressedStatus.downwards != null && fiveDimensionPressedStatus.downwards);
+    }
+
+    @Override
+    public RemoteControllerButton getLeftButton() {
+        return new RemoteControllerButton(fiveDimensionPressedStatus != null, fiveDimensionPressedStatus != null && fiveDimensionPressedStatus.leftwards != null && fiveDimensionPressedStatus.leftwards);
+    }
+
+    @Override
+    public RemoteControllerButton getRightButton() {
+        return new RemoteControllerButton(fiveDimensionPressedStatus != null, fiveDimensionPressedStatus != null && fiveDimensionPressedStatus.rightwards != null && fiveDimensionPressedStatus.rightwards);
+    }
+
+    @Override
+    public RemoteControllerButton getL1Button() {
+        return null;
+    }
+
+    @Override
+    public RemoteControllerButton getL2Button() {
+        return null;
+    }
+
+    @Override
+    public RemoteControllerButton getL3Button() {
+        return null;
+    }
+
+    @Override
+    public RemoteControllerButton getR1Button() {
+        return null;
+    }
+
+    @Override
+    public RemoteControllerButton getR2Button() {
+        return null;
+    }
+
+    @Override
+    public RemoteControllerButton getR3Button() {
+        return null;
     }
 }

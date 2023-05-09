@@ -14,6 +14,7 @@ import com.dronelink.core.DatedValue;
 import com.dronelink.core.adapters.DroneStateAdapter;
 import com.dronelink.core.kernel.core.Message;
 import com.dronelink.core.kernel.core.Orientation3;
+import com.dronelink.core.kernel.core.enums.DroneAuxiliaryLightMode;
 import com.dronelink.core.kernel.core.enums.DroneLightbridgeFrequencyBand;
 import com.dronelink.core.kernel.core.enums.DroneOcuSyncFrequencyBand;
 import com.dronelink.dji2.DJI2ListenerGroup;
@@ -34,6 +35,7 @@ import dji.sdk.keyvalue.value.common.Attitude;
 import dji.sdk.keyvalue.value.common.LocationCoordinate2D;
 import dji.sdk.keyvalue.value.common.LocationCoordinate3D;
 import dji.sdk.keyvalue.value.common.Velocity3D;
+import dji.sdk.keyvalue.value.flightassistant.AuxiliaryLightMode;
 import dji.sdk.keyvalue.value.flightcontroller.AirSenseSystemInformation;
 import dji.sdk.keyvalue.value.flightcontroller.CompassCalibrationState;
 import dji.sdk.keyvalue.value.flightcontroller.CompassState;
@@ -92,6 +94,7 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataLis
     private Integer downlinkQuality;
     public Integer ocuSyncChannel;
     public ChannelSelectionMode ocuSyncChannelSelectionMode;
+    public AuxiliaryLightMode auxiliaryLightModeBottom;
     private FrequencyBand ocuSyncFrequencyBand;
     private WindWarning windWarning;
     private AirSenseSystemInformation airSenseSystemInformation;
@@ -167,6 +170,7 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataLis
         listeners.init(KeyTools.createKey(AirLinkKey.KeyChannelNumber), (oldValue, newValue) -> ocuSyncChannel = newValue);
         listeners.init(KeyTools.createKey(AirLinkKey.KeyChannelSelectionMode), (oldValue, newValue) -> ocuSyncChannelSelectionMode = newValue);
         listeners.init(KeyTools.createKey(AirLinkKey.KeyFrequencyBand), (oldValue, newValue) -> ocuSyncFrequencyBand = newValue);
+        listeners.init(KeyTools.createKey(FlightAssistantKey.KeyBottomAuxiliaryLightMode), (oldValue, newValue) -> auxiliaryLightModeBottom = newValue);
 
         PerceptionManager.getInstance().addObstacleDataListener(this);
         WaypointMissionManager.getInstance().addWaypointMissionExecuteStateListener(this);
@@ -483,6 +487,11 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataLis
     @Override
     public DroneOcuSyncFrequencyBand getOcuSyncFrequencyBand() {
         return DronelinkDJI2.getOcuSyncFrequencyBand(ocuSyncFrequencyBand);
+    }
+
+    @Override
+    public DroneAuxiliaryLightMode getAuxiliaryLightModeBottom() {
+        return DronelinkDJI2.getDroneAuxiliaryLightMode(auxiliaryLightModeBottom);
     }
 
     @Override
