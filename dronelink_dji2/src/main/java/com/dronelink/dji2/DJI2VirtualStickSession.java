@@ -12,6 +12,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.dronelink.core.DroneControlSession;
+import com.dronelink.core.LocaleUtil;
 import com.dronelink.core.kernel.core.Message;
 import com.dronelink.core.kernel.core.enums.ExecutionEngine;
 import com.dronelink.dji2.adapters.DJI2DroneAdapter;
@@ -62,6 +63,12 @@ public class DJI2VirtualStickSession implements DroneControlSession, VirtualStic
     @Override
     public ExecutionEngine getExecutionEngine() {
         return ExecutionEngine.DRONELINK_KERNEL;
+    }
+
+    @Override
+    public void setLocale(final String locale) {
+        LocaleUtil.selectedLocale = locale;
+        LocaleUtil.applyLocalizedContext(context, LocaleUtil.selectedLocale);
     }
 
     @Override

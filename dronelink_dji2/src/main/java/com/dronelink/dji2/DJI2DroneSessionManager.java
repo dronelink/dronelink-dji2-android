@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.dronelink.core.DroneSession;
 import com.dronelink.core.DroneSessionManager;
+import com.dronelink.core.LocaleUtil;
 import com.dronelink.core.command.Command;
 import com.dronelink.core.kernel.core.Message;
 
@@ -52,6 +53,12 @@ public class DJI2DroneSessionManager implements DroneSessionManager {
 
     private void initAppActivationManagerStateListener(final int attempt) {
         SDKManager.getInstance().registerApp();
+    }
+
+    @Override
+    public void setLocale(final String locale) {
+        LocaleUtil.selectedLocale = locale;
+        LocaleUtil.applyLocalizedContext(context, LocaleUtil.selectedLocale);
     }
 
     @Override
