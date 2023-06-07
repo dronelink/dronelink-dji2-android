@@ -11,6 +11,7 @@ import android.location.Location;
 
 import com.dronelink.core.Convert;
 import com.dronelink.core.DatedValue;
+import com.dronelink.core.Dronelink;
 import com.dronelink.core.adapters.DroneStateAdapter;
 import com.dronelink.core.kernel.core.Message;
 import com.dronelink.core.kernel.core.Orientation3;
@@ -55,7 +56,6 @@ import dji.v5.manager.diagnostic.DeviceStatusManager;
 
 public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataListener, WaypointMissionExecuteStateListener {
     private final DJI2ListenerGroup listeners = new DJI2ListenerGroup();
-    private final Context context;
     private final DJI2DroneAdapter drone;
     private Date updated = new Date();
     public FlightMode flightMode;
@@ -108,8 +108,7 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataLis
     public boolean visionPositioningEnabled = false;
     private WaypointMissionExecuteState waypointMissionExecuteState;
 
-    public DJI2DroneStateAdapter(final Context context, final DJI2DroneAdapter drone) {
-        this.context = context;
+    public DJI2DroneStateAdapter(final DJI2DroneAdapter drone) {
         this.drone = drone;
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyFlightMode), (oldValue, newValue) -> flightMode = newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyFlightModeString), (oldValue, newValue) -> flightModeString = newValue);
@@ -191,59 +190,59 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataLis
         final List<Message> messages = new ArrayList<>();
 
         if (flightMode == null) {
-            messages.add(new Message(context.getString(R.string.DJI2DroneStateAdapter_telemetry_unavailable), Message.Level.DANGER));
+            messages.add(new Message(Dronelink.getInstance().context.getString(R.string.DJI2DroneStateAdapter_telemetry_unavailable), Message.Level.DANGER));
             return messages;
         }
 
-        final Message fcGoHomeStateMessage = DronelinkDJI2.getMessage(context, fcGoHomeState);
+        final Message fcGoHomeStateMessage = DronelinkDJI2.getMessage(fcGoHomeState);
         if (fcGoHomeStateMessage != null) {
             messages.add(fcGoHomeStateMessage);
         }
         else {
-            final Message goHomeStatusMessage = DronelinkDJI2.getMessage(context, goHomeState);
+            final Message goHomeStatusMessage = DronelinkDJI2.getMessage(goHomeState);
             if (goHomeStatusMessage != null) {
                 messages.add(goHomeStatusMessage);
             }
             else {
                 if (isSeriousLowBatteryWarning) {
-                    messages.add(new Message(context.getString(R.string.DJI2DroneStateAdapter_statusMessages_isSeriousLowBatteryWarning_title), Message.Level.WARNING));
+                    messages.add(new Message(Dronelink.getInstance().context.getString(R.string.DJI2DroneStateAdapter_statusMessages_isSeriousLowBatteryWarning_title), Message.Level.WARNING));
                 } else if (isLowBatteryWarning) {
-                    messages.add(new Message(context.getString(R.string.DJI2DroneStateAdapter_statusMessages_isLowBatteryWarning_title), Message.Level.WARNING));
+                    messages.add(new Message(Dronelink.getInstance().context.getString(R.string.DJI2DroneStateAdapter_statusMessages_isLowBatteryWarning_title), Message.Level.WARNING));
                 }
 
                 if (isOutOfDistanceLimit) {
-                    messages.add(new Message(context.getString(R.string.DJI2DroneStateAdapter_statusMessages_isOutOfDistanceLimit_title), Message.Level.WARNING));
+                    messages.add(new Message(Dronelink.getInstance().context.getString(R.string.DJI2DroneStateAdapter_statusMessages_isOutOfDistanceLimit_title), Message.Level.WARNING));
                 } else if (isNearDistanceLimit) {
-                    messages.add(new Message(context.getString(R.string.DJI2DroneStateAdapter_statusMessages_isNearDistanceLimit_title), Message.Level.WARNING));
+                    messages.add(new Message(Dronelink.getInstance().context.getString(R.string.DJI2DroneStateAdapter_statusMessages_isNearDistanceLimit_title), Message.Level.WARNING));
                 }
 
                 if (isNearHeightLimit) {
-                    messages.add(new Message(context.getString(R.string.DJI2DroneStateAdapter_statusMessages_isNearHeightLimit_title), Message.Level.WARNING));
+                    messages.add(new Message(Dronelink.getInstance().context.getString(R.string.DJI2DroneStateAdapter_statusMessages_isNearHeightLimit_title), Message.Level.WARNING));
                 }
 
                 if (DronelinkDJI2.isWaypointMissionState(waypointMissionExecuteState, new WaypointMissionExecuteState[]{WaypointMissionExecuteState.UPLOADING})) {
-                    final Message message = DronelinkDJI2.getMessage(context, waypointMissionExecuteState);
+                    final Message message = DronelinkDJI2.getMessage(waypointMissionExecuteState);
                     if (message != null) {
                         messages.add(message);
                     }
                 }
 
-                final Message flightModeMessage = DronelinkDJI2.getMessage(context, flightMode, waypointMissionExecuteState);
+                final Message flightModeMessage = DronelinkDJI2.getMessage(flightMode, waypointMissionExecuteState);
                 if (flightModeMessage != null) {
                     messages.add(flightModeMessage);
                 }
 
                 if (getLocation() == null) {
-                    messages.add(new Message(context.getString(R.string.DJI2DroneStateAdapter_statusMessages_locationUnavailable_title), context.getString(R.string.DJI2DroneStateAdapter_statusMessages_locationUnavailable_details), Message.Level.DANGER));
+                    messages.add(new Message(Dronelink.getInstance().context.getString(R.string.DJI2DroneStateAdapter_statusMessages_locationUnavailable_title), Dronelink.getInstance().context.getString(R.string.DJI2DroneStateAdapter_statusMessages_locationUnavailable_details), Message.Level.DANGER));
                 }
 
                 if (!isHomeLocationSet) {
-                    messages.add(new Message(context.getString(R.string.DJI2DroneStateAdapter_statusMessages_homeLocationNotSet_title), Message.Level.DANGER));
+                    messages.add(new Message(Dronelink.getInstance().context.getString(R.string.DJI2DroneStateAdapter_statusMessages_homeLocationNotSet_title), Message.Level.DANGER));
                 }
             }
         }
 
-        final Message windWarningMessage = DronelinkDJI2.getMessage(context, windWarning);
+        final Message windWarningMessage = DronelinkDJI2.getMessage(windWarning);
         if (windWarningMessage != null) {
             messages.add(windWarningMessage);
         }
@@ -251,14 +250,14 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataLis
         final List<CompassState> compassStates = this.compassStates;
         if (compassStates != null) {
             for (final CompassState state : compassStates) {
-                final Message message = DronelinkDJI2.getMessage(context, state.compassSensorState);
+                final Message message = DronelinkDJI2.getMessage(state.compassSensorState);
                 if (message != null) {
                     messages.add(message);
                 }
             }
         }
 
-        final List<Message> airSenseSystemInformationMessages = DronelinkDJI2.getMessages(context, airSenseSystemInformation);
+        final List<Message> airSenseSystemInformationMessages = DronelinkDJI2.getMessages(airSenseSystemInformation);
         if (airSenseSystemInformationMessages != null) {
             messages.addAll(airSenseSystemInformationMessages);
         }
@@ -275,7 +274,7 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataLis
 
     @Override
     public String getMode() {
-        return flightMode != null ? DronelinkDJI2.getString(context, flightMode) : flightModeString;
+        return flightMode != null ? DronelinkDJI2.getString(flightMode) : flightModeString;
     }
 
     @Override
@@ -312,7 +311,7 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataLis
 
     @Override
     public Message getCompassCalibrationMessage() {
-        return DronelinkDJI2.getMessage(context, compassCalibrationState);
+        return DronelinkDJI2.getMessage(compassCalibrationState);
     }
 
     @Override

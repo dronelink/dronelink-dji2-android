@@ -10,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.dronelink.core.DatedValue;
+import com.dronelink.core.Dronelink;
 import com.dronelink.core.adapters.RTKStateAdapter;
 import com.dronelink.core.kernel.core.Message;
 import com.dronelink.core.kernel.core.enums.RTKReferenceStationSource;
@@ -36,7 +37,6 @@ import dji.v5.manager.interfaces.INetworkRTKManager;
 import dji.v5.manager.interfaces.IRTKCenter;
 
 public class DJI2RTKStateAdapter implements RTKStateAdapter, RTKSystemStateListener, INetworkServiceInfoListener {
-    private final Context context;
     private final DJI2DroneAdapter drone;
     private final DJI2ListenerGroup listeners = new DJI2ListenerGroup();
 
@@ -46,8 +46,7 @@ public class DJI2RTKStateAdapter implements RTKStateAdapter, RTKSystemStateListe
     private dji.sdk.keyvalue.value.rtkbasestation.RTKServiceState serviceState;
     private IDJIError customNetworkError;
 
-    public DJI2RTKStateAdapter(final Context context, final DJI2DroneAdapter drone) {
-        this.context = context;
+    public DJI2RTKStateAdapter(final DJI2DroneAdapter drone) {
         this.drone = drone;
 
         locationInfoListener = newValue -> locationInfo = newValue;
@@ -115,7 +114,7 @@ public class DJI2RTKStateAdapter implements RTKStateAdapter, RTKSystemStateListe
     public List<Message> getStatusMessages() {
         final List<Message> messages = new ArrayList<>();
 
-        Message message = customNetworkError == null ? null : DronelinkDJI2.getMessage(context, customNetworkError);
+        Message message = customNetworkError == null ? null : DronelinkDJI2.getMessage(customNetworkError);
         if (message != null) {
             messages.add(message);
         }
@@ -136,29 +135,29 @@ public class DJI2RTKStateAdapter implements RTKStateAdapter, RTKSystemStateListe
         }
 
         if (getServiceState() == RTKServiceState.TRANSMITTING) {
-            message = DronelinkDJI2.getMessage(context, positioningSolution);
+            message = DronelinkDJI2.getMessage(positioningSolution);
             if (message != null) {
                 messages.add(message);
             }
 
             if (location == null) {
-                messages.add(new Message(context.getString(R.string.DJI2RTKStateAdapter_custom_network), context.getString(R.string.DJI2RTKStateAdapter_custom_network_location_unavailable), Message.Level.ERROR));
+                messages.add(new Message(Dronelink.getInstance().context.getString(R.string.DJI2RTKStateAdapter_custom_network), Dronelink.getInstance().context.getString(R.string.DJI2RTKStateAdapter_custom_network_location_unavailable), Message.Level.ERROR));
             }
         }
 
-        message = serviceState == null ? null : DronelinkDJI2.getMessage(context, serviceState);
+        message = serviceState == null ? null : DronelinkDJI2.getMessage(serviceState);
         if (message != null) {
             messages.add(message);
         }
 
-        message = systemState == null ? null : DronelinkDJI2.getMessage(context, systemState.getError());
+        message = systemState == null ? null : DronelinkDJI2.getMessage(systemState.getError());
         if (message != null) {
             messages.add(message);
         }
 
         if (getServiceState() == RTKServiceState.TRANSMITTING) {
             if (location != null) {
-                messages.add(new Message(context.getString(R.string.DJI2RTKStateAdapter_custom_network_location), String.format("%.6f", location.getLatitude()) + ", " + String.format("%.6f", location.getLongitude()), Message.Level.INFO));
+                messages.add(new Message(Dronelink.getInstance().context.getString(R.string.DJI2RTKStateAdapter_custom_network_location), String.format("%.6f", location.getLatitude()) + ", " + String.format("%.6f", location.getLongitude()), Message.Level.INFO));
             }
         }
 
