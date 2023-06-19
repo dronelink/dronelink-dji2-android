@@ -1,0 +1,563 @@
+# Drone Disconnected
+MissionDisengageReason_drone_disconnected_title=Dronă deconectată
+
+# Automatic Control Interrupted
+MissionDisengageReason_drone_control_override_title=Control automat întrerupt
+
+# Unable to Take Off
+MissionDisengageReason_take_off_failed_title=Nu se poate decola
+
+# Unable to Take Control
+MissionDisengageReason_take_control_failed_title=Incapabil să preia controlul
+
+# Please toggle the RC flight mode switch to N (Normal) to continue.
+MissionDisengageReason_take_control_failed_rc_mode_details=Vă rugăm să comutați comutatorul modului de zbor RC la N (Normal) pentru a continua.
+
+# Please make sure the drone flight mode is P-GPS to continue.
+MissionDisengageReason_take_control_failed_flight_mode_details=Vă rugăm să vă asigurați că modul de zbor al dronei este P-GPS pentru a continua.
+
+# Weak Signal
+MissionDisengageReason_telemetry_delayed_title=Semnal slab
+
+# • Please point the RC antennas towards the drone.\n• If the signal does not improve, try moving closer to the drone.\n• If the signal still does not improve, move to an area with fewer obstacles or RF interference.
+MissionDisengageReason_telemetry_delayed_details=• Vă rugăm să îndreptați antenele RC către dronă.\n• Dacă semnalul nu se îmbunătățește, încercați să vă apropiați de dronă.\n• Dacă semnalul tot nu se îmbunătățește, mutați-vă într-o zonă cu mai puține obstacole sau interferențe RF.
+
+# Max Distance Reached
+MissionDisengageReason_drone_max_distance_title=Distanța maximă atinsă
+
+# Increase the max distance setting to continue.
+MissionDisengageReason_drone_max_distance_details=Măriți setarea distanței maxime pentru a continua.
+
+# Remote Controller Unavailable
+MissionDisengageReason_drone_remote_controller_unavailable_title=Telecomanda indisponibilă
+
+# RTK Unavailable
+MissionDisengageReason_rtk_unavailable_title=RTK indisponibil
+
+# Custom Network RTK Unavailable
+MissionDisengageReason_rtk_custom_network_unavailable_title=Rețea personalizată RTK indisponibilă
+
+# Live Streaming Unavailable
+MissionDisengageReason_live_streaming_unavailable_title=Streaming live indisponibil
+
+# RTMP Live Streaming Unavailable
+MissionDisengageReason_live_streaming_rtmp_unavailable_title=RTMP Live Streaming indisponibil
+
+# Camera Unavailable
+MissionDisengageReason_drone_camera_unavailable_title=Camera nu este disponibilă
+
+# Gimbal Unavailable
+MissionDisengageReason_drone_gimbal_unavailable_title=Gimbal indisponibil
+
+# Unhandled Command Type
+MissionDisengageReason_command_type_unhandled=Tip de comandă netratată
+
+# Unable to Set Value
+MissionDisengageReason_command_value_invalid=Nu se poate seta valoarea
+
+# Initializing DJI SDK
+DJI2DroneSessionManager_initializing=Se inițializează DJI SDK
+
+# Unable to register DJI SDK
+DJI2DroneSessionManager_register_failed=Nu se poate înregistra DJI SDK
+
+# Serial Number Unavailable
+DJI2DroneSession_serial_number_failed=Numărul de serie indisponibil
+
+# Telemetry Unavailable
+DJI2DroneStateAdapter_telemetry_unavailable=Telemetria indisponibilă
+
+# Critically Low Battery
+DJI2DroneStateAdapter_statusMessages_isSeriousLowBatteryWarning_title=Baterie extrem de scăzută
+
+# Low Battery
+DJI2DroneStateAdapter_statusMessages_isLowBatteryWarning_title=Baterie descarcata
+
+# Max Distance
+DJI2DroneStateAdapter_statusMessages_isOutOfDistanceLimit_title=Distanța maximă
+
+# Near Max Distance
+DJI2DroneStateAdapter_statusMessages_isNearDistanceLimit_title=Aproape Distanța Max
+
+# Near Max Altitude
+DJI2DroneStateAdapter_statusMessages_isNearHeightLimit_title=Aproape de altitudinea maximă
+
+# GPS Signal Unavailable
+DJI2DroneStateAdapter_statusMessages_locationUnavailable_title=Semnal GPS indisponibil
+
+# Please wait for a strong GPS signal lock to continue.
+DJI2DroneStateAdapter_statusMessages_locationUnavailable_details=Vă rugăm să așteptați ca o blocare puternică a semnalului GPS să continue.
+
+# Home Location Not Set
+DJI2DroneStateAdapter_statusMessages_homeLocationNotSet_title=Locația de acasă nu este setată
+
+# RTK
+DJI2RTKStateAdapter_rtk=RTK
+
+# Custom Network RTK
+DJI2RTKStateAdapter_custom_network=Rețea personalizată RTK
+
+# RTK Location
+DJI2RTKStateAdapter_custom_network_location=Locație RTK
+
+# Location Unavailable
+DJI2RTKStateAdapter_custom_network_location_unavailable=Locație indisponibilă
+
+# Camera still capturing
+DJI2CameraAdapter_cameraCommand_stop_capture_error=Camera încă captează
+
+# Media File Not Created
+DJI2CameraAdapter_cameraCommand_start_shoot_photo_no_file=Fișierul media nu a fost creat
+
+# Camera Busy
+DJI2CameraStateAdapter_cameraCommand_focus_target_error=Camera ocupată
+
+# Focus Ring Outside Limits:
+DJI2CameraStateAdapter_cameraCommand_focus_target_ring_invalid=Inel de focalizare în afara limitelor:
+
+# Uncalibrated Focus Distance
+DJI2CameraStateAdapter_cameraCommand_focus_distance_error=Distanța de focalizare necalibrată
+
+# %1$s Full
+DJI2CameraStateAdapter_statusMessages_storage_remaining_space_none_title=%1$s plin
+
+# %1$s %2$d%% Full
+DJI2CameraStateAdapter_statusMessages_storage_remaining_space_low_title=%1$s %2$d%% plin
+
+# Gimbal Not Rotated
+DJI2GimbalAdapter_gimbalCommand_orientation_not_achieved=Gimbal nu este rotit
+
+# Mode
+DronelinkDJI2_FlightMode_title=Modul
+
+# Manual
+DronelinkDJI2_FlightMode_value_MANUAL=Manual
+
+# ATTI
+DronelinkDJI2_FlightMode_value_ATTI=ATTI
+
+# P-GPS
+DronelinkDJI2_FlightMode_value_GPS_NORMAL=P-GPS
+
+# POI
+DronelinkDJI2_FlightMode_value_POI=POI
+
+# Takeoff Ready
+DronelinkDJI2_FlightMode_value_TAKE_OFF_READY=Decolare gata
+
+# Auto Takeoff
+DronelinkDJI2_FlightMode_value_AUTO_TAKE_OFF=Decolare automată
+
+# Auto Landing
+DronelinkDJI2_FlightMode_value_AUTO_LANDING=Aterizare automată
+
+# Waypoint
+DronelinkDJI2_FlightMode_value_WAYPOINT=Punct de drum
+
+# Go Home
+DronelinkDJI2_FlightMode_value_GO_HOME=Du-te acasă
+
+# Virtual Stick
+DronelinkDJI2_FlightMode_value_VIRTUAL_STICK=Stick virtual
+
+# Smart Flight
+DronelinkDJI2_FlightMode_value_SMART_FLIGHT=Zbor inteligent
+
+# Pano
+DronelinkDJI2_FlightMode_value_PANO=Pano
+
+# Sport
+DronelinkDJI2_FlightMode_value_GPS_SPORT=Sport
+
+# Tripod
+DronelinkDJI2_FlightMode_value_GPS_TRIPOD=Trepied
+
+# Auto Avoidance
+DronelinkDJI2_FlightMode_value_AUTO_AVOIDANCE=Evitarea automată
+
+# Smart Fly
+DronelinkDJI2_FlightMode_value_SMART_FLY=Zbură inteligentă
+
+# Force Landing
+DronelinkDJI2_FlightMode_value_FORCE_LANDING=Aterizare forțată
+
+# ATTI Landing
+DronelinkDJI2_FlightMode_value_ATTI_LANDING=ATTI Aterizare
+
+# Click Go
+DronelinkDJI2_FlightMode_value_CLICK_GO=Faceți clic pe Go
+
+# Cinematic
+DronelinkDJI2_FlightMode_value_CINEMATIC=Cinematografic
+
+# Unknown
+DronelinkDJI2_FlightMode_value_DRAW=Necunoscut
+
+# Follow
+DronelinkDJI2_FlightMode_value_FOLLOW_ME=Urma
+
+# Novice
+DronelinkDJI2_FlightMode_value_GPS_NOVICE=Novice
+
+# Quick Movie
+DronelinkDJI2_FlightMode_value_QUICK_MOVIE=Film rapid
+
+# Tap Fly
+DronelinkDJI2_FlightMode_value_TAP_FLY=Atinge Fly
+
+# Master Shot
+DronelinkDJI2_FlightMode_value_MASTER_SHOT=Master Shot
+
+# APAS
+DronelinkDJI2_FlightMode_value_APAS=APAS
+
+# Timelapse
+DronelinkDJI2_FlightMode_value_TIME_LAPSE=Interval de timp
+
+# Motors Starting
+DronelinkDJI2_FlightMode_value_MOTOR_START=Pornirea motoarelor
+
+# Unknown
+DronelinkDJI2_FlightMode_value_UNKNOWN=Necunoscut
+
+# AirSense Alert
+DronelinkDJI2_AirSenseAirplaneState_title=Alertă AirSense
+
+# Aircraft %1$s at %2$s %3$s
+DronelinkDJI2_AirSenseAirplaneState_message=Aeronava %1$s la %2$s %3$s
+
+# RTH
+DronelinkDJI2_FCGoHomeState_title=RTH
+
+# Preparing
+DronelinkDJI2_FCGoHomeState_value_PREASCENDING=Pregătirea
+
+# Turning to Home Point
+DronelinkDJI2_FCGoHomeState_value_ALIGN=Întorcându-vă la punctul de pornire
+
+# Ascending to Altitude
+DronelinkDJI2_FCGoHomeState_value_ASCENDING=Urcarea la altitudine
+
+# Flying to Home Point
+DronelinkDJI2_FCGoHomeState_value_CRUISE=Zburând către punctul de acasă
+
+# Braking
+DronelinkDJI2_FCGoHomeState_value_BRAKING=Frânare
+
+# Descending to Ground
+DronelinkDJI2_FCGoHomeState_value_AVOID_ASCENDING=Coborând la pământ
+
+# RTH
+DronelinkDJI2_GoHomeState_title=RTH
+
+# Flying to Home Point
+DronelinkDJI2_GoHomeState_value_RETURNING_TO_HOME=Zboară către punctul de acasă
+
+# Landing
+DronelinkDJI2_GoHomeState_value_LANDING=Aterizare
+
+# Compass
+DronelinkDJI2_CompassSensorState_title=Busolă
+
+# Disconnected
+DronelinkDJI2_CompassSensorState_value_DISCONNECTED=Deconectat
+
+# Calibrating
+DronelinkDJI2_CompassSensorState_value_CALIBRATING=Calibrare
+
+# Uncalibrated
+DronelinkDJI2_CompassSensorState_value_UNCALIBRATED=Necalibrat
+
+# Data Exception
+DronelinkDJI2_CompassSensorState_value_DATA_EXCEPTION=Excepție de date
+
+# Calibration Failed
+DronelinkDJI2_CompassSensorState_value_CALIBRATION_FAILED=Calibrarea a eșuat
+
+# Direction Exception
+DronelinkDJI2_CompassSensorState_value_DIRECTION_EXCEPTION=Excepție de direcție
+
+# Compass Calibration
+DronelinkDJI2_CompassCalibrationState_title=Calibrare busola
+
+# Rotate 360 Horizontally
+DronelinkDJI2_CompassCalibrationState_value_HORIZONTAL=Rotiți 360 pe orizontală
+
+# Rotate 360 Vertically
+DronelinkDJI2_CompassCalibrationState_value_VERTICAL=Rotiți 360 pe verticală
+
+# Finished
+DronelinkDJI2_CompassCalibrationState_value_SUCCEEDED=Terminat
+
+# Failed
+DronelinkDJI2_CompassCalibrationState_value_FAILED=A eșuat
+
+# Model
+DronelinkDJI2_ProductType_title=Model
+
+# Mavic 3 Enterprise
+DronelinkDJI2_ProductType_value_DJI_MAVIC_3_ENTERPRISE_SERIES=Mavic 3 Enterprise
+
+# M30
+DronelinkDJI2_ProductType_value_M30_SERIES=M30
+
+# M300 RTK
+DronelinkDJI2_ProductType_value_M300_RTK=M300 RTK
+
+# DJI Mini 3
+DronelinkDJI2_ProductType_value_DJI_MINI_3=DJI Mini 3
+
+# DJI Mini 3 Pro
+DronelinkDJI2_ProductType_value_DJI_MINI_3_PRO=DJI Mini 3 Pro
+
+# Unrecognized
+DronelinkDJI2_ProductType_value_UNRECOGNIZED=Nerecunoscut
+
+# Unknown
+DronelinkDJI2_ProductType_value_UNKNOWN=Necunoscut
+
+# RTK
+DronelinkDJI2_RTKError_title=RTK
+
+# None
+DronelinkDJI2_RTKError_value_NONE=Nici unul
+
+# Cannot Start
+DronelinkDJI2_RTKError_value_CANNOT_START=Nu se poate porni
+
+# Connection Broken
+DronelinkDJI2_RTKError_value_CONNECTION_BROKEN=Conexiune întreruptă
+
+# Base Station Antenna Error
+DronelinkDJI2_RTKError_value_BS_ANTENNA_ERROR=Eroare la antena stației de bază
+
+# Base Station Coordinate Reset
+DronelinkDJI2_RTKError_value_BS_COORDINATE_RESET=Resetarea coordonatelor stației de bază
+
+# Initializing
+DronelinkDJI2_RTKError_value_INTIALIZING=Inițializarea
+
+# Base Station Not Activated
+DronelinkDJI2_RTKError_value_BASE_STATION_NOT_ACTIVATED=Stația de bază nu este activată
+
+# RTCM Type Changed
+DronelinkDJI2_RTKError_value_RTCM_TYPE_CHANGE=Tipul RTCM a fost modificat
+
+# Base Station Moved
+DronelinkDJI2_RTKError_value_BASE_STATION_IS_MOVED=Stația de bază mutată
+
+# Base Station Fell
+DronelinkDJI2_RTKError_value_BASE_STATION_FELL=Stația de bază a căzut
+
+# Custom Network RTK Status
+DronelinkDJI2_RTKServiceState_title=Stare personalizată RTK a rețelei
+
+# RTCM Connected
+DronelinkDJI2_RTKServiceState_value_RTCM_CONNECTED=RTCM conectat
+
+# RTCM Normal
+DronelinkDJI2_RTKServiceState_value_RTCM_NORMAL=RTCM Normal
+
+# RTCM User Activated
+DronelinkDJI2_RTKServiceState_value_RTCM_USER_HAS_ACTIVATE=Utilizator RTCM activat
+
+# RTCM Account Expires Soon
+DronelinkDJI2_RTKServiceState_value_RTCM_USER_ACCOUNT_EXPIRES_SOON=Contul RTCM expiră în curând
+
+# RTCM Use Default Mount Point
+DronelinkDJI2_RTKServiceState_value_RTCM_USE_DEFAULT_MOUNT_POINT=RTCM Utilizați punctul de montare implicit
+
+# RTCM Authentication Failed
+DronelinkDJI2_RTKServiceState_value_RTCM_AUTH_FAILED=Autentificarea RTCM a eșuat
+
+# RTCM User Not Bounded
+DronelinkDJI2_RTKServiceState_value_RTCM_USER_NOT_BOUNDED=Utilizatorul RTCM nu este limitat
+
+# RTCM User Not Activated
+DronelinkDJI2_RTKServiceState_value_RTCM_USER_NOT_ACTIVATED=Utilizatorul RTCM nu este activat
+
+# Account Expired
+DronelinkDJI2_RTKServiceState_value_ACCOUNT_EXPIRED=Contul a expirat
+
+# RTCM Illegal UTC Time
+DronelinkDJI2_RTKServiceState_value_RTCM_ILLEGAL_UTC_TIME=RTCM Ora UTC ilegală
+
+# RTCM Set Coordinate Failure
+DronelinkDJI2_RTKServiceState_value_RTCM_SET_COORDINATE_FAILURE=RTCM Set Coordinate Failure
+
+# RTCM Connecting
+DronelinkDJI2_RTKServiceState_value_RTCM_CONNECTING=Conectare RTCM
+
+# RTCM Activation Failed
+DronelinkDJI2_RTKServiceState_value_RTCM_ACTIVATED_FAILED=Activarea RTCM a eșuat
+
+# Disabled
+DronelinkDJI2_RTKServiceState_value_DISABLED=Dezactivat
+
+# Aircraft Disconnected
+DronelinkDJI2_RTKServiceState_value_AIRCRAFT_DISCONNECTED=Aeronava deconectată
+
+# Connecting
+DronelinkDJI2_RTKServiceState_value_CONNECTING=Conectare
+
+# Transmitting
+DronelinkDJI2_RTKServiceState_value_TRANSMITTING=Transmiterea
+
+# Login Failure
+DronelinkDJI2_RTKServiceState_value_LOGIN_FAILURE=Eroare de conectare
+
+# Invalid Request
+DronelinkDJI2_RTKServiceState_value_INVALID_REQUEST=cerere invalida
+
+# Account Error
+DronelinkDJI2_RTKServiceState_value_ACCOUNT_ERROR=Eroare de cont
+
+# Network Not Reachable
+DronelinkDJI2_RTKServiceState_value_NETWORK_NOT_REACHABLE=Rețeaua nu este accesibilă
+
+# Server Not Reachable
+DronelinkDJI2_RTKServiceState_value_SERVER_NOT_REACHABLE=Serverul nu este accesibil
+
+# Service Suspension
+DronelinkDJI2_RTKServiceState_value_SERVICE_SUSPENSION=Suspendarea serviciului
+
+# Disconnected
+DronelinkDJI2_RTKServiceState_value_DISCONNECTED=Deconectat
+
+# Ready
+DronelinkDJI2_RTKServiceState_value_READY=Gata
+
+# Send GGA No Valid Base
+DronelinkDJI2_RTKServiceState_value_SEND_GGA_NO_VALID_BASE=Trimiteți GGA fără o bază validă
+
+# RTK Start Processing
+DronelinkDJI2_RTKServiceState_value_RTK_START_PROCESSING=RTK începe procesarea
+
+# RTK Positioning Solution
+DronelinkDJI2_RTKPositioningSolution_title=Soluție de poziționare RTK
+
+# None
+DronelinkDJI2_RTKPositioningSolution_value_NONE=Nici unul
+
+# Float
+DronelinkDJI2_RTKPositioningSolution_value_FLOAT=Pluti
+
+# Single Point
+DronelinkDJI2_RTKPositioningSolution_value_SINGLE_POINT=Punct unic
+
+# Fixed Point
+DronelinkDJI2_RTKPositioningSolution_value_FIXED_POINT=Punct fix
+
+# Unknown
+DronelinkDJI2_RTKPositioningSolution_value_UNKNOWN=Necunoscut
+
+# Wind Warning
+DronelinkDJI2_WindWarning_title=Avertizare de vânt
+
+# Strong Wind
+DronelinkDJI2_WindWarning_LEVEL_1=Vânt puternic
+
+# Very Strong Wind
+DronelinkDJI2_WindWarning_LEVEL_2=Vânt foarte puternic
+
+# Lens
+DronelinkDJI2_CameraLensType_title=Obiectiv
+
+# Zoom
+DronelinkDJI2_CameraLensType_CAMERA_LENS_ZOOM=Zoom
+
+# Wide
+DronelinkDJI2_CameraLensType_CAMERA_LENS_WIDE=Lat
+
+# Thermal
+DronelinkDJI2_CameraLensType_CAMERA_LENS_THERMAL=Termic
+
+# MS G
+DronelinkDJI2_CameraLensType_CAMERA_LENS_MS_G=MS G
+
+# MS R
+DronelinkDJI2_CameraLensType_CAMERA_LENS_MS_R=MS R
+
+# MS RE
+DronelinkDJI2_CameraLensType_CAMERA_LENS_MS_RE=MS RE
+
+# MS NIR
+DronelinkDJI2_CameraLensType_CAMERA_LENS_MS_NIR=MS NIR
+
+# MS NDVI
+DronelinkDJI2_CameraLensType_CAMERA_LENS_MS_NDVI=MS NDVI
+
+# Visible
+DronelinkDJI2_CameraLensType_CAMERA_LENS_RGB=Vizibil
+
+# Default
+DronelinkDJI2_CameraLensType_CAMERA_LENS_DEFAULT=Mod implicit
+
+# Unknown
+DronelinkDJI2_CameraLensType_CAMERA_LENS_UNKNOWN=Necunoscut
+
+# Onboard Waypoints
+DronelinkDJI2_DJIWaypointMissionState_title=Puncte de trecere la bord
+
+# Ready
+DronelinkDJI2_DJIWaypointMissionState_value_READY=Gata
+
+# Uploading
+DronelinkDJI2_DJIWaypointMissionState_value_UPLOADING=Încărcare
+
+# Preparing to Execute
+DronelinkDJI2_DJIWaypointMissionState_value_PREPARING=Pregătirea pentru Execuție
+
+# Enter Wayline
+DronelinkDJI2_DJIWaypointMissionState_value_ENTER_WAYLINE=Introduceți Wayline
+
+# Running
+DronelinkDJI2_DJIWaypointMissionState_value_EXECUTING=Alergare
+
+# Interrupted
+DronelinkDJI2_DJIWaypointMissionState_value_INTERRUPTED=Întrerupt
+
+# Recovering
+DronelinkDJI2_DJIWaypointMissionState_value_RECOVERING=Recuperarea
+
+# Return to Start
+DronelinkDJI2_DJIWaypointMissionState_value_RETURN_TO_START_POINT=Reveniți la Start
+
+# MSDK Request
+DronelinkDJI2_FlightControlAuthorityChangeReason_MSDK_REQUEST=Solicitare MSDK
+
+# Auto Test Request
+DronelinkDJI2_FlightControlAuthorityChangeReason_AUTO_TEST_REQUEST=Cerere de testare automată
+
+# OSDK Request
+DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_REQUEST=Solicitare OSDK
+
+# RC Disconnected
+DronelinkDJI2_FlightControlAuthorityChangeReason_RC_LOST=RC Deconectat
+
+# RC Not in P-Mode
+DronelinkDJI2_FlightControlAuthorityChangeReason_RC_NOT_P_MODE=RC Nu este în modul P
+
+# RC Flight Mode Switched
+DronelinkDJI2_FlightControlAuthorityChangeReason_RC_SWITCH=Mod de zbor RC comutat
+
+# RC Pause
+DronelinkDJI2_FlightControlAuthorityChangeReason_RC_PAUSE_STOP=Pauză RC
+
+# RTH Activated
+DronelinkDJI2_FlightControlAuthorityChangeReason_RC_ONE_KEY_GO_HOME=RTH activat
+
+# Low Battery RTH
+DronelinkDJI2_FlightControlAuthorityChangeReason_BATTERY_LOW_GO_HOME=Baterie scăzută RTH
+
+# Low Battery Landing
+DronelinkDJI2_FlightControlAuthorityChangeReason_BATTERY_SUPER_LOW_LANDING=Aterizare cu baterie scăzută
+
+# OSDK Lost
+DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_LOST=OSDK pierdut
+
+# Near Boundary
+DronelinkDJI2_FlightControlAuthorityChangeReason_NEAR_BOUNDARY=Aproape de Graniță
+
+# Unknown
+DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN=Necunoscut

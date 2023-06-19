@@ -1,0 +1,563 @@
+# Drone Disconnected
+MissionDisengageReason_drone_disconnected_title=ड्रोन डिस्कनेक्ट हो गया
+
+# Automatic Control Interrupted
+MissionDisengageReason_drone_control_override_title=स्वचालित नियंत्रण बाधित
+
+# Unable to Take Off
+MissionDisengageReason_take_off_failed_title=उतारने में असमर्थ
+
+# Unable to Take Control
+MissionDisengageReason_take_control_failed_title=नियंत्रण करने में असमर्थ
+
+# Please toggle the RC flight mode switch to N (Normal) to continue.
+MissionDisengageReason_take_control_failed_rc_mode_details=कृपया जारी रखने के लिए आरसी उड़ान मोड स्विच को एन (सामान्य) पर टॉगल करें।
+
+# Please make sure the drone flight mode is P-GPS to continue.
+MissionDisengageReason_take_control_failed_flight_mode_details=जारी रखने के लिए कृपया सुनिश्चित करें कि ड्रोन उड़ान मोड पी-जीपीएस है।
+
+# Weak Signal
+MissionDisengageReason_telemetry_delayed_title=कमजोर संकेत
+
+# • Please point the RC antennas towards the drone.\n• If the signal does not improve, try moving closer to the drone.\n• If the signal still does not improve, move to an area with fewer obstacles or RF interference.
+MissionDisengageReason_telemetry_delayed_details=• कृपया आरसी एंटेना को ड्रोन की ओर इंगित करें।\n• यदि सिग्नल में सुधार नहीं होता है, तो ड्रोन के करीब जाने का प्रयास करें।\n• यदि सिग्नल अभी भी नहीं सुधरता है, तो कम बाधाओं या आरएफ हस्तक्षेप वाले क्षेत्र में जाएं।
+
+# Max Distance Reached
+MissionDisengageReason_drone_max_distance_title=अधिकतम दूरी पूरी हुई
+
+# Increase the max distance setting to continue.
+MissionDisengageReason_drone_max_distance_details=जारी रखने के लिए अधिकतम दूरी सेटिंग बढ़ाएँ।
+
+# Remote Controller Unavailable
+MissionDisengageReason_drone_remote_controller_unavailable_title=दूरस्थ नियंत्रक अनुपलब्ध
+
+# RTK Unavailable
+MissionDisengageReason_rtk_unavailable_title=आरटीके अनुपलब्ध
+
+# Custom Network RTK Unavailable
+MissionDisengageReason_rtk_custom_network_unavailable_title=कस्टम नेटवर्क RTK अनुपलब्ध
+
+# Live Streaming Unavailable
+MissionDisengageReason_live_streaming_unavailable_title=लाइव स्ट्रीमिंग अनुपलब्ध
+
+# RTMP Live Streaming Unavailable
+MissionDisengageReason_live_streaming_rtmp_unavailable_title=आरटीएमपी लाइव स्ट्रीमिंग अनुपलब्ध
+
+# Camera Unavailable
+MissionDisengageReason_drone_camera_unavailable_title=कैमरा अनुपलब्ध
+
+# Gimbal Unavailable
+MissionDisengageReason_drone_gimbal_unavailable_title=गिंबल अनुपलब्ध
+
+# Unhandled Command Type
+MissionDisengageReason_command_type_unhandled=बिना क्रिया के कमांड प्रकार
+
+# Unable to Set Value
+MissionDisengageReason_command_value_invalid=मान सेट करने में असमर्थ
+
+# Initializing DJI SDK
+DJI2DroneSessionManager_initializing=डीजेआई एसडीके की शुरुआत
+
+# Unable to register DJI SDK
+DJI2DroneSessionManager_register_failed=डीजेआई एसडीके पंजीकृत करने में असमर्थ
+
+# Serial Number Unavailable
+DJI2DroneSession_serial_number_failed=सीरियल नंबर अनुपलब्ध
+
+# Telemetry Unavailable
+DJI2DroneStateAdapter_telemetry_unavailable=टेलीमेट्री अनुपलब्ध
+
+# Critically Low Battery
+DJI2DroneStateAdapter_statusMessages_isSeriousLowBatteryWarning_title=गंभीर रूप से कम बैटरी
+
+# Low Battery
+DJI2DroneStateAdapter_statusMessages_isLowBatteryWarning_title=लो बैटरी
+
+# Max Distance
+DJI2DroneStateAdapter_statusMessages_isOutOfDistanceLimit_title=अधिकतम दूरी
+
+# Near Max Distance
+DJI2DroneStateAdapter_statusMessages_isNearDistanceLimit_title=अधिकतम दूरी के पास
+
+# Near Max Altitude
+DJI2DroneStateAdapter_statusMessages_isNearHeightLimit_title=अधिकतम ऊंचाई के पास
+
+# GPS Signal Unavailable
+DJI2DroneStateAdapter_statusMessages_locationUnavailable_title=GPS सिग्नल अनुपलब्ध
+
+# Please wait for a strong GPS signal lock to continue.
+DJI2DroneStateAdapter_statusMessages_locationUnavailable_details=कृपया जारी रखने के लिए एक मजबूत जीपीएस सिग्नल लॉक की प्रतीक्षा करें।
+
+# Home Location Not Set
+DJI2DroneStateAdapter_statusMessages_homeLocationNotSet_title=घर का स्थान निर्धारित नहीं है
+
+# RTK
+DJI2RTKStateAdapter_rtk=आरटीके
+
+# Custom Network RTK
+DJI2RTKStateAdapter_custom_network=कस्टम नेटवर्क आरटीके
+
+# RTK Location
+DJI2RTKStateAdapter_custom_network_location=आरटीके स्थान
+
+# Location Unavailable
+DJI2RTKStateAdapter_custom_network_location_unavailable=स्थान अनुपलब्ध
+
+# Camera still capturing
+DJI2CameraAdapter_cameraCommand_stop_capture_error=कैमरा अभी भी कैप्चर कर रहा है
+
+# Media File Not Created
+DJI2CameraAdapter_cameraCommand_start_shoot_photo_no_file=मीडिया फ़ाइल नहीं बनाई गई
+
+# Camera Busy
+DJI2CameraStateAdapter_cameraCommand_focus_target_error=कैमरा व्यस्त
+
+# Focus Ring Outside Limits:
+DJI2CameraStateAdapter_cameraCommand_focus_target_ring_invalid=फोकस रिंग आउटसाइड लिमिट्स:
+
+# Uncalibrated Focus Distance
+DJI2CameraStateAdapter_cameraCommand_focus_distance_error=अनकैलिब्रेटेड फोकस डिस्टेंस
+
+# %1$s Full
+DJI2CameraStateAdapter_statusMessages_storage_remaining_space_none_title=%1$s पूर्ण
+
+# %1$s %2$d%% Full
+DJI2CameraStateAdapter_statusMessages_storage_remaining_space_low_title=%1$s %2$d%% पूर्ण
+
+# Gimbal Not Rotated
+DJI2GimbalAdapter_gimbalCommand_orientation_not_achieved=गिंबल नहीं घुमाया गया
+
+# Mode
+DronelinkDJI2_FlightMode_title=तरीका
+
+# Manual
+DronelinkDJI2_FlightMode_value_MANUAL=नियमावली
+
+# ATTI
+DronelinkDJI2_FlightMode_value_ATTI=अति
+
+# P-GPS
+DronelinkDJI2_FlightMode_value_GPS_NORMAL=पी-जीपीएस
+
+# POI
+DronelinkDJI2_FlightMode_value_POI=पीओआई
+
+# Takeoff Ready
+DronelinkDJI2_FlightMode_value_TAKE_OFF_READY=टेकऑफ़ तैयार
+
+# Auto Takeoff
+DronelinkDJI2_FlightMode_value_AUTO_TAKE_OFF=ऑटो टेकऑफ़
+
+# Auto Landing
+DronelinkDJI2_FlightMode_value_AUTO_LANDING=ऑटो लैंडिंग
+
+# Waypoint
+DronelinkDJI2_FlightMode_value_WAYPOINT=रास्ते बिंदु
+
+# Go Home
+DronelinkDJI2_FlightMode_value_GO_HOME=घर जाओ
+
+# Virtual Stick
+DronelinkDJI2_FlightMode_value_VIRTUAL_STICK=वर्चुअल स्टिक
+
+# Smart Flight
+DronelinkDJI2_FlightMode_value_SMART_FLIGHT=स्मार्ट उड़ान
+
+# Pano
+DronelinkDJI2_FlightMode_value_PANO=पानो
+
+# Sport
+DronelinkDJI2_FlightMode_value_GPS_SPORT=खेल
+
+# Tripod
+DronelinkDJI2_FlightMode_value_GPS_TRIPOD=तिपाई
+
+# Auto Avoidance
+DronelinkDJI2_FlightMode_value_AUTO_AVOIDANCE=ऑटो परिहार
+
+# Smart Fly
+DronelinkDJI2_FlightMode_value_SMART_FLY=स्मार्ट फ्लाई
+
+# Force Landing
+DronelinkDJI2_FlightMode_value_FORCE_LANDING=फोर्स लैंडिंग
+
+# ATTI Landing
+DronelinkDJI2_FlightMode_value_ATTI_LANDING=एटीटीआई लैंडिंग
+
+# Click Go
+DronelinkDJI2_FlightMode_value_CLICK_GO=जाओ क्लिक करें
+
+# Cinematic
+DronelinkDJI2_FlightMode_value_CINEMATIC=सिनेमाई
+
+# Unknown
+DronelinkDJI2_FlightMode_value_DRAW=अज्ञात
+
+# Follow
+DronelinkDJI2_FlightMode_value_FOLLOW_ME=अनुसरण करना
+
+# Novice
+DronelinkDJI2_FlightMode_value_GPS_NOVICE=नौसिखिए
+
+# Quick Movie
+DronelinkDJI2_FlightMode_value_QUICK_MOVIE=त्वरित मूवी
+
+# Tap Fly
+DronelinkDJI2_FlightMode_value_TAP_FLY=फ्लाई टैप करें
+
+# Master Shot
+DronelinkDJI2_FlightMode_value_MASTER_SHOT=मास्टर शॉट
+
+# APAS
+DronelinkDJI2_FlightMode_value_APAS=एपीएएस
+
+# Timelapse
+DronelinkDJI2_FlightMode_value_TIME_LAPSE=समय समाप्त
+
+# Motors Starting
+DronelinkDJI2_FlightMode_value_MOTOR_START=मोटर्स शुरू
+
+# Unknown
+DronelinkDJI2_FlightMode_value_UNKNOWN=अज्ञात
+
+# AirSense Alert
+DronelinkDJI2_AirSenseAirplaneState_title=एयरसेंस अलर्ट
+
+# Aircraft %1$s at %2$s %3$s
+DronelinkDJI2_AirSenseAirplaneState_message=%2$s %3$s पर विमान %1$s
+
+# RTH
+DronelinkDJI2_FCGoHomeState_title=आरटीएच
+
+# Preparing
+DronelinkDJI2_FCGoHomeState_value_PREASCENDING=तैयार कर रहे हैं
+
+# Turning to Home Point
+DronelinkDJI2_FCGoHomeState_value_ALIGN=होम प्वाइंट की ओर मुड़ना
+
+# Ascending to Altitude
+DronelinkDJI2_FCGoHomeState_value_ASCENDING=ऊंचाई पर चढ़ना
+
+# Flying to Home Point
+DronelinkDJI2_FCGoHomeState_value_CRUISE=होम प्वाइंट के लिए उड़ान
+
+# Braking
+DronelinkDJI2_FCGoHomeState_value_BRAKING=ब्रेकिंग
+
+# Descending to Ground
+DronelinkDJI2_FCGoHomeState_value_AVOID_ASCENDING=जमीन पर उतरना
+
+# RTH
+DronelinkDJI2_GoHomeState_title=आरटीएच
+
+# Flying to Home Point
+DronelinkDJI2_GoHomeState_value_RETURNING_TO_HOME=होम प्वाइंट के लिए उड़ान
+
+# Landing
+DronelinkDJI2_GoHomeState_value_LANDING=अवतरण
+
+# Compass
+DronelinkDJI2_CompassSensorState_title=दिशा सूचक यंत्र
+
+# Disconnected
+DronelinkDJI2_CompassSensorState_value_DISCONNECTED=डिस्कनेक्ट किया गया
+
+# Calibrating
+DronelinkDJI2_CompassSensorState_value_CALIBRATING=औजार
+
+# Uncalibrated
+DronelinkDJI2_CompassSensorState_value_UNCALIBRATED=अनकैलिब्रेटेड
+
+# Data Exception
+DronelinkDJI2_CompassSensorState_value_DATA_EXCEPTION=डेटा अपवाद
+
+# Calibration Failed
+DronelinkDJI2_CompassSensorState_value_CALIBRATION_FAILED=अंशांकन विफल
+
+# Direction Exception
+DronelinkDJI2_CompassSensorState_value_DIRECTION_EXCEPTION=दिशा अपवाद
+
+# Compass Calibration
+DronelinkDJI2_CompassCalibrationState_title=कम्पास अंशांकन
+
+# Rotate 360 Horizontally
+DronelinkDJI2_CompassCalibrationState_value_HORIZONTAL=360 क्षैतिज घुमाएँ
+
+# Rotate 360 Vertically
+DronelinkDJI2_CompassCalibrationState_value_VERTICAL=360 लंबवत घुमाएँ
+
+# Finished
+DronelinkDJI2_CompassCalibrationState_value_SUCCEEDED=खत्म
+
+# Failed
+DronelinkDJI2_CompassCalibrationState_value_FAILED=असफल
+
+# Model
+DronelinkDJI2_ProductType_title=नमूना
+
+# Mavic 3 Enterprise
+DronelinkDJI2_ProductType_value_DJI_MAVIC_3_ENTERPRISE_SERIES=मविक 3 उद्यम
+
+# M30
+DronelinkDJI2_ProductType_value_M30_SERIES=M30
+
+# M300 RTK
+DronelinkDJI2_ProductType_value_M300_RTK=एम300 आरटीके
+
+# DJI Mini 3
+DronelinkDJI2_ProductType_value_DJI_MINI_3=डीजेआई मिनी 3
+
+# DJI Mini 3 Pro
+DronelinkDJI2_ProductType_value_DJI_MINI_3_PRO=डीजेआई मिनी 3 प्रो
+
+# Unrecognized
+DronelinkDJI2_ProductType_value_UNRECOGNIZED=पहचानने अयोग्य
+
+# Unknown
+DronelinkDJI2_ProductType_value_UNKNOWN=अज्ञात
+
+# RTK
+DronelinkDJI2_RTKError_title=आरटीके
+
+# None
+DronelinkDJI2_RTKError_value_NONE=कोई नहीं
+
+# Cannot Start
+DronelinkDJI2_RTKError_value_CANNOT_START=शुरु करने में असमर्थ
+
+# Connection Broken
+DronelinkDJI2_RTKError_value_CONNECTION_BROKEN=कनेक्शन टूट गया
+
+# Base Station Antenna Error
+DronelinkDJI2_RTKError_value_BS_ANTENNA_ERROR=बेस स्टेशन एंटीना त्रुटि
+
+# Base Station Coordinate Reset
+DronelinkDJI2_RTKError_value_BS_COORDINATE_RESET=बेस स्टेशन समन्वय रीसेट
+
+# Initializing
+DronelinkDJI2_RTKError_value_INTIALIZING=शुरु कर रहा है
+
+# Base Station Not Activated
+DronelinkDJI2_RTKError_value_BASE_STATION_NOT_ACTIVATED=बेस स्टेशन सक्रिय नहीं
+
+# RTCM Type Changed
+DronelinkDJI2_RTKError_value_RTCM_TYPE_CHANGE=आरटीसीएम प्रकार बदला गया
+
+# Base Station Moved
+DronelinkDJI2_RTKError_value_BASE_STATION_IS_MOVED=बेस स्टेशन ले जाया गया
+
+# Base Station Fell
+DronelinkDJI2_RTKError_value_BASE_STATION_FELL=बेस स्टेशन गिर गया
+
+# Custom Network RTK Status
+DronelinkDJI2_RTKServiceState_title=कस्टम नेटवर्क आरटीके स्थिति
+
+# RTCM Connected
+DronelinkDJI2_RTKServiceState_value_RTCM_CONNECTED=आरटीसीएम जुड़ा हुआ है
+
+# RTCM Normal
+DronelinkDJI2_RTKServiceState_value_RTCM_NORMAL=आरटीसीएम सामान्य
+
+# RTCM User Activated
+DronelinkDJI2_RTKServiceState_value_RTCM_USER_HAS_ACTIVATE=आरटीसीएम उपयोगकर्ता सक्रिय
+
+# RTCM Account Expires Soon
+DronelinkDJI2_RTKServiceState_value_RTCM_USER_ACCOUNT_EXPIRES_SOON=आरटीसीएम खाता जल्द ही समाप्त हो रहा है
+
+# RTCM Use Default Mount Point
+DronelinkDJI2_RTKServiceState_value_RTCM_USE_DEFAULT_MOUNT_POINT=आरटीसीएम डिफ़ॉल्ट माउंट प्वाइंट का प्रयोग करें
+
+# RTCM Authentication Failed
+DronelinkDJI2_RTKServiceState_value_RTCM_AUTH_FAILED=आरटीसीएम प्रमाणीकरण विफल
+
+# RTCM User Not Bounded
+DronelinkDJI2_RTKServiceState_value_RTCM_USER_NOT_BOUNDED=आरटीसीएम उपयोगकर्ता बाध्य नहीं है
+
+# RTCM User Not Activated
+DronelinkDJI2_RTKServiceState_value_RTCM_USER_NOT_ACTIVATED=आरटीसीएम उपयोगकर्ता सक्रिय नहीं है
+
+# Account Expired
+DronelinkDJI2_RTKServiceState_value_ACCOUNT_EXPIRED=खाता समाप्त हो गया
+
+# RTCM Illegal UTC Time
+DronelinkDJI2_RTKServiceState_value_RTCM_ILLEGAL_UTC_TIME=आरटीसीएम अवैध यूटीसी समय
+
+# RTCM Set Coordinate Failure
+DronelinkDJI2_RTKServiceState_value_RTCM_SET_COORDINATE_FAILURE=आरटीसीएम सेट समन्वय विफलता
+
+# RTCM Connecting
+DronelinkDJI2_RTKServiceState_value_RTCM_CONNECTING=आरटीसीएम कनेक्ट करना
+
+# RTCM Activation Failed
+DronelinkDJI2_RTKServiceState_value_RTCM_ACTIVATED_FAILED=आरटीसीएम सक्रियण विफल
+
+# Disabled
+DronelinkDJI2_RTKServiceState_value_DISABLED=अक्षम
+
+# Aircraft Disconnected
+DronelinkDJI2_RTKServiceState_value_AIRCRAFT_DISCONNECTED=विमान डिस्कनेक्ट हो गया
+
+# Connecting
+DronelinkDJI2_RTKServiceState_value_CONNECTING=कनेक्ट
+
+# Transmitting
+DronelinkDJI2_RTKServiceState_value_TRANSMITTING=संचारण
+
+# Login Failure
+DronelinkDJI2_RTKServiceState_value_LOGIN_FAILURE=लॉगिन विफलता
+
+# Invalid Request
+DronelinkDJI2_RTKServiceState_value_INVALID_REQUEST=अमान्य अनुरोध
+
+# Account Error
+DronelinkDJI2_RTKServiceState_value_ACCOUNT_ERROR=खाता त्रुटि
+
+# Network Not Reachable
+DronelinkDJI2_RTKServiceState_value_NETWORK_NOT_REACHABLE=नेटवर्क पहुंच योग्य नहीं है
+
+# Server Not Reachable
+DronelinkDJI2_RTKServiceState_value_SERVER_NOT_REACHABLE=सर्वर पहुंच योग्य नहीं है
+
+# Service Suspension
+DronelinkDJI2_RTKServiceState_value_SERVICE_SUSPENSION=सेवा निलंबन
+
+# Disconnected
+DronelinkDJI2_RTKServiceState_value_DISCONNECTED=डिस्कनेक्ट किया गया
+
+# Ready
+DronelinkDJI2_RTKServiceState_value_READY=तैयार
+
+# Send GGA No Valid Base
+DronelinkDJI2_RTKServiceState_value_SEND_GGA_NO_VALID_BASE=GGA नो वैलिड बेस भेजें
+
+# RTK Start Processing
+DronelinkDJI2_RTKServiceState_value_RTK_START_PROCESSING=आरटीके प्रसंस्करण शुरू करें
+
+# RTK Positioning Solution
+DronelinkDJI2_RTKPositioningSolution_title=आरटीके पोजिशनिंग समाधान
+
+# None
+DronelinkDJI2_RTKPositioningSolution_value_NONE=कोई नहीं
+
+# Float
+DronelinkDJI2_RTKPositioningSolution_value_FLOAT=तैरना
+
+# Single Point
+DronelinkDJI2_RTKPositioningSolution_value_SINGLE_POINT=सिंगल पॉइंट
+
+# Fixed Point
+DronelinkDJI2_RTKPositioningSolution_value_FIXED_POINT=नियत बिन्दु
+
+# Unknown
+DronelinkDJI2_RTKPositioningSolution_value_UNKNOWN=अज्ञात
+
+# Wind Warning
+DronelinkDJI2_WindWarning_title=पवन चेतावनी
+
+# Strong Wind
+DronelinkDJI2_WindWarning_LEVEL_1=तेज हवा
+
+# Very Strong Wind
+DronelinkDJI2_WindWarning_LEVEL_2=बहुत तेज हवा
+
+# Lens
+DronelinkDJI2_CameraLensType_title=लेंस
+
+# Zoom
+DronelinkDJI2_CameraLensType_CAMERA_LENS_ZOOM=ज़ूम
+
+# Wide
+DronelinkDJI2_CameraLensType_CAMERA_LENS_WIDE=चौड़ा
+
+# Thermal
+DronelinkDJI2_CameraLensType_CAMERA_LENS_THERMAL=थर्मल
+
+# MS G
+DronelinkDJI2_CameraLensType_CAMERA_LENS_MS_G=एमएस जी
+
+# MS R
+DronelinkDJI2_CameraLensType_CAMERA_LENS_MS_R=एमएस आर
+
+# MS RE
+DronelinkDJI2_CameraLensType_CAMERA_LENS_MS_RE=एमएस आरई
+
+# MS NIR
+DronelinkDJI2_CameraLensType_CAMERA_LENS_MS_NIR=एमएस एनआईआर
+
+# MS NDVI
+DronelinkDJI2_CameraLensType_CAMERA_LENS_MS_NDVI=एमएस एनडीवीआई
+
+# Visible
+DronelinkDJI2_CameraLensType_CAMERA_LENS_RGB=दृश्यमान
+
+# Default
+DronelinkDJI2_CameraLensType_CAMERA_LENS_DEFAULT=गलती करना
+
+# Unknown
+DronelinkDJI2_CameraLensType_CAMERA_LENS_UNKNOWN=अज्ञात
+
+# Onboard Waypoints
+DronelinkDJI2_DJIWaypointMissionState_title=ऑनबोर्ड वेपॉइंट्स
+
+# Ready
+DronelinkDJI2_DJIWaypointMissionState_value_READY=तैयार
+
+# Uploading
+DronelinkDJI2_DJIWaypointMissionState_value_UPLOADING=अपलोड हो रहा है
+
+# Preparing to Execute
+DronelinkDJI2_DJIWaypointMissionState_value_PREPARING=निष्पादित करने की तैयारी कर रहा है
+
+# Enter Wayline
+DronelinkDJI2_DJIWaypointMissionState_value_ENTER_WAYLINE=वेलाइन दर्ज करें
+
+# Running
+DronelinkDJI2_DJIWaypointMissionState_value_EXECUTING=दौड़ना
+
+# Interrupted
+DronelinkDJI2_DJIWaypointMissionState_value_INTERRUPTED=बाधित
+
+# Recovering
+DronelinkDJI2_DJIWaypointMissionState_value_RECOVERING=पुन: प्राप्त करना
+
+# Return to Start
+DronelinkDJI2_DJIWaypointMissionState_value_RETURN_TO_START_POINT=स्टार्ट पर लौटें
+
+# MSDK Request
+DronelinkDJI2_FlightControlAuthorityChangeReason_MSDK_REQUEST=एमएसडीके अनुरोध
+
+# Auto Test Request
+DronelinkDJI2_FlightControlAuthorityChangeReason_AUTO_TEST_REQUEST=ऑटो टेस्ट अनुरोध
+
+# OSDK Request
+DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_REQUEST=ओएसडीके अनुरोध
+
+# RC Disconnected
+DronelinkDJI2_FlightControlAuthorityChangeReason_RC_LOST=आरसी काट दी गई
+
+# RC Not in P-Mode
+DronelinkDJI2_FlightControlAuthorityChangeReason_RC_NOT_P_MODE=आरसी पी-मोड में नहीं है
+
+# RC Flight Mode Switched
+DronelinkDJI2_FlightControlAuthorityChangeReason_RC_SWITCH=आरसी फ्लाइट मोड स्विच किया गया
+
+# RC Pause
+DronelinkDJI2_FlightControlAuthorityChangeReason_RC_PAUSE_STOP=आरसी विराम
+
+# RTH Activated
+DronelinkDJI2_FlightControlAuthorityChangeReason_RC_ONE_KEY_GO_HOME=आरटीएच सक्रिय
+
+# Low Battery RTH
+DronelinkDJI2_FlightControlAuthorityChangeReason_BATTERY_LOW_GO_HOME=कम बैटरी आरटीएच
+
+# Low Battery Landing
+DronelinkDJI2_FlightControlAuthorityChangeReason_BATTERY_SUPER_LOW_LANDING=कम बैटरी लैंडिंग
+
+# OSDK Lost
+DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_LOST=ओएसडीके खो गया
+
+# Near Boundary
+DronelinkDJI2_FlightControlAuthorityChangeReason_NEAR_BOUNDARY=सीमा के पास
+
+# Unknown
+DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN=अज्ञात

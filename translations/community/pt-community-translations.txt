@@ -1,0 +1,563 @@
+# Drone Disconnected
+MissionDisengageReason_drone_disconnected_title=drone desconectado
+
+# Automatic Control Interrupted
+MissionDisengageReason_drone_control_override_title=Controle Automático Interrompido
+
+# Unable to Take Off
+MissionDisengageReason_take_off_failed_title=Incapaz de decolar
+
+# Unable to Take Control
+MissionDisengageReason_take_control_failed_title=Incapaz de Assumir o Controle
+
+# Please toggle the RC flight mode switch to N (Normal) to continue.
+MissionDisengageReason_take_control_failed_rc_mode_details=Mude o modo de voo RC para N (Normal) para continuar.
+
+# Please make sure the drone flight mode is P-GPS to continue.
+MissionDisengageReason_take_control_failed_flight_mode_details=Certifique-se de que o modo de voo do drone é P-GPS para continuar.
+
+# Weak Signal
+MissionDisengageReason_telemetry_delayed_title=Sinal fraco
+
+# • Please point the RC antennas towards the drone.\n• If the signal does not improve, try moving closer to the drone.\n• If the signal still does not improve, move to an area with fewer obstacles or RF interference.
+MissionDisengageReason_telemetry_delayed_details=• Aponte as antenas RC para o drone.\n• Se o sinal não melhorar, tente se aproximar do drone.\n• Se o sinal ainda não melhorar, vá para uma área com menos obstáculos ou interferência de RF.
+
+# Max Distance Reached
+MissionDisengageReason_drone_max_distance_title=Distância Máxima Alcançada
+
+# Increase the max distance setting to continue.
+MissionDisengageReason_drone_max_distance_details=Aumente a configuração de distância máxima para continuar.
+
+# Remote Controller Unavailable
+MissionDisengageReason_drone_remote_controller_unavailable_title=Controle remoto indisponível
+
+# RTK Unavailable
+MissionDisengageReason_rtk_unavailable_title=RTK indisponível
+
+# Custom Network RTK Unavailable
+MissionDisengageReason_rtk_custom_network_unavailable_title=Rede personalizada RTK indisponível
+
+# Live Streaming Unavailable
+MissionDisengageReason_live_streaming_unavailable_title=Transmissão ao vivo indisponível
+
+# RTMP Live Streaming Unavailable
+MissionDisengageReason_live_streaming_rtmp_unavailable_title=Transmissão ao vivo RTMP indisponível
+
+# Camera Unavailable
+MissionDisengageReason_drone_camera_unavailable_title=Câmera indisponível
+
+# Gimbal Unavailable
+MissionDisengageReason_drone_gimbal_unavailable_title=Gimbal indisponível
+
+# Unhandled Command Type
+MissionDisengageReason_command_type_unhandled=Tipo de comando não tratado
+
+# Unable to Set Value
+MissionDisengageReason_command_value_invalid=Não foi possível definir o valor
+
+# Initializing DJI SDK
+DJI2DroneSessionManager_initializing=Inicializando DJI SDK
+
+# Unable to register DJI SDK
+DJI2DroneSessionManager_register_failed=Não foi possível registrar o DJI SDK
+
+# Serial Number Unavailable
+DJI2DroneSession_serial_number_failed=Número de série indisponível
+
+# Telemetry Unavailable
+DJI2DroneStateAdapter_telemetry_unavailable=Telemetria indisponível
+
+# Critically Low Battery
+DJI2DroneStateAdapter_statusMessages_isSeriousLowBatteryWarning_title=Bateria Criticamente Baixa
+
+# Low Battery
+DJI2DroneStateAdapter_statusMessages_isLowBatteryWarning_title=Bateria Fraca
+
+# Max Distance
+DJI2DroneStateAdapter_statusMessages_isOutOfDistanceLimit_title=Distância máxima
+
+# Near Max Distance
+DJI2DroneStateAdapter_statusMessages_isNearDistanceLimit_title=Perto da distância máxima
+
+# Near Max Altitude
+DJI2DroneStateAdapter_statusMessages_isNearHeightLimit_title=Perto da altitude máxima
+
+# GPS Signal Unavailable
+DJI2DroneStateAdapter_statusMessages_locationUnavailable_title=Sinal de GPS indisponível
+
+# Please wait for a strong GPS signal lock to continue.
+DJI2DroneStateAdapter_statusMessages_locationUnavailable_details=Por favor, aguarde um bloqueio de sinal de GPS forte para continuar.
+
+# Home Location Not Set
+DJI2DroneStateAdapter_statusMessages_homeLocationNotSet_title=Localização residencial não definida
+
+# RTK
+DJI2RTKStateAdapter_rtk=RTK
+
+# Custom Network RTK
+DJI2RTKStateAdapter_custom_network=Rede personalizada RTK
+
+# RTK Location
+DJI2RTKStateAdapter_custom_network_location=Localização RTK
+
+# Location Unavailable
+DJI2RTKStateAdapter_custom_network_location_unavailable=Localização indisponível
+
+# Camera still capturing
+DJI2CameraAdapter_cameraCommand_stop_capture_error=A câmera ainda está capturando
+
+# Media File Not Created
+DJI2CameraAdapter_cameraCommand_start_shoot_photo_no_file=Arquivo de mídia não criado
+
+# Camera Busy
+DJI2CameraStateAdapter_cameraCommand_focus_target_error=Câmera ocupada
+
+# Focus Ring Outside Limits:
+DJI2CameraStateAdapter_cameraCommand_focus_target_ring_invalid=Limites externos do anel de foco:
+
+# Uncalibrated Focus Distance
+DJI2CameraStateAdapter_cameraCommand_focus_distance_error=Distância de foco não calibrada
+
+# %1$s Full
+DJI2CameraStateAdapter_statusMessages_storage_remaining_space_none_title=%1$s cheio
+
+# %1$s %2$d%% Full
+DJI2CameraStateAdapter_statusMessages_storage_remaining_space_low_title=%1$s %2$d%% Cheio
+
+# Gimbal Not Rotated
+DJI2GimbalAdapter_gimbalCommand_orientation_not_achieved=Cardan não girado
+
+# Mode
+DronelinkDJI2_FlightMode_title=Modo
+
+# Manual
+DronelinkDJI2_FlightMode_value_MANUAL=Manual
+
+# ATTI
+DronelinkDJI2_FlightMode_value_ATTI=ATTI
+
+# P-GPS
+DronelinkDJI2_FlightMode_value_GPS_NORMAL=P-GPS
+
+# POI
+DronelinkDJI2_FlightMode_value_POI=POI
+
+# Takeoff Ready
+DronelinkDJI2_FlightMode_value_TAKE_OFF_READY=pronto para decolagem
+
+# Auto Takeoff
+DronelinkDJI2_FlightMode_value_AUTO_TAKE_OFF=decolagem automática
+
+# Auto Landing
+DronelinkDJI2_FlightMode_value_AUTO_LANDING=pouso automático
+
+# Waypoint
+DronelinkDJI2_FlightMode_value_WAYPOINT=Parada
+
+# Go Home
+DronelinkDJI2_FlightMode_value_GO_HOME=Ir para casa
+
+# Virtual Stick
+DronelinkDJI2_FlightMode_value_VIRTUAL_STICK=Bastão virtual
+
+# Smart Flight
+DronelinkDJI2_FlightMode_value_SMART_FLIGHT=voo inteligente
+
+# Pano
+DronelinkDJI2_FlightMode_value_PANO=panorâmico
+
+# Sport
+DronelinkDJI2_FlightMode_value_GPS_SPORT=Esporte
+
+# Tripod
+DronelinkDJI2_FlightMode_value_GPS_TRIPOD=Tripé
+
+# Auto Avoidance
+DronelinkDJI2_FlightMode_value_AUTO_AVOIDANCE=Evitação Automática
+
+# Smart Fly
+DronelinkDJI2_FlightMode_value_SMART_FLY=Voo Inteligente
+
+# Force Landing
+DronelinkDJI2_FlightMode_value_FORCE_LANDING=pouso forçado
+
+# ATTI Landing
+DronelinkDJI2_FlightMode_value_ATTI_LANDING=Aterragem ATTI
+
+# Click Go
+DronelinkDJI2_FlightMode_value_CLICK_GO=Clique em Ir
+
+# Cinematic
+DronelinkDJI2_FlightMode_value_CINEMATIC=Cinematográfico
+
+# Unknown
+DronelinkDJI2_FlightMode_value_DRAW=Desconhecido
+
+# Follow
+DronelinkDJI2_FlightMode_value_FOLLOW_ME=Seguir
+
+# Novice
+DronelinkDJI2_FlightMode_value_GPS_NOVICE=Novato
+
+# Quick Movie
+DronelinkDJI2_FlightMode_value_QUICK_MOVIE=Filme rápido
+
+# Tap Fly
+DronelinkDJI2_FlightMode_value_TAP_FLY=Tap Fly
+
+# Master Shot
+DronelinkDJI2_FlightMode_value_MASTER_SHOT=tiro mestre
+
+# APAS
+DronelinkDJI2_FlightMode_value_APAS=APAS
+
+# Timelapse
+DronelinkDJI2_FlightMode_value_TIME_LAPSE=Espaço de tempo
+
+# Motors Starting
+DronelinkDJI2_FlightMode_value_MOTOR_START=Partida de Motores
+
+# Unknown
+DronelinkDJI2_FlightMode_value_UNKNOWN=Desconhecido
+
+# AirSense Alert
+DronelinkDJI2_AirSenseAirplaneState_title=Alerta AirSense
+
+# Aircraft %1$s at %2$s %3$s
+DronelinkDJI2_AirSenseAirplaneState_message=Aeronave %1$s em %2$s %3$s
+
+# RTH
+DronelinkDJI2_FCGoHomeState_title=RTH
+
+# Preparing
+DronelinkDJI2_FCGoHomeState_value_PREASCENDING=Preparando
+
+# Turning to Home Point
+DronelinkDJI2_FCGoHomeState_value_ALIGN=Voltando para o Ponto Inicial
+
+# Ascending to Altitude
+DronelinkDJI2_FCGoHomeState_value_ASCENDING=Ascendendo à Altitude
+
+# Flying to Home Point
+DronelinkDJI2_FCGoHomeState_value_CRUISE=Voando para Home Point
+
+# Braking
+DronelinkDJI2_FCGoHomeState_value_BRAKING=Frenagem
+
+# Descending to Ground
+DronelinkDJI2_FCGoHomeState_value_AVOID_ASCENDING=Descendo ao chão
+
+# RTH
+DronelinkDJI2_GoHomeState_title=RTH
+
+# Flying to Home Point
+DronelinkDJI2_GoHomeState_value_RETURNING_TO_HOME=Voando para Home Point
+
+# Landing
+DronelinkDJI2_GoHomeState_value_LANDING=Pousar
+
+# Compass
+DronelinkDJI2_CompassSensorState_title=Bússola
+
+# Disconnected
+DronelinkDJI2_CompassSensorState_value_DISCONNECTED=Desconectado
+
+# Calibrating
+DronelinkDJI2_CompassSensorState_value_CALIBRATING=Calibrando
+
+# Uncalibrated
+DronelinkDJI2_CompassSensorState_value_UNCALIBRATED=Descalibrado
+
+# Data Exception
+DronelinkDJI2_CompassSensorState_value_DATA_EXCEPTION=Exceção de dados
+
+# Calibration Failed
+DronelinkDJI2_CompassSensorState_value_CALIBRATION_FAILED=Falha na calibração
+
+# Direction Exception
+DronelinkDJI2_CompassSensorState_value_DIRECTION_EXCEPTION=Exceção de direção
+
+# Compass Calibration
+DronelinkDJI2_CompassCalibrationState_title=Calibração da Bússola
+
+# Rotate 360 Horizontally
+DronelinkDJI2_CompassCalibrationState_value_HORIZONTAL=Girar 360 na horizontal
+
+# Rotate 360 Vertically
+DronelinkDJI2_CompassCalibrationState_value_VERTICAL=Girar 360 na vertical
+
+# Finished
+DronelinkDJI2_CompassCalibrationState_value_SUCCEEDED=Finalizado
+
+# Failed
+DronelinkDJI2_CompassCalibrationState_value_FAILED=Fracassado
+
+# Model
+DronelinkDJI2_ProductType_title=Modelo
+
+# Mavic 3 Enterprise
+DronelinkDJI2_ProductType_value_DJI_MAVIC_3_ENTERPRISE_SERIES=Mavic 3 Enterprise
+
+# M30
+DronelinkDJI2_ProductType_value_M30_SERIES=M30
+
+# M300 RTK
+DronelinkDJI2_ProductType_value_M300_RTK=M300 RTK
+
+# DJI Mini 3
+DronelinkDJI2_ProductType_value_DJI_MINI_3=DJI Mini 3
+
+# DJI Mini 3 Pro
+DronelinkDJI2_ProductType_value_DJI_MINI_3_PRO=DJI Mini 3 Pro
+
+# Unrecognized
+DronelinkDJI2_ProductType_value_UNRECOGNIZED=Não reconhecido
+
+# Unknown
+DronelinkDJI2_ProductType_value_UNKNOWN=Desconhecido
+
+# RTK
+DronelinkDJI2_RTKError_title=RTK
+
+# None
+DronelinkDJI2_RTKError_value_NONE=Nenhum
+
+# Cannot Start
+DronelinkDJI2_RTKError_value_CANNOT_START=Não pode começar
+
+# Connection Broken
+DronelinkDJI2_RTKError_value_CONNECTION_BROKEN=Conexão quebrada
+
+# Base Station Antenna Error
+DronelinkDJI2_RTKError_value_BS_ANTENNA_ERROR=Erro de Antena da Estação Base
+
+# Base Station Coordinate Reset
+DronelinkDJI2_RTKError_value_BS_COORDINATE_RESET=Reinicialização das Coordenadas da Estação Base
+
+# Initializing
+DronelinkDJI2_RTKError_value_INTIALIZING=Inicializando
+
+# Base Station Not Activated
+DronelinkDJI2_RTKError_value_BASE_STATION_NOT_ACTIVATED=Estação base não ativada
+
+# RTCM Type Changed
+DronelinkDJI2_RTKError_value_RTCM_TYPE_CHANGE=Tipo de RTCM alterado
+
+# Base Station Moved
+DronelinkDJI2_RTKError_value_BASE_STATION_IS_MOVED=Estação base movida
+
+# Base Station Fell
+DronelinkDJI2_RTKError_value_BASE_STATION_FELL=Estação base caiu
+
+# Custom Network RTK Status
+DronelinkDJI2_RTKServiceState_title=Status RTK de rede personalizada
+
+# RTCM Connected
+DronelinkDJI2_RTKServiceState_value_RTCM_CONNECTED=RTCM conectado
+
+# RTCM Normal
+DronelinkDJI2_RTKServiceState_value_RTCM_NORMAL=RTCM Normal
+
+# RTCM User Activated
+DronelinkDJI2_RTKServiceState_value_RTCM_USER_HAS_ACTIVATE=Usuário RTCM ativado
+
+# RTCM Account Expires Soon
+DronelinkDJI2_RTKServiceState_value_RTCM_USER_ACCOUNT_EXPIRES_SOON=A conta RTCM expira em breve
+
+# RTCM Use Default Mount Point
+DronelinkDJI2_RTKServiceState_value_RTCM_USE_DEFAULT_MOUNT_POINT=RTCM Usar ponto de montagem padrão
+
+# RTCM Authentication Failed
+DronelinkDJI2_RTKServiceState_value_RTCM_AUTH_FAILED=Falha na Autenticação RTCM
+
+# RTCM User Not Bounded
+DronelinkDJI2_RTKServiceState_value_RTCM_USER_NOT_BOUNDED=Usuário RTCM não limitado
+
+# RTCM User Not Activated
+DronelinkDJI2_RTKServiceState_value_RTCM_USER_NOT_ACTIVATED=Usuário RTCM não ativado
+
+# Account Expired
+DronelinkDJI2_RTKServiceState_value_ACCOUNT_EXPIRED=Conta expirada
+
+# RTCM Illegal UTC Time
+DronelinkDJI2_RTKServiceState_value_RTCM_ILLEGAL_UTC_TIME=Hora UTC ilegal RTCM
+
+# RTCM Set Coordinate Failure
+DronelinkDJI2_RTKServiceState_value_RTCM_SET_COORDINATE_FAILURE=Falha na Coordenada do Conjunto RTCM
+
+# RTCM Connecting
+DronelinkDJI2_RTKServiceState_value_RTCM_CONNECTING=Conexão RTCM
+
+# RTCM Activation Failed
+DronelinkDJI2_RTKServiceState_value_RTCM_ACTIVATED_FAILED=Falha na ativação do RTCM
+
+# Disabled
+DronelinkDJI2_RTKServiceState_value_DISABLED=Desabilitado
+
+# Aircraft Disconnected
+DronelinkDJI2_RTKServiceState_value_AIRCRAFT_DISCONNECTED=Aeronave Desconectada
+
+# Connecting
+DronelinkDJI2_RTKServiceState_value_CONNECTING=Conectando
+
+# Transmitting
+DronelinkDJI2_RTKServiceState_value_TRANSMITTING=transmitindo
+
+# Login Failure
+DronelinkDJI2_RTKServiceState_value_LOGIN_FAILURE=Falha de login
+
+# Invalid Request
+DronelinkDJI2_RTKServiceState_value_INVALID_REQUEST=pedido inválido
+
+# Account Error
+DronelinkDJI2_RTKServiceState_value_ACCOUNT_ERROR=Erro de conta
+
+# Network Not Reachable
+DronelinkDJI2_RTKServiceState_value_NETWORK_NOT_REACHABLE=Rede não acessível
+
+# Server Not Reachable
+DronelinkDJI2_RTKServiceState_value_SERVER_NOT_REACHABLE=Servidor não acessível
+
+# Service Suspension
+DronelinkDJI2_RTKServiceState_value_SERVICE_SUSPENSION=Suspensão do serviço
+
+# Disconnected
+DronelinkDJI2_RTKServiceState_value_DISCONNECTED=Desconectado
+
+# Ready
+DronelinkDJI2_RTKServiceState_value_READY=Preparar
+
+# Send GGA No Valid Base
+DronelinkDJI2_RTKServiceState_value_SEND_GGA_NO_VALID_BASE=Enviar GGA sem base válida
+
+# RTK Start Processing
+DronelinkDJI2_RTKServiceState_value_RTK_START_PROCESSING=Processamento de Início RTK
+
+# RTK Positioning Solution
+DronelinkDJI2_RTKPositioningSolution_title=Solução de Posicionamento RTK
+
+# None
+DronelinkDJI2_RTKPositioningSolution_value_NONE=Nenhum
+
+# Float
+DronelinkDJI2_RTKPositioningSolution_value_FLOAT=Flutuador
+
+# Single Point
+DronelinkDJI2_RTKPositioningSolution_value_SINGLE_POINT=Ponto único
+
+# Fixed Point
+DronelinkDJI2_RTKPositioningSolution_value_FIXED_POINT=Ponto fixo
+
+# Unknown
+DronelinkDJI2_RTKPositioningSolution_value_UNKNOWN=Desconhecido
+
+# Wind Warning
+DronelinkDJI2_WindWarning_title=Alerta de Vento
+
+# Strong Wind
+DronelinkDJI2_WindWarning_LEVEL_1=Vento forte
+
+# Very Strong Wind
+DronelinkDJI2_WindWarning_LEVEL_2=Vento Muito Forte
+
+# Lens
+DronelinkDJI2_CameraLensType_title=Lente
+
+# Zoom
+DronelinkDJI2_CameraLensType_CAMERA_LENS_ZOOM=Ampliação
+
+# Wide
+DronelinkDJI2_CameraLensType_CAMERA_LENS_WIDE=Largo
+
+# Thermal
+DronelinkDJI2_CameraLensType_CAMERA_LENS_THERMAL=Térmico
+
+# MS G
+DronelinkDJI2_CameraLensType_CAMERA_LENS_MS_G=MS G
+
+# MS R
+DronelinkDJI2_CameraLensType_CAMERA_LENS_MS_R=MS R
+
+# MS RE
+DronelinkDJI2_CameraLensType_CAMERA_LENS_MS_RE=MS RE
+
+# MS NIR
+DronelinkDJI2_CameraLensType_CAMERA_LENS_MS_NIR=MS NIR
+
+# MS NDVI
+DronelinkDJI2_CameraLensType_CAMERA_LENS_MS_NDVI=MS NDVI
+
+# Visible
+DronelinkDJI2_CameraLensType_CAMERA_LENS_RGB=Visível
+
+# Default
+DronelinkDJI2_CameraLensType_CAMERA_LENS_DEFAULT=Padrão
+
+# Unknown
+DronelinkDJI2_CameraLensType_CAMERA_LENS_UNKNOWN=Desconhecido
+
+# Onboard Waypoints
+DronelinkDJI2_DJIWaypointMissionState_title=Pontos de passagem a bordo
+
+# Ready
+DronelinkDJI2_DJIWaypointMissionState_value_READY=Preparar
+
+# Uploading
+DronelinkDJI2_DJIWaypointMissionState_value_UPLOADING=Enviando
+
+# Preparing to Execute
+DronelinkDJI2_DJIWaypointMissionState_value_PREPARING=Preparando para Executar
+
+# Enter Wayline
+DronelinkDJI2_DJIWaypointMissionState_value_ENTER_WAYLINE=Insira o alinhamento
+
+# Running
+DronelinkDJI2_DJIWaypointMissionState_value_EXECUTING=Correndo
+
+# Interrupted
+DronelinkDJI2_DJIWaypointMissionState_value_INTERRUPTED=Interrompido
+
+# Recovering
+DronelinkDJI2_DJIWaypointMissionState_value_RECOVERING=recuperando
+
+# Return to Start
+DronelinkDJI2_DJIWaypointMissionState_value_RETURN_TO_START_POINT=Voltar ao início
+
+# MSDK Request
+DronelinkDJI2_FlightControlAuthorityChangeReason_MSDK_REQUEST=Solicitação MSDK
+
+# Auto Test Request
+DronelinkDJI2_FlightControlAuthorityChangeReason_AUTO_TEST_REQUEST=Solicitação de teste automático
+
+# OSDK Request
+DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_REQUEST=Pedido de OSDK
+
+# RC Disconnected
+DronelinkDJI2_FlightControlAuthorityChangeReason_RC_LOST=RC Desconectado
+
+# RC Not in P-Mode
+DronelinkDJI2_FlightControlAuthorityChangeReason_RC_NOT_P_MODE=RC fora do modo P
+
+# RC Flight Mode Switched
+DronelinkDJI2_FlightControlAuthorityChangeReason_RC_SWITCH=Modo de voo RC comutado
+
+# RC Pause
+DronelinkDJI2_FlightControlAuthorityChangeReason_RC_PAUSE_STOP=Pausa RC
+
+# RTH Activated
+DronelinkDJI2_FlightControlAuthorityChangeReason_RC_ONE_KEY_GO_HOME=RTH ativado
+
+# Low Battery RTH
+DronelinkDJI2_FlightControlAuthorityChangeReason_BATTERY_LOW_GO_HOME=RTH de bateria fraca
+
+# Low Battery Landing
+DronelinkDJI2_FlightControlAuthorityChangeReason_BATTERY_SUPER_LOW_LANDING=Pouso de bateria fraca
+
+# OSDK Lost
+DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_LOST=OSDK perdido
+
+# Near Boundary
+DronelinkDJI2_FlightControlAuthorityChangeReason_NEAR_BOUNDARY=Perto do limite
+
+# Unknown
+DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN=Desconhecido

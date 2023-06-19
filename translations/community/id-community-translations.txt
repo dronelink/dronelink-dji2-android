@@ -1,0 +1,563 @@
+# Drone Disconnected
+MissionDisengageReason_drone_disconnected_title=Drone Terputus
+
+# Automatic Control Interrupted
+MissionDisengageReason_drone_control_override_title=Kontrol Otomatis Terganggu
+
+# Unable to Take Off
+MissionDisengageReason_take_off_failed_title=Tidak Dapat Lepas Landas
+
+# Unable to Take Control
+MissionDisengageReason_take_control_failed_title=Tidak Dapat Mengambil Kendali
+
+# Please toggle the RC flight mode switch to N (Normal) to continue.
+MissionDisengageReason_take_control_failed_rc_mode_details=Harap alihkan sakelar mode penerbangan RC ke N (Normal) untuk melanjutkan.
+
+# Please make sure the drone flight mode is P-GPS to continue.
+MissionDisengageReason_take_control_failed_flight_mode_details=Harap pastikan mode penerbangan drone adalah P-GPS untuk melanjutkan.
+
+# Weak Signal
+MissionDisengageReason_telemetry_delayed_title=Sinyal lemah
+
+# • Please point the RC antennas towards the drone.\n• If the signal does not improve, try moving closer to the drone.\n• If the signal still does not improve, move to an area with fewer obstacles or RF interference.
+MissionDisengageReason_telemetry_delayed_details=• Harap arahkan antena RC ke arah drone.\n• Jika sinyal tidak membaik, coba mendekat ke drone.\n• Jika sinyal masih tidak membaik, pindahlah ke area dengan lebih sedikit rintangan atau gangguan RF.
+
+# Max Distance Reached
+MissionDisengageReason_drone_max_distance_title=Jarak Maksimum Tercapai
+
+# Increase the max distance setting to continue.
+MissionDisengageReason_drone_max_distance_details=Tingkatkan pengaturan jarak maks untuk melanjutkan.
+
+# Remote Controller Unavailable
+MissionDisengageReason_drone_remote_controller_unavailable_title=Pengontrol Jarak Jauh Tidak Tersedia
+
+# RTK Unavailable
+MissionDisengageReason_rtk_unavailable_title=RTK Tidak Tersedia
+
+# Custom Network RTK Unavailable
+MissionDisengageReason_rtk_custom_network_unavailable_title=RTK Jaringan Khusus Tidak Tersedia
+
+# Live Streaming Unavailable
+MissionDisengageReason_live_streaming_unavailable_title=Streaming Langsung Tidak Tersedia
+
+# RTMP Live Streaming Unavailable
+MissionDisengageReason_live_streaming_rtmp_unavailable_title=Streaming Langsung RTMP Tidak Tersedia
+
+# Camera Unavailable
+MissionDisengageReason_drone_camera_unavailable_title=Kamera Tidak Tersedia
+
+# Gimbal Unavailable
+MissionDisengageReason_drone_gimbal_unavailable_title=Gimbal Tidak Tersedia
+
+# Unhandled Command Type
+MissionDisengageReason_command_type_unhandled=Jenis Perintah Tidak Tertangani
+
+# Unable to Set Value
+MissionDisengageReason_command_value_invalid=Tidak Dapat Menetapkan Nilai
+
+# Initializing DJI SDK
+DJI2DroneSessionManager_initializing=Menginisialisasi DJI SDK
+
+# Unable to register DJI SDK
+DJI2DroneSessionManager_register_failed=Tidak dapat mendaftarkan DJI SDK
+
+# Serial Number Unavailable
+DJI2DroneSession_serial_number_failed=Nomor Seri Tidak Tersedia
+
+# Telemetry Unavailable
+DJI2DroneStateAdapter_telemetry_unavailable=Telemetri Tidak Tersedia
+
+# Critically Low Battery
+DJI2DroneStateAdapter_statusMessages_isSeriousLowBatteryWarning_title=Baterai Sangat Rendah
+
+# Low Battery
+DJI2DroneStateAdapter_statusMessages_isLowBatteryWarning_title=Baterai lemah
+
+# Max Distance
+DJI2DroneStateAdapter_statusMessages_isOutOfDistanceLimit_title=Jarak Maks
+
+# Near Max Distance
+DJI2DroneStateAdapter_statusMessages_isNearDistanceLimit_title=Dekat Max Jarak
+
+# Near Max Altitude
+DJI2DroneStateAdapter_statusMessages_isNearHeightLimit_title=Dekat Ketinggian Maks
+
+# GPS Signal Unavailable
+DJI2DroneStateAdapter_statusMessages_locationUnavailable_title=Sinyal GPS Tidak Tersedia
+
+# Please wait for a strong GPS signal lock to continue.
+DJI2DroneStateAdapter_statusMessages_locationUnavailable_details=Harap tunggu kunci sinyal GPS yang kuat untuk melanjutkan.
+
+# Home Location Not Set
+DJI2DroneStateAdapter_statusMessages_homeLocationNotSet_title=Lokasi Rumah Tidak Ditetapkan
+
+# RTK
+DJI2RTKStateAdapter_rtk=RTK
+
+# Custom Network RTK
+DJI2RTKStateAdapter_custom_network=RTK Jaringan Khusus
+
+# RTK Location
+DJI2RTKStateAdapter_custom_network_location=Lokasi RTK
+
+# Location Unavailable
+DJI2RTKStateAdapter_custom_network_location_unavailable=Lokasi Tidak Tersedia
+
+# Camera still capturing
+DJI2CameraAdapter_cameraCommand_stop_capture_error=Kamera masih merekam
+
+# Media File Not Created
+DJI2CameraAdapter_cameraCommand_start_shoot_photo_no_file=File Media Tidak Dibuat
+
+# Camera Busy
+DJI2CameraStateAdapter_cameraCommand_focus_target_error=Kamera Sibuk
+
+# Focus Ring Outside Limits:
+DJI2CameraStateAdapter_cameraCommand_focus_target_ring_invalid=Cincin Fokus Di Luar Batas:
+
+# Uncalibrated Focus Distance
+DJI2CameraStateAdapter_cameraCommand_focus_distance_error=Jarak Fokus yang tidak dikalibrasi
+
+# %1$s Full
+DJI2CameraStateAdapter_statusMessages_storage_remaining_space_none_title=%1$s Penuh
+
+# %1$s %2$d%% Full
+DJI2CameraStateAdapter_statusMessages_storage_remaining_space_low_title=%1$s %2$d%% Penuh
+
+# Gimbal Not Rotated
+DJI2GimbalAdapter_gimbalCommand_orientation_not_achieved=Gimbal Tidak Diputar
+
+# Mode
+DronelinkDJI2_FlightMode_title=Mode
+
+# Manual
+DronelinkDJI2_FlightMode_value_MANUAL=Manual
+
+# ATTI
+DronelinkDJI2_FlightMode_value_ATTI=ATTI
+
+# P-GPS
+DronelinkDJI2_FlightMode_value_GPS_NORMAL=P-GPS
+
+# POI
+DronelinkDJI2_FlightMode_value_POI=POI
+
+# Takeoff Ready
+DronelinkDJI2_FlightMode_value_TAKE_OFF_READY=Lepas Landas Siap
+
+# Auto Takeoff
+DronelinkDJI2_FlightMode_value_AUTO_TAKE_OFF=Lepas Landas Otomatis
+
+# Auto Landing
+DronelinkDJI2_FlightMode_value_AUTO_LANDING=Pendaratan Otomatis
+
+# Waypoint
+DronelinkDJI2_FlightMode_value_WAYPOINT=Titik arah
+
+# Go Home
+DronelinkDJI2_FlightMode_value_GO_HOME=Pulang ke rumah
+
+# Virtual Stick
+DronelinkDJI2_FlightMode_value_VIRTUAL_STICK=Tongkat Virtual
+
+# Smart Flight
+DronelinkDJI2_FlightMode_value_SMART_FLIGHT=Penerbangan Cerdas
+
+# Pano
+DronelinkDJI2_FlightMode_value_PANO=Pano
+
+# Sport
+DronelinkDJI2_FlightMode_value_GPS_SPORT=Olahraga
+
+# Tripod
+DronelinkDJI2_FlightMode_value_GPS_TRIPOD=Tripod
+
+# Auto Avoidance
+DronelinkDJI2_FlightMode_value_AUTO_AVOIDANCE=Penghindaran Otomatis
+
+# Smart Fly
+DronelinkDJI2_FlightMode_value_SMART_FLY=Terbang Cerdas
+
+# Force Landing
+DronelinkDJI2_FlightMode_value_FORCE_LANDING=Mendarat Paksa
+
+# ATTI Landing
+DronelinkDJI2_FlightMode_value_ATTI_LANDING=Pendaratan ATTI
+
+# Click Go
+DronelinkDJI2_FlightMode_value_CLICK_GO=Klik Mulai
+
+# Cinematic
+DronelinkDJI2_FlightMode_value_CINEMATIC=Sinematik
+
+# Unknown
+DronelinkDJI2_FlightMode_value_DRAW=Tidak dikenal
+
+# Follow
+DronelinkDJI2_FlightMode_value_FOLLOW_ME=Mengikuti
+
+# Novice
+DronelinkDJI2_FlightMode_value_GPS_NOVICE=Pemula
+
+# Quick Movie
+DronelinkDJI2_FlightMode_value_QUICK_MOVIE=Film Cepat
+
+# Tap Fly
+DronelinkDJI2_FlightMode_value_TAP_FLY=Ketuk Terbang
+
+# Master Shot
+DronelinkDJI2_FlightMode_value_MASTER_SHOT=tembakan master
+
+# APAS
+DronelinkDJI2_FlightMode_value_APAS=APAS
+
+# Timelapse
+DronelinkDJI2_FlightMode_value_TIME_LAPSE=selang waktu
+
+# Motors Starting
+DronelinkDJI2_FlightMode_value_MOTOR_START=Motor Memulai
+
+# Unknown
+DronelinkDJI2_FlightMode_value_UNKNOWN=Tidak dikenal
+
+# AirSense Alert
+DronelinkDJI2_AirSenseAirplaneState_title=Peringatan AirSense
+
+# Aircraft %1$s at %2$s %3$s
+DronelinkDJI2_AirSenseAirplaneState_message=Pesawat %1$s di %2$s %3$s
+
+# RTH
+DronelinkDJI2_FCGoHomeState_title=RTH
+
+# Preparing
+DronelinkDJI2_FCGoHomeState_value_PREASCENDING=Mempersiapkan
+
+# Turning to Home Point
+DronelinkDJI2_FCGoHomeState_value_ALIGN=Beralih ke Titik Awal
+
+# Ascending to Altitude
+DronelinkDJI2_FCGoHomeState_value_ASCENDING=Naik ke Ketinggian
+
+# Flying to Home Point
+DronelinkDJI2_FCGoHomeState_value_CRUISE=Terbang ke Titik Asal
+
+# Braking
+DronelinkDJI2_FCGoHomeState_value_BRAKING=Pengereman
+
+# Descending to Ground
+DronelinkDJI2_FCGoHomeState_value_AVOID_ASCENDING=Turun ke Tanah
+
+# RTH
+DronelinkDJI2_GoHomeState_title=RTH
+
+# Flying to Home Point
+DronelinkDJI2_GoHomeState_value_RETURNING_TO_HOME=Terbang ke Titik Asal
+
+# Landing
+DronelinkDJI2_GoHomeState_value_LANDING=Pendaratan
+
+# Compass
+DronelinkDJI2_CompassSensorState_title=Kompas
+
+# Disconnected
+DronelinkDJI2_CompassSensorState_value_DISCONNECTED=Terputus
+
+# Calibrating
+DronelinkDJI2_CompassSensorState_value_CALIBRATING=Mengkalibrasi
+
+# Uncalibrated
+DronelinkDJI2_CompassSensorState_value_UNCALIBRATED=Tidak dikalibrasi
+
+# Data Exception
+DronelinkDJI2_CompassSensorState_value_DATA_EXCEPTION=Pengecualian Data
+
+# Calibration Failed
+DronelinkDJI2_CompassSensorState_value_CALIBRATION_FAILED=Kalibrasi Gagal
+
+# Direction Exception
+DronelinkDJI2_CompassSensorState_value_DIRECTION_EXCEPTION=Pengecualian Arah
+
+# Compass Calibration
+DronelinkDJI2_CompassCalibrationState_title=Kalibrasi Kompas
+
+# Rotate 360 Horizontally
+DronelinkDJI2_CompassCalibrationState_value_HORIZONTAL=Putar 360 Secara Horizontal
+
+# Rotate 360 Vertically
+DronelinkDJI2_CompassCalibrationState_value_VERTICAL=Putar 360 Vertikal
+
+# Finished
+DronelinkDJI2_CompassCalibrationState_value_SUCCEEDED=Selesai
+
+# Failed
+DronelinkDJI2_CompassCalibrationState_value_FAILED=Gagal
+
+# Model
+DronelinkDJI2_ProductType_title=Model
+
+# Mavic 3 Enterprise
+DronelinkDJI2_ProductType_value_DJI_MAVIC_3_ENTERPRISE_SERIES=Mavic 3 Perusahaan
+
+# M30
+DronelinkDJI2_ProductType_value_M30_SERIES=M30
+
+# M300 RTK
+DronelinkDJI2_ProductType_value_M300_RTK=M300RTK
+
+# DJI Mini 3
+DronelinkDJI2_ProductType_value_DJI_MINI_3=DJI Mini 3
+
+# DJI Mini 3 Pro
+DronelinkDJI2_ProductType_value_DJI_MINI_3_PRO=DJI Mini 3 Pro
+
+# Unrecognized
+DronelinkDJI2_ProductType_value_UNRECOGNIZED=Tidak dikenal
+
+# Unknown
+DronelinkDJI2_ProductType_value_UNKNOWN=Tidak dikenal
+
+# RTK
+DronelinkDJI2_RTKError_title=RTK
+
+# None
+DronelinkDJI2_RTKError_value_NONE=Tidak ada
+
+# Cannot Start
+DronelinkDJI2_RTKError_value_CANNOT_START=Tidak Dapat Memulai
+
+# Connection Broken
+DronelinkDJI2_RTKError_value_CONNECTION_BROKEN=Koneksi Rusak
+
+# Base Station Antenna Error
+DronelinkDJI2_RTKError_value_BS_ANTENNA_ERROR=Kesalahan Antena Pemancar
+
+# Base Station Coordinate Reset
+DronelinkDJI2_RTKError_value_BS_COORDINATE_RESET=Reset Koordinat Stasiun Basis
+
+# Initializing
+DronelinkDJI2_RTKError_value_INTIALIZING=Inisialisasi
+
+# Base Station Not Activated
+DronelinkDJI2_RTKError_value_BASE_STATION_NOT_ACTIVATED=Stasiun Basis Tidak Diaktifkan
+
+# RTCM Type Changed
+DronelinkDJI2_RTKError_value_RTCM_TYPE_CHANGE=Jenis RTCM Berubah
+
+# Base Station Moved
+DronelinkDJI2_RTKError_value_BASE_STATION_IS_MOVED=Stasiun Basis Dipindahkan
+
+# Base Station Fell
+DronelinkDJI2_RTKError_value_BASE_STATION_FELL=Stasiun Basis Jatuh
+
+# Custom Network RTK Status
+DronelinkDJI2_RTKServiceState_title=Status RTK Jaringan Kustom
+
+# RTCM Connected
+DronelinkDJI2_RTKServiceState_value_RTCM_CONNECTED=RTCM Terhubung
+
+# RTCM Normal
+DronelinkDJI2_RTKServiceState_value_RTCM_NORMAL=RTCM Normal
+
+# RTCM User Activated
+DronelinkDJI2_RTKServiceState_value_RTCM_USER_HAS_ACTIVATE=Pengguna RTCM Diaktifkan
+
+# RTCM Account Expires Soon
+DronelinkDJI2_RTKServiceState_value_RTCM_USER_ACCOUNT_EXPIRES_SOON=Akun RTCM Segera Kedaluwarsa
+
+# RTCM Use Default Mount Point
+DronelinkDJI2_RTKServiceState_value_RTCM_USE_DEFAULT_MOUNT_POINT=RTCM Gunakan Titik Pemasangan Default
+
+# RTCM Authentication Failed
+DronelinkDJI2_RTKServiceState_value_RTCM_AUTH_FAILED=Otentikasi RTCM Gagal
+
+# RTCM User Not Bounded
+DronelinkDJI2_RTKServiceState_value_RTCM_USER_NOT_BOUNDED=Pengguna RTCM Tidak Dibatasi
+
+# RTCM User Not Activated
+DronelinkDJI2_RTKServiceState_value_RTCM_USER_NOT_ACTIVATED=Pengguna RTCM Tidak Diaktifkan
+
+# Account Expired
+DronelinkDJI2_RTKServiceState_value_ACCOUNT_EXPIRED=Akun Kedaluwarsa
+
+# RTCM Illegal UTC Time
+DronelinkDJI2_RTKServiceState_value_RTCM_ILLEGAL_UTC_TIME=Waktu UTC Ilegal RTCM
+
+# RTCM Set Coordinate Failure
+DronelinkDJI2_RTKServiceState_value_RTCM_SET_COORDINATE_FAILURE=Kegagalan Koordinat RTCM Tetapkan
+
+# RTCM Connecting
+DronelinkDJI2_RTKServiceState_value_RTCM_CONNECTING=Menghubungkan RTCM
+
+# RTCM Activation Failed
+DronelinkDJI2_RTKServiceState_value_RTCM_ACTIVATED_FAILED=Aktivasi RTCM Gagal
+
+# Disabled
+DronelinkDJI2_RTKServiceState_value_DISABLED=Dengan disabilitas
+
+# Aircraft Disconnected
+DronelinkDJI2_RTKServiceState_value_AIRCRAFT_DISCONNECTED=Pesawat Terputus
+
+# Connecting
+DronelinkDJI2_RTKServiceState_value_CONNECTING=Menghubungkan
+
+# Transmitting
+DronelinkDJI2_RTKServiceState_value_TRANSMITTING=Mengirimkan
+
+# Login Failure
+DronelinkDJI2_RTKServiceState_value_LOGIN_FAILURE=Gagal Masuk
+
+# Invalid Request
+DronelinkDJI2_RTKServiceState_value_INVALID_REQUEST=Permintaan Tidak Valid
+
+# Account Error
+DronelinkDJI2_RTKServiceState_value_ACCOUNT_ERROR=Kesalahan Akun
+
+# Network Not Reachable
+DronelinkDJI2_RTKServiceState_value_NETWORK_NOT_REACHABLE=Jaringan Tidak Terjangkau
+
+# Server Not Reachable
+DronelinkDJI2_RTKServiceState_value_SERVER_NOT_REACHABLE=Server Tidak Dapat Dijangkau
+
+# Service Suspension
+DronelinkDJI2_RTKServiceState_value_SERVICE_SUSPENSION=Penangguhan Layanan
+
+# Disconnected
+DronelinkDJI2_RTKServiceState_value_DISCONNECTED=Terputus
+
+# Ready
+DronelinkDJI2_RTKServiceState_value_READY=Siap
+
+# Send GGA No Valid Base
+DronelinkDJI2_RTKServiceState_value_SEND_GGA_NO_VALID_BASE=Kirim GGA Tidak Ada Basis yang Valid
+
+# RTK Start Processing
+DronelinkDJI2_RTKServiceState_value_RTK_START_PROCESSING=RTK Mulai Memproses
+
+# RTK Positioning Solution
+DronelinkDJI2_RTKPositioningSolution_title=Solusi Pemosisian RTK
+
+# None
+DronelinkDJI2_RTKPositioningSolution_value_NONE=Tidak ada
+
+# Float
+DronelinkDJI2_RTKPositioningSolution_value_FLOAT=Mengambang
+
+# Single Point
+DronelinkDJI2_RTKPositioningSolution_value_SINGLE_POINT=Titik Tunggal
+
+# Fixed Point
+DronelinkDJI2_RTKPositioningSolution_value_FIXED_POINT=Titik pasti
+
+# Unknown
+DronelinkDJI2_RTKPositioningSolution_value_UNKNOWN=Tidak dikenal
+
+# Wind Warning
+DronelinkDJI2_WindWarning_title=Peringatan Angin
+
+# Strong Wind
+DronelinkDJI2_WindWarning_LEVEL_1=Angin kencang
+
+# Very Strong Wind
+DronelinkDJI2_WindWarning_LEVEL_2=Angin Sangat Kencang
+
+# Lens
+DronelinkDJI2_CameraLensType_title=Lensa
+
+# Zoom
+DronelinkDJI2_CameraLensType_CAMERA_LENS_ZOOM=Perbesar
+
+# Wide
+DronelinkDJI2_CameraLensType_CAMERA_LENS_WIDE=Lebar
+
+# Thermal
+DronelinkDJI2_CameraLensType_CAMERA_LENS_THERMAL=Panas
+
+# MS G
+DronelinkDJI2_CameraLensType_CAMERA_LENS_MS_G=MS G
+
+# MS R
+DronelinkDJI2_CameraLensType_CAMERA_LENS_MS_R=MS R
+
+# MS RE
+DronelinkDJI2_CameraLensType_CAMERA_LENS_MS_RE=MS RE
+
+# MS NIR
+DronelinkDJI2_CameraLensType_CAMERA_LENS_MS_NIR=MS NIR
+
+# MS NDVI
+DronelinkDJI2_CameraLensType_CAMERA_LENS_MS_NDVI=MS NDVI
+
+# Visible
+DronelinkDJI2_CameraLensType_CAMERA_LENS_RGB=Bisa dilihat
+
+# Default
+DronelinkDJI2_CameraLensType_CAMERA_LENS_DEFAULT=Bawaan
+
+# Unknown
+DronelinkDJI2_CameraLensType_CAMERA_LENS_UNKNOWN=Tidak dikenal
+
+# Onboard Waypoints
+DronelinkDJI2_DJIWaypointMissionState_title=Titik Arah Onboard
+
+# Ready
+DronelinkDJI2_DJIWaypointMissionState_value_READY=Siap
+
+# Uploading
+DronelinkDJI2_DJIWaypointMissionState_value_UPLOADING=Mengunggah
+
+# Preparing to Execute
+DronelinkDJI2_DJIWaypointMissionState_value_PREPARING=Bersiap untuk Mengeksekusi
+
+# Enter Wayline
+DronelinkDJI2_DJIWaypointMissionState_value_ENTER_WAYLINE=Masukkan Wayline
+
+# Running
+DronelinkDJI2_DJIWaypointMissionState_value_EXECUTING=Berlari
+
+# Interrupted
+DronelinkDJI2_DJIWaypointMissionState_value_INTERRUPTED=Terganggu
+
+# Recovering
+DronelinkDJI2_DJIWaypointMissionState_value_RECOVERING=Memulihkan
+
+# Return to Start
+DronelinkDJI2_DJIWaypointMissionState_value_RETURN_TO_START_POINT=Kembali ke Mulai
+
+# MSDK Request
+DronelinkDJI2_FlightControlAuthorityChangeReason_MSDK_REQUEST=Permintaan MSDK
+
+# Auto Test Request
+DronelinkDJI2_FlightControlAuthorityChangeReason_AUTO_TEST_REQUEST=Permintaan Tes Otomatis
+
+# OSDK Request
+DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_REQUEST=Permintaan OSDK
+
+# RC Disconnected
+DronelinkDJI2_FlightControlAuthorityChangeReason_RC_LOST=RC Terputus
+
+# RC Not in P-Mode
+DronelinkDJI2_FlightControlAuthorityChangeReason_RC_NOT_P_MODE=RC Tidak dalam Mode-P
+
+# RC Flight Mode Switched
+DronelinkDJI2_FlightControlAuthorityChangeReason_RC_SWITCH=Mode Penerbangan RC Beralih
+
+# RC Pause
+DronelinkDJI2_FlightControlAuthorityChangeReason_RC_PAUSE_STOP=Jeda RC
+
+# RTH Activated
+DronelinkDJI2_FlightControlAuthorityChangeReason_RC_ONE_KEY_GO_HOME=RTH Diaktifkan
+
+# Low Battery RTH
+DronelinkDJI2_FlightControlAuthorityChangeReason_BATTERY_LOW_GO_HOME=RTH Baterai Lemah
+
+# Low Battery Landing
+DronelinkDJI2_FlightControlAuthorityChangeReason_BATTERY_SUPER_LOW_LANDING=Pendaratan Baterai Rendah
+
+# OSDK Lost
+DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_LOST=OSDK Hilang
+
+# Near Boundary
+DronelinkDJI2_FlightControlAuthorityChangeReason_NEAR_BOUNDARY=Dekat Batas
+
+# Unknown
+DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN=Tidak dikenal
