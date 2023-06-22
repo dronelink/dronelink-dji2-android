@@ -8,6 +8,7 @@ package com.dronelink.dji2.adapters;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -46,6 +47,7 @@ import com.dronelink.core.kernel.command.camera.SaturationCameraCommand;
 import com.dronelink.core.kernel.command.camera.SharpnessCameraCommand;
 import com.dronelink.core.kernel.command.camera.ShutterSpeedCameraCommand;
 import com.dronelink.core.kernel.command.camera.SpotMeteringTargetCameraCommand;
+import com.dronelink.core.kernel.command.camera.ThermalZoomCameraCommand;
 import com.dronelink.core.kernel.command.camera.VideoCaptionCameraCommand;
 import com.dronelink.core.kernel.command.camera.VideoFileCompressionStandardCameraCommand;
 import com.dronelink.core.kernel.command.camera.VideoFileFormatCameraCommand;
@@ -55,7 +57,9 @@ import com.dronelink.core.kernel.command.camera.VideoStandardCameraCommand;
 import com.dronelink.core.kernel.command.camera.VideoStreamSourceCameraCommand;
 import com.dronelink.core.kernel.command.camera.WhiteBalanceCustomCameraCommand;
 import com.dronelink.core.kernel.command.camera.WhiteBalancePresetCameraCommand;
+import com.dronelink.core.kernel.command.camera.ZoomCameraCommand;
 import com.dronelink.core.kernel.core.CameraFocusCalibration;
+import com.dronelink.core.kernel.core.CameraZoomSpec;
 import com.dronelink.core.kernel.core.Message;
 import com.dronelink.core.kernel.core.Point2;
 import com.dronelink.core.kernel.core.enums.CameraAEBCount;
@@ -97,6 +101,7 @@ import dji.sdk.keyvalue.key.DJIKey;
 import dji.sdk.keyvalue.key.DJIKeyInfo;
 import dji.sdk.keyvalue.key.KeyTools;
 import dji.sdk.keyvalue.value.camera.CameraExposureSettings;
+import dji.sdk.keyvalue.value.camera.CameraHybridZoomSpec;
 import dji.sdk.keyvalue.value.camera.CameraVideoStreamSourceType;
 import dji.sdk.keyvalue.value.camera.CameraWhiteBalanceInfo;
 import dji.sdk.keyvalue.value.camera.CameraWhiteBalanceMode;
@@ -191,7 +196,12 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
     private boolean lockGimbalDuringShootPhotoEnabled = false;
     private boolean mechanicalShutterEnabled = false;
     private boolean dewarpingEnabled = false;
-
+    private boolean isHybridZoomSupported = false;
+    private Integer hybridZoomFocalLength;
+    private CameraHybridZoomSpec hybridZoomSpec;
+    private int[] zoomRatios;
+    private int[] thermalZoomRatios;
+    private Double currentThermalZoomRatio;
     public DJI2CameraStateAdapter(final Context context, final DJI2DroneAdapter drone, final ComponentIndexType index, final CameraLensType lensType) {
         this.context = context;
         this.drone = drone;
@@ -394,6 +404,12 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
         listeners.init(createLensKey(CameraKey.KeyLockGimbalDuringShootPhotoEnabled), (oldValue, newValue) -> lockGimbalDuringShootPhotoEnabled = newValue != null && newValue);
         listeners.init(createLensKey(CameraKey.KeyMechanicalShutterEnabled), (oldValue, newValue) -> mechanicalShutterEnabled = newValue != null && newValue);
         listeners.init(createLensKey(CameraKey.KeyDewarpingEnabled), (oldValue, newValue) -> dewarpingEnabled = newValue != null && newValue);
+        listeners.init(createLensKey(CameraKey.KeyCameraHybridZoomSupported), (oldValue, newValue) -> isHybridZoomSupported = newValue != null && newValue);
+        listeners.init(createLensKey(CameraKey.KeyCameraHybridZoomFocalLength), (oldValue, newValue) -> hybridZoomFocalLength = newValue);
+        listeners.init(createLensKey(CameraKey.KeyCameraHybridZoomSpec), (oldValue, newValue) -> hybridZoomSpec = newValue);
+        listeners.init(createLensKey(CameraKey.KeyCameraZoomRatiosRange), (oldValue, newValue) -> zoomRatios = newValue.getGears());
+        listeners.init(createLensKey(CameraKey.KeyThermalZoomRatiosRange), (oldValue, newValue) -> thermalZoomRatios = newValue.getGears());
+        listeners.init(createLensKey(CameraKey.KeyThermalZoomRatios), (oldValue, newValue) -> currentThermalZoomRatio = newValue);
     }
 
     private <T> DJIKey<T> createKey(final DJIKeyInfo<T> keyInfo) {
@@ -760,6 +776,56 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
     }
 
     @Override
+    public boolean isZoomSupported() {
+        return ((lensType == CameraLensType.CAMERA_LENS_ZOOM && isHybridZoomSupported)
+                || (lensType == CameraLensType.CAMERA_LENS_THERMAL && thermalZoomRatios != null && thermalZoomRatios.length > 0));
+    }
+
+    @Override
+    public boolean isThermalZoomSupported() {
+        return (lensType == CameraLensType.CAMERA_LENS_THERMAL && thermalZoomRatios != null && thermalZoomRatios.length > 0);
+    }
+
+    @Override
+    public CameraZoomSpec getZoomSpec() {
+        final CameraHybridZoomSpec spec = hybridZoomSpec;
+        if (spec != null) {
+            //Sometimes a valid spec is returned from the SDK, but the focalLengthStep is 0. This is a hack to fix that.
+            final Integer focalLengthStep = spec.focalLengthStep == 0 ? 10 : spec.focalLengthStep;
+            CameraZoomSpec.Builder cameraZoomSpecBuilder = new CameraZoomSpec.Builder(spec.minFocalLength, spec.maxFocalLength, spec.maxOpticalFocalLength, focalLengthStep);
+            final int[] zoomRatios = this.zoomRatios;
+            if (zoomRatios != null) {
+                cameraZoomSpecBuilder = cameraZoomSpecBuilder.zoomRatios(zoomRatios);
+            }
+            final int[] thermalZoomRatios = this.thermalZoomRatios;
+            if (thermalZoomRatios != null) {
+                cameraZoomSpecBuilder = cameraZoomSpecBuilder.thermalZoomRatios(thermalZoomRatios);
+            }
+
+            final Double currentThermalZoomRatio = this.currentThermalZoomRatio;
+            if (currentThermalZoomRatio != null) {
+                cameraZoomSpecBuilder = cameraZoomSpecBuilder.currentThermalZoomRatio(currentThermalZoomRatio);
+            }
+
+            try {
+                return cameraZoomSpecBuilder.build();
+            } catch (final IllegalArgumentException e) {
+                Log.e(TAG, e.getMessage());
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Double getZoomValue() {
+        final Integer focalLength = hybridZoomFocalLength;
+        if (focalLength != null) {
+            return focalLength.doubleValue();
+        }
+        return null;
+    }
+
+    @Override
     public CameraMeteringMode getMeteringMode() {
         return DronelinkDJI2.getCameraMeteringMode(meteringMode);
     }
@@ -936,6 +1002,60 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
                     createLensKey(CameraKey.KeyCameraFocusRingValue),
                     (int)(((FocusRingCameraCommand)command).focusRingPercent * (focusRingMax == null ? 0 : focusRingMax)),
                     DronelinkDJI2.createCompletionCallback(finished));
+            return null;
+        }
+
+        if (command instanceof ZoomCameraCommand) {
+            final CameraZoomSpec zoomSpec = getZoomSpec();
+            if (zoomSpec == null) {
+                return new CommandError(context.getString(R.string.MissionDisengageReason_command_type_unsupported));
+            }
+            int zoomMax = zoomSpec.getMax();
+            int zoomMin = zoomSpec.getMin();
+            int zoomStep = zoomSpec.getStep();
+            final int hybridZoomFocalLength = (int)Math.round((((ZoomCameraCommand) command).zoomPercent * (zoomMax - zoomMin) + zoomMin) / zoomStep) * zoomStep;
+            Command.conditionallyExecute(getZoomValue() == null || hybridZoomFocalLength != getZoomValue().intValue(), finished, () -> KeyManager.getInstance().setValue(
+                    createLensKey(CameraKey.KeyCameraHybridZoomFocalLength),
+                    hybridZoomFocalLength,
+                    DronelinkDJI2.createCompletionCallback(finished)));
+            return null;
+        }
+
+        if (command instanceof ThermalZoomCameraCommand) {
+            final CameraZoomSpec zoomSpec = getZoomSpec();
+            if (zoomSpec == null) {
+                return new CommandError(context.getString(R.string.MissionDisengageReason_command_type_unsupported));
+            }
+            final int[] ratios = zoomSpec.getThermalZoomRatios();
+            if (ratios == null || ratios.length == 0) {
+                return new CommandError(context.getString(R.string.MissionDisengageReason_command_type_unsupported));
+            }
+            int minRatio = ratios[0];
+            int maxRatio = ratios[ratios.length - 1];
+            for (int ratio : ratios) {
+                if (ratio < minRatio) {
+                    minRatio = ratio;
+                }
+                if (ratio > maxRatio) {
+                    maxRatio = ratio;
+                }
+            }
+            final double targetValue = (((ThermalZoomCameraCommand)command).thermalZoomPercent * (maxRatio - minRatio) + minRatio);
+            int closestRatio = ratios[0];
+            double closestRatioDistance = Math.abs(targetValue - closestRatio);
+            for (int ratio : ratios) {
+                final double distance = Math.abs(targetValue - ratio);
+                if (distance < closestRatioDistance) {
+                    closestRatio = ratio;
+                    closestRatioDistance = distance;
+                }
+            }
+            final Double finalClosestRatio = Double.valueOf(closestRatio);
+            Command.conditionallyExecute(zoomSpec.getCurrentThermalZoomRatio() == null || zoomSpec.getCurrentThermalZoomRatio() != finalClosestRatio,
+                    finished, () -> KeyManager.getInstance().setValue(
+                    createLensKey(CameraKey.KeyThermalZoomRatios),
+                    finalClosestRatio,
+                    DronelinkDJI2.createCompletionCallback(finished)));
             return null;
         }
 
