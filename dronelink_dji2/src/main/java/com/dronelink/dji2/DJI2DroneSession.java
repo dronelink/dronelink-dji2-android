@@ -66,6 +66,7 @@ import dji.sdk.errorcode.DJIErrorCode;
 import dji.sdk.keyvalue.key.FlightControllerKey;
 import dji.sdk.keyvalue.key.GimbalKey;
 import dji.sdk.keyvalue.key.KeyTools;
+import dji.sdk.keyvalue.value.flightcontroller.FlightMode;
 import dji.sdk.keyvalue.value.gimbal.GimbalSpeedRotation;
 import dji.v5.common.callback.CommonCallbacks;
 import dji.v5.common.error.IDJIError;
@@ -268,8 +269,9 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
             return new Message(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_drone_disconnected_title));
         }
 
-        if (droneAdapter.state.flightMode == null) {
-            return new Message(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_telemetry_unavailable_title));
+        final FlightMode flightMode = droneAdapter.state.flightMode;
+        if (flightMode == null) {
+            return new Message(context.getString(R.string.MissionDisengageReason_telemetry_unavailable_title));
         }
 
         if (isTelemetryDelayed()) {
@@ -280,7 +282,7 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
             return new Message(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_drone_max_distance_title), Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_drone_max_distance_details));
         }
 
-        switch (droneAdapter.state.flightMode) {
+        switch (flightMode) {
             case VIRTUAL_STICK:
             case GPS_NORMAL:
             case APAS:

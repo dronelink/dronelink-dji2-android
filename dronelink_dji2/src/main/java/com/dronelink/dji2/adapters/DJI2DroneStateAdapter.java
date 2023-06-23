@@ -284,11 +284,12 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, ObstacleDataLis
 
     @Override
     public boolean isReturningHome() {
-        return flightMode != null && flightMode == FlightMode.GO_HOME;
+        return flightMode == FlightMode.GO_HOME;
     }
 
     @Override
     public boolean isLanding() {
+        final FlightMode flightMode = this.flightMode;
         if (flightMode == null) {
             return false;
         }
