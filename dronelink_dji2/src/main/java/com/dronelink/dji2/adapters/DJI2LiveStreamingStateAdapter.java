@@ -7,7 +7,6 @@
 package com.dronelink.dji2.adapters;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 
 import com.dronelink.core.DatedValue;
 import com.dronelink.core.adapters.LiveStreamingStateAdapter;
@@ -27,15 +26,13 @@ import dji.v5.manager.interfaces.ILiveStreamManager;
 import dji.v5.manager.interfaces.IMediaDataCenter;
 
 public class DJI2LiveStreamingStateAdapter implements LiveStreamingStateAdapter, LiveStreamStatusListener {
-    private final Context context;
     private final DJI2DroneAdapter drone;
     private final DJI2ListenerGroup listeners = new DJI2ListenerGroup();
 
     private LiveStreamStatus status;
     private IDJIError error;
 
-    public DJI2LiveStreamingStateAdapter(final Context context, final DJI2DroneAdapter drone) {
-        this.context = context;
+    public DJI2LiveStreamingStateAdapter(final DJI2DroneAdapter drone) {
         this.drone = drone;
 
         final IMediaDataCenter mediaDataCenter = MediaDataCenter.getInstance();
@@ -80,7 +77,7 @@ public class DJI2LiveStreamingStateAdapter implements LiveStreamingStateAdapter,
     @Override
     public List<Message> getStatusMessages() {
         final List<Message> messages = new ArrayList<>();
-        Message message = error == null ? null : DronelinkDJI2.getMessage(context, error);
+        Message message = error == null ? null : DronelinkDJI2.getMessage(error);
         if (message != null) {
             messages.add(message);
         }

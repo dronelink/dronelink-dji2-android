@@ -6,7 +6,6 @@
 //
 package com.dronelink.dji2;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -14,6 +13,8 @@ import androidx.annotation.Nullable;
 
 import com.dronelink.core.DroneSession;
 import com.dronelink.core.DroneSessionManager;
+import com.dronelink.core.Dronelink;
+import com.dronelink.core.LocaleUtil;
 import com.dronelink.core.command.Command;
 import com.dronelink.core.kernel.core.Message;
 
@@ -36,7 +37,6 @@ import dji.v5.manager.interfaces.SDKManagerCallback;
 public class DJI2DroneSessionManager implements DroneSessionManager {
     private static final String TAG = DJI2DroneSessionManager.class.getCanonicalName();
 
-    private final Context context;
     private DJI2DroneSession session;
     private final AtomicBoolean isRegistrationInProgress = new AtomicBoolean(false);
     private DJISDKInitEvent initEvent;
@@ -44,9 +44,7 @@ public class DJI2DroneSessionManager implements DroneSessionManager {
     private IDJIError registerError;
     private final List<Listener> listeners = new LinkedList<>();
 
-    public DJI2DroneSessionManager(final Context context) {
-        this.context = context;
-
+    public DJI2DroneSessionManager() {
         initAppActivationManagerStateListener(0);
     }
 
@@ -103,12 +101,12 @@ public class DJI2DroneSessionManager implements DroneSessionManager {
         if (initEvent != null) {
             switch (initEvent) {
                 case START_TO_INITIALIZE:
-                    messages.add(new Message(context.getString(R.string.DJI2DroneSessionManager_initializing), Message.Level.WARNING));
+                    messages.add(new Message(Dronelink.getInstance().context.getString(R.string.DJI2DroneSessionManager_initializing), Message.Level.WARNING));
                     break;
 
                 case INITIALIZE_COMPLETE:
                     if (registerError != null) {
-                        messages.add(new Message(context.getString(R.string.DJI2DroneSessionManager_register_failed), registerError.description(), Message.Level.ERROR));
+                        messages.add(new Message(Dronelink.getInstance().context.getString(R.string.DJI2DroneSessionManager_register_failed), registerError.description(), Message.Level.ERROR));
                     }
                     break;
             }
@@ -117,14 +115,14 @@ public class DJI2DroneSessionManager implements DroneSessionManager {
         return messages;
     }
 
-    public void register(final Context context) {
+    public void register() {
         if (registered != null && registered) {
             return;
         }
 
         if (isRegistrationInProgress.compareAndSet(false, true)) {
             final DJI2DroneSessionManager self = this;
-            AsyncTask.execute(() -> SDKManager.getInstance().init(context, new SDKManagerCallback() {
+            AsyncTask.execute(() -> SDKManager.getInstance().init(Dronelink.getInstance().context, new SDKManagerCallback() {
                 @Override
                 public void onRegisterSuccess() {
                     registered = true;
@@ -141,7 +139,7 @@ public class DJI2DroneSessionManager implements DroneSessionManager {
                                     closeSession();
                                 }
 
-                                session = new DJI2DroneSession(context, self);
+                                session = new DJI2DroneSession(self);
                                 for (final Listener listener : listeners) {
                                     listener.onOpened(session);
                                 }
@@ -170,7 +168,7 @@ public class DJI2DroneSessionManager implements DroneSessionManager {
 //                        closeSession();
 //                    }
 //
-//                    session = new DJI2DroneSession(context, self);
+//                    session = new DJI2DroneSession(self);
 //                    for (final Listener listener : listeners) {
 //                        listener.onOpened(session);
 //                    }

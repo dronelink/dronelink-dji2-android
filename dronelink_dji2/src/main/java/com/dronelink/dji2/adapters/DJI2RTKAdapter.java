@@ -9,6 +9,7 @@ package com.dronelink.dji2.adapters;
 import android.content.Context;
 
 import com.dronelink.core.DatedValue;
+import com.dronelink.core.Dronelink;
 import com.dronelink.core.adapters.RTKAdapter;
 import com.dronelink.core.adapters.RTKStateAdapter;
 import com.dronelink.core.command.Command;
@@ -35,8 +36,8 @@ import dji.v5.manager.interfaces.IRTKCenter;
 public class DJI2RTKAdapter implements RTKAdapter {
     private final DJI2RTKStateAdapter state;
 
-    public DJI2RTKAdapter(final Context context, final DJI2DroneAdapter drone) {
-        this.state = new DJI2RTKStateAdapter(context, drone);
+    public DJI2RTKAdapter(final DJI2DroneAdapter drone) {
+        this.state = new DJI2RTKStateAdapter(drone);
     }
 
     public void close() {
@@ -51,10 +52,10 @@ public class DJI2RTKAdapter implements RTKAdapter {
         return state.getStatusMessages();
     }
 
-    public CommandError executeCommand(final Context context, final RTKCommand command, final Command.Finisher finished) {
+    public CommandError executeCommand(final RTKCommand command, final Command.Finisher finished) {
         final IRTKCenter rtkCenter = RTKCenter.getInstance();
         if (rtkCenter == null) {
-            return new CommandError(context.getString(R.string.MissionDisengageReason_rtk_unavailable_title));
+            return new CommandError(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_rtk_unavailable_title));
         }
 
         if (command instanceof MaintainAccuracyRTKCommand) {
@@ -83,16 +84,16 @@ public class DJI2RTKAdapter implements RTKAdapter {
         }
 
         if (command instanceof CustomNetworkRTKCommand) {
-            return executeCustomNetworkRTKCommand(context, rtkCenter, (CustomNetworkRTKCommand)command, finished);
+            return executeCustomNetworkRTKCommand(rtkCenter, (CustomNetworkRTKCommand)command, finished);
         }
 
-        return new CommandError(context.getString(R.string.MissionDisengageReason_command_type_unhandled) + ": " + command.type);
+        return new CommandError(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_command_type_unhandled) + ": " + command.type);
     }
 
-    private CommandError executeCustomNetworkRTKCommand(final Context context, final IRTKCenter rtkCenter, final CustomNetworkRTKCommand command, final Command.Finisher finished) {
+    private CommandError executeCustomNetworkRTKCommand(final IRTKCenter rtkCenter, final CustomNetworkRTKCommand command, final Command.Finisher finished) {
         final INetworkRTKManager networkRTKManager = rtkCenter.getCustomRTKManager();
         if (networkRTKManager == null) {
-            return new CommandError(context.getString(R.string.MissionDisengageReason_rtk_custom_network_unavailable_title));
+            return new CommandError(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_rtk_custom_network_unavailable_title));
         }
 
         if (command instanceof CustomNetworkTransmittingRTKCommand) {
@@ -113,6 +114,6 @@ public class DJI2RTKAdapter implements RTKAdapter {
             return null;
         }
 
-        return new CommandError(context.getString(R.string.MissionDisengageReason_command_type_unhandled) + ": " + command.type);
+        return new CommandError(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_command_type_unhandled) + ": " + command.type);
     }
 }

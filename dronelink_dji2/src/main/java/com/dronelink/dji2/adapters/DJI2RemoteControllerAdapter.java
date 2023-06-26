@@ -9,6 +9,7 @@ package com.dronelink.dji2.adapters;
 import android.content.Context;
 
 import com.dronelink.core.DatedValue;
+import com.dronelink.core.Dronelink;
 import com.dronelink.core.adapters.RemoteControllerAdapter;
 import com.dronelink.core.adapters.RemoteControllerStateAdapter;
 import com.dronelink.core.command.Command;
@@ -37,12 +38,12 @@ public class DJI2RemoteControllerAdapter implements RemoteControllerAdapter {
         return state.asDatedValue();
     }
 
-    public CommandError executeCommand(final Context context, final RemoteControllerCommand command, final Command.Finisher finished) {
+    public CommandError executeCommand(final RemoteControllerCommand command, final Command.Finisher finished) {
         if (command instanceof TargetGimbalChannelRemoteControllerCommand) {
             //TODO
             return null;
         }
 
-        return new CommandError(context.getString(R.string.MissionDisengageReason_command_type_unhandled) + ": " + command.type);
+        return new CommandError(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_command_type_unhandled) + ": " + command.type);
     }
 }

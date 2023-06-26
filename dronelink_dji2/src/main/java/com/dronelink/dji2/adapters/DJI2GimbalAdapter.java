@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 
 import com.dronelink.core.Convert;
 import com.dronelink.core.DatedValue;
+import com.dronelink.core.Dronelink;
 import com.dronelink.core.Kernel;
 import com.dronelink.core.adapters.EnumElement;
 import com.dronelink.core.adapters.EnumElementsCollection;
@@ -172,7 +173,7 @@ public class DJI2GimbalAdapter implements GimbalAdapter {
         serialQueue.execute(() -> pendingSpeedRotation = newPendingSpeedRotation);
     }
 
-    public CommandError executeCommand(final Context context, final GimbalCommand command, final Command.Finisher finished) {
+    public CommandError executeCommand(final GimbalCommand command, final Command.Finisher finished) {
         if (command instanceof ModeGimbalCommand) {
             final GimbalMode target = ((ModeGimbalCommand) command).mode;
             Command.conditionallyExecute(target != state.getMode(), finished, () -> KeyManager.getInstance().setValue(
@@ -219,7 +220,7 @@ public class DJI2GimbalAdapter implements GimbalAdapter {
                 @Override
                 public void onSuccess(final EmptyMsg emptyMsg) {
                     if (finished != null) {
-                        commandFinishOrientationVerify(context, (OrientationGimbalCommand) command, finished);
+                        commandFinishOrientationVerify((OrientationGimbalCommand) command, finished);
                     }
                 }
 
@@ -233,7 +234,7 @@ public class DJI2GimbalAdapter implements GimbalAdapter {
             return null;
         }
 
-        return new CommandError(context.getString(R.string.MissionDisengageReason_command_type_unhandled) + ": " + command.type);
+        return new CommandError(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_command_type_unhandled) + ": " + command.type);
     }
 
     private boolean isAdjustYaw360Supported() {
@@ -246,13 +247,13 @@ public class DJI2GimbalAdapter implements GimbalAdapter {
         return false;
     }
 
-    private void commandFinishOrientationVerify(final Context context, final OrientationGimbalCommand command, final Command.Finisher finished) {
-        commandFinishOrientationVerify(context, command, 0, 20, Convert.DegreesToRadians(2.0), finished);
+    private void commandFinishOrientationVerify(final OrientationGimbalCommand command, final Command.Finisher finished) {
+        commandFinishOrientationVerify(command, 0, 20, Convert.DegreesToRadians(2.0), finished);
     }
 
-    private void commandFinishOrientationVerify(final Context context, final OrientationGimbalCommand command, final int attempt, final int maxAttempts, final double threshold, final Command.Finisher finished) {
+    private void commandFinishOrientationVerify(final OrientationGimbalCommand command, final int attempt, final int maxAttempts, final double threshold, final Command.Finisher finished) {
         if (attempt >= maxAttempts) {
-            finished.execute(new CommandError(context.getString(R.string.DJI2GimbalAdapter_gimbalCommand_orientation_not_achieved)));
+            finished.execute(new CommandError(Dronelink.getInstance().context.getString(R.string.DJI2GimbalAdapter_gimbalCommand_orientation_not_achieved)));
             return;
         }
 
@@ -277,6 +278,6 @@ public class DJI2GimbalAdapter implements GimbalAdapter {
 
         final long wait = 100;
         Log.d(TAG, "Gimbal command finished and waiting for orientation (" + ((attempt + 1) * wait) + "ms)... (" + command.id + ")");
-        new Handler().postDelayed(() -> commandFinishOrientationVerify(context, command, attempt + 1, maxAttempts, threshold, finished), wait);
+        new Handler().postDelayed(() -> commandFinishOrientationVerify(command, attempt + 1, maxAttempts, threshold, finished), wait);
     }
 }
