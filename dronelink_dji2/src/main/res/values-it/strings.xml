@@ -4,12 +4,12 @@
   <string name="MissionDisengageReason_drone_control_override_title">Controllo automatico interrotto</string>
   <string name="MissionDisengageReason_take_off_failed_title">Impossibile decollare</string>
   <string name="MissionDisengageReason_take_control_failed_title">Impossibile prendere il controllo</string>
-  <string name="MissionDisengageReason_take_control_failed_rc_mode_details">Spostare l'interruttore della modalità di volo RC su N (Normale) per continuare.</string>
+  <string name="MissionDisengageReason_take_control_failed_rc_mode_details">Spostare l\'interruttore della modalità di volo RC su N (Normale) per continuare.</string>
   <string name="MissionDisengageReason_take_control_failed_flight_mode_details">Assicurati che la modalità di volo del drone sia P-GPS per continuare.</string>
   <string name="MissionDisengageReason_telemetry_delayed_title">Segnale debole</string>
-  <string name="MissionDisengageReason_telemetry_delayed_details">• Punta le antenne RC verso il drone.\n• Se il segnale non migliora, prova ad avvicinarti al drone.\n• Se il segnale continua a non migliorare, spostati in un'area con meno ostacoli o interferenze RF.</string>
+  <string name="MissionDisengageReason_telemetry_delayed_details">• Punta le antenne RC verso il drone.\n• Se il segnale non migliora, prova ad avvicinarti al drone.\n• Se il segnale continua a non migliorare, spostati in un\'area con meno ostacoli o interferenze RF.</string>
   <string name="MissionDisengageReason_drone_max_distance_title">Distanza massima raggiunta</string>
-  <string name="MissionDisengageReason_drone_max_distance_details">Aumentare l'impostazione della distanza massima per continuare.</string>
+  <string name="MissionDisengageReason_drone_max_distance_details">Aumentare l\'impostazione della distanza massima per continuare.</string>
   <string name="MissionDisengageReason_drone_remote_controller_unavailable_title">Telecomando non disponibile</string>
   <string name="MissionDisengageReason_rtk_unavailable_title">RTK non disponibile</string>
   <string name="MissionDisengageReason_rtk_custom_network_unavailable_title">Rete personalizzata RTK non disponibile</string>
@@ -110,7 +110,7 @@
   <string name="DronelinkDJI2_RTKError_value_NONE">Nessuno</string>
   <string name="DronelinkDJI2_RTKError_value_CANNOT_START">Impossibile iniziare</string>
   <string name="DronelinkDJI2_RTKError_value_CONNECTION_BROKEN">Connessione interrotta</string>
-  <string name="DronelinkDJI2_RTKError_value_BS_ANTENNA_ERROR">Errore dell'antenna della stazione base</string>
+  <string name="DronelinkDJI2_RTKError_value_BS_ANTENNA_ERROR">Errore dell\'antenna della stazione base</string>
   <string name="DronelinkDJI2_RTKError_value_BS_COORDINATE_RESET">Ripristino delle coordinate della stazione base</string>
   <string name="DronelinkDJI2_RTKError_value_INTIALIZING">Inizializzazione</string>
   <string name="DronelinkDJI2_RTKError_value_BASE_STATION_NOT_ACTIVATED">Stazione base non attivata</string>
@@ -121,7 +121,7 @@
   <string name="DronelinkDJI2_RTKServiceState_value_RTCM_CONNECTED">RTCM connesso</string>
   <string name="DronelinkDJI2_RTKServiceState_value_RTCM_NORMAL">RTCM Normale</string>
   <string name="DronelinkDJI2_RTKServiceState_value_RTCM_USER_HAS_ACTIVATE">Utente RTCM attivato</string>
-  <string name="DronelinkDJI2_RTKServiceState_value_RTCM_USER_ACCOUNT_EXPIRES_SOON">L'account RTCM scade a breve</string>
+  <string name="DronelinkDJI2_RTKServiceState_value_RTCM_USER_ACCOUNT_EXPIRES_SOON">L\'account RTCM scade a breve</string>
   <string name="DronelinkDJI2_RTKServiceState_value_RTCM_USE_DEFAULT_MOUNT_POINT">RTCM Usa punto di montaggio predefinito</string>
   <string name="DronelinkDJI2_RTKServiceState_value_RTCM_AUTH_FAILED">Autenticazione RTCM non riuscita</string>
   <string name="DronelinkDJI2_RTKServiceState_value_RTCM_USER_NOT_BOUNDED">Utente RTCM non vincolato</string>
@@ -137,7 +137,7 @@
   <string name="DronelinkDJI2_RTKServiceState_value_TRANSMITTING">Trasmissione</string>
   <string name="DronelinkDJI2_RTKServiceState_value_LOGIN_FAILURE">Login fallito</string>
   <string name="DronelinkDJI2_RTKServiceState_value_INVALID_REQUEST">richiesta non valida</string>
-  <string name="DronelinkDJI2_RTKServiceState_value_ACCOUNT_ERROR">Errore dell'account</string>
+  <string name="DronelinkDJI2_RTKServiceState_value_ACCOUNT_ERROR">Errore dell\'account</string>
   <string name="DronelinkDJI2_RTKServiceState_value_NETWORK_NOT_REACHABLE">Rete non raggiungibile</string>
   <string name="DronelinkDJI2_RTKServiceState_value_SERVER_NOT_REACHABLE">Server non raggiungibile</string>
   <string name="DronelinkDJI2_RTKServiceState_value_SERVICE_SUSPENSION">Sospensione del servizio</string>
@@ -169,12 +169,12 @@
   <string name="DronelinkDJI2_DJIWaypointMissionState_title">Waypoint a bordo</string>
   <string name="DronelinkDJI2_DJIWaypointMissionState_value_READY">Pronto</string>
   <string name="DronelinkDJI2_DJIWaypointMissionState_value_UPLOADING">Caricamento in corso</string>
-  <string name="DronelinkDJI2_DJIWaypointMissionState_value_PREPARING">Preparazione all'esecuzione</string>
+  <string name="DronelinkDJI2_DJIWaypointMissionState_value_PREPARING">Preparazione all\'esecuzione</string>
   <string name="DronelinkDJI2_DJIWaypointMissionState_value_ENTER_WAYLINE">Inserisci Wayline</string>
   <string name="DronelinkDJI2_DJIWaypointMissionState_value_EXECUTING">Corsa</string>
   <string name="DronelinkDJI2_DJIWaypointMissionState_value_INTERRUPTED">Interrotto</string>
   <string name="DronelinkDJI2_DJIWaypointMissionState_value_RECOVERING">Recupero</string>
-  <string name="DronelinkDJI2_DJIWaypointMissionState_value_RETURN_TO_START_POINT">Torna all'inizio</string>
+  <string name="DronelinkDJI2_DJIWaypointMissionState_value_RETURN_TO_START_POINT">Torna all\'inizio</string>
   <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_MSDK_REQUEST">Richiesta MSDK</string>
   <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_AUTO_TEST_REQUEST">Richiesta di test automatico</string>
   <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_REQUEST">Richiesta OSDK</string>

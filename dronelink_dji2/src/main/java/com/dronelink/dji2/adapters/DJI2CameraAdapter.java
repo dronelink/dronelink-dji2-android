@@ -13,7 +13,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.dronelink.core.DatedValue;
-import com.dronelink.core.Dronelink;
 import com.dronelink.core.Kernel;
 import com.dronelink.core.adapters.CameraAdapter;
 import com.dronelink.core.adapters.CameraStateAdapter;
@@ -74,9 +73,9 @@ public class DJI2CameraAdapter implements CameraAdapter {
     private CameraVideoStreamSourceType videoStreamSource;
     private DatedValue<GeneratedMediaFileInfo> mostRecentGeneratedMediaFileInfo;
 
-    public DJI2CameraAdapter(final DJI2DroneAdapter drone, final ComponentIndexType index, final GeneratedMediaFileInfoCallback generatedMediaFileInfoReceiver) {
+    public DJI2CameraAdapter(final Context context, final DJI2DroneAdapter drone, final ComponentIndexType index, final GeneratedMediaFileInfoCallback generatedMediaFileInfoReceiver) {
         this.index = index;
-        this.defaultState = new DJI2CameraStateAdapter(drone, index, CameraLensType.CAMERA_LENS_DEFAULT);
+        this.defaultState = new DJI2CameraStateAdapter(context, drone, index, CameraLensType.CAMERA_LENS_DEFAULT);
 
         KeyManager.getInstance().getValue(createKey(CameraKey.KeyCameraType), new CommonCallbacks.CompletionCallbackWithParam<CameraType>() {
             @Override
@@ -102,7 +101,7 @@ public class DJI2CameraAdapter implements CameraAdapter {
                     for (final CameraVideoStreamSourceType value : newValue) {
                         final CameraLensType lensType = DronelinkDJI2.getCameraLensType(value);
                         if (lensType != CameraLensType.CAMERA_LENS_DEFAULT) {
-                            lensStates.put(lensType, new DJI2CameraStateAdapter(drone, index, lensType));
+                            lensStates.put(lensType, new DJI2CameraStateAdapter(context, drone, index, lensType));
                         }
                         range.add(Kernel.enumRawValue(DronelinkDJI2.getCameraVideoStreamSource(value)));
                     }
@@ -207,7 +206,7 @@ public class DJI2CameraAdapter implements CameraAdapter {
         return getActiveState().getEnumElements(parameter);
     }
 
-    public CommandError executeCommand(final CameraCommand command, final Command.Finisher finished) {
+    public CommandError executeCommand(final Context context, final CameraCommand command, final Command.Finisher finished) {
         final DJI2CameraStateAdapter state = getActiveState();
 
         if (command instanceof StartCaptureCameraCommand) {
@@ -229,7 +228,7 @@ public class DJI2CameraAdapter implements CameraAdapter {
                                 new Handler().postDelayed(() -> {
                                     final StartCaptureCameraCommand startCaptureCameraCommand = (StartCaptureCameraCommand) command;
                                     if (startCaptureCameraCommand.verifyFileCreated) {
-                                        commandFinishStartShootPhotoVerifyFile(startCaptureCameraCommand, started, finished);
+                                        commandFinishStartShootPhotoVerifyFile(context, startCaptureCameraCommand, started, finished);
                                     } else {
                                         commandFinishNotBusy(startCaptureCameraCommand, finished);
                                     }
@@ -277,7 +276,7 @@ public class DJI2CameraAdapter implements CameraAdapter {
                 case BROADCAST:
                 case UNKNOWN:
                     Log.i(TAG, "Camera start capture invalid mode: " + state.getMode().toString());
-                    return new CommandError(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_drone_camera_mode_invalid_title));
+                    return new CommandError(context.getString(R.string.MissionDisengageReason_drone_camera_mode_invalid_title));
             }
         }
 
@@ -295,7 +294,7 @@ public class DJI2CameraAdapter implements CameraAdapter {
                         @Override
                         public void onSuccess(final EmptyMsg emptyMsg) {
                             if (finished != null) {
-                                commandFinishStopCapture(command, finished);
+                                commandFinishStopCapture(context, command, finished);
                             }
                         }
 
@@ -320,7 +319,7 @@ public class DJI2CameraAdapter implements CameraAdapter {
                         @Override
                         public void onSuccess(final EmptyMsg emptyMsg) {
                             if (finished == null) {
-                                commandFinishStopCapture(command, finished);
+                                commandFinishStopCapture(context, command, finished);
                             }
                         }
 
@@ -338,7 +337,7 @@ public class DJI2CameraAdapter implements CameraAdapter {
                 case BROADCAST:
                 case UNKNOWN:
                     Log.i(TAG, "Camera start capture invalid mode: " + state.getMode().toString());
-                    return new CommandError(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_drone_camera_mode_invalid_title));
+                    return new CommandError(context.getString(R.string.MissionDisengageReason_drone_camera_mode_invalid_title));
             }
         }
 
@@ -378,16 +377,16 @@ public class DJI2CameraAdapter implements CameraAdapter {
             return null;
         }
 
-        return state.executeCommand(command, finished);
+        return state.executeCommand(context, command, finished);
     }
 
-    private void commandFinishStopCapture(final CameraCommand command, final Command.Finisher finished) {
-        commandFinishStopCapture(command, 0, 20, finished);
+    private void commandFinishStopCapture(final Context context, final CameraCommand command, final Command.Finisher finished) {
+        commandFinishStopCapture(context, command, 0, 20, finished);
     }
 
-    private void commandFinishStopCapture(final CameraCommand command, final int attempt, final int maxAttempts, final Command.Finisher finished) {
+    private void commandFinishStopCapture(final Context context, final CameraCommand command, final int attempt, final int maxAttempts, final Command.Finisher finished) {
         if (attempt >= maxAttempts) {
-            finished.execute(new CommandError(Dronelink.getInstance().context.getString(R.string.DJI2CameraAdapter_cameraCommand_stop_capture_error)));
+            finished.execute(new CommandError(context.getString(R.string.DJI2CameraAdapter_cameraCommand_stop_capture_error)));
             return;
         }
 
@@ -402,13 +401,13 @@ public class DJI2CameraAdapter implements CameraAdapter {
         new Handler().postDelayed(() -> commandFinishNotBusy(command, attempt + 1, maxAttempts, finished), wait);
     }
 
-    private void commandFinishStartShootPhotoVerifyFile(final StartCaptureCameraCommand command, final Date started, final Command.Finisher finished) {
-        commandFinishStartShootPhoto(command, started, 0, 20, finished);
+    private void commandFinishStartShootPhotoVerifyFile(final Context context, final StartCaptureCameraCommand command, final Date started, final Command.Finisher finished) {
+        commandFinishStartShootPhoto(context, command, started, 0, 20, finished);
     }
 
-    private void commandFinishStartShootPhoto(final StartCaptureCameraCommand command, final Date started, final int attempt, final int maxAttempts, final Command.Finisher finished) {
+    private void commandFinishStartShootPhoto(final Context context, final StartCaptureCameraCommand command, final Date started, final int attempt, final int maxAttempts, final Command.Finisher finished) {
         if (attempt >= maxAttempts) {
-            finished.execute(new CommandError(Dronelink.getInstance().context.getString(R.string.DJI2CameraAdapter_cameraCommand_start_shoot_photo_no_file)));
+            finished.execute(new CommandError(context.getString(R.string.DJI2CameraAdapter_cameraCommand_start_shoot_photo_no_file)));
             return;
         }
 
@@ -424,7 +423,7 @@ public class DJI2CameraAdapter implements CameraAdapter {
 
         final long wait = 250;
         Log.d(TAG, "Camera start shoot photo finished and waiting for camera file (" + ((attempt + 1) * wait) + "ms)... (" + command.id + ")");
-        new Handler().postDelayed(() -> commandFinishStartShootPhoto(command, started, attempt + 1, maxAttempts, finished), wait);
+        new Handler().postDelayed(() -> commandFinishStartShootPhoto(context, command, started, attempt + 1, maxAttempts, finished), wait);
     }
 
     private void commandFinishNotBusy(final CameraCommand command, final Command.Finisher finished) {

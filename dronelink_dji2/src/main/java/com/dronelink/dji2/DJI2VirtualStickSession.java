@@ -12,7 +12,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.dronelink.core.DroneControlSession;
-import com.dronelink.core.Dronelink;
 import com.dronelink.core.LocaleUtil;
 import com.dronelink.core.kernel.core.Message;
 import com.dronelink.core.kernel.core.enums.ExecutionEngine;
@@ -46,6 +45,7 @@ public class DJI2VirtualStickSession implements DroneControlSession, VirtualStic
         DEACTIVATED
     }
 
+    private final Context context;
     private final DJI2DroneAdapter droneAdapter;
 
     private State state = State.TAKEOFF_START;
@@ -55,7 +55,8 @@ public class DJI2VirtualStickSession implements DroneControlSession, VirtualStic
     private Message attemptDisengageReason = null;
     private FlightControlAuthorityChangeReason reason;
 
-    public DJI2VirtualStickSession(final DJI2DroneAdapter droneAdapter) {
+    public DJI2VirtualStickSession(final Context context, final DJI2DroneAdapter droneAdapter) {
+        this.context = context;
         this.droneAdapter = droneAdapter;
     }
 
@@ -73,7 +74,7 @@ public class DJI2VirtualStickSession implements DroneControlSession, VirtualStic
         if (state == State.FLIGHT_MODE_JOYSTICK_COMPLETE) {
             final FlightControlAuthorityChangeReason reason = this.reason;
             if (reason != null) {
-                return new Message(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_drone_control_override_title), DronelinkDJI2.getString(reason));
+                return new Message(context.getString(R.string.MissionDisengageReason_drone_control_override_title), DronelinkDJI2.getString(context, reason));
             }
 
             final FlightMode flightMode = droneAdapter.state.flightMode;
@@ -132,7 +133,7 @@ public class DJI2VirtualStickSession implements DroneControlSession, VirtualStic
                             @Override
                             public void onFailure(final @NonNull IDJIError error) {
                                 Log.e(TAG, "Takeoff failed: " + error.description());
-                                attemptDisengageReason = new Message(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_take_off_failed_title), error.description());
+                                attemptDisengageReason = new Message(context.getString(R.string.MissionDisengageReason_take_off_failed_title), error.description());
                                 deactivate();
                             }
                         });
@@ -170,7 +171,7 @@ public class DJI2VirtualStickSession implements DroneControlSession, VirtualStic
                         @Override
                         public void onFailure(final @NonNull IDJIError error) {
                             if (virtualStickAttempts >= 5) {
-                                attemptDisengageReason = new Message(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_take_control_failed_title), error.description());
+                                attemptDisengageReason = new Message(context.getString(R.string.MissionDisengageReason_take_control_failed_title), error.description());
                                 deactivate();
                             }
                             else {
@@ -194,7 +195,7 @@ public class DJI2VirtualStickSession implements DroneControlSession, VirtualStic
 
                 if (flightModeJoystickAttemptingStarted != null) {
                     if ((System.currentTimeMillis() - flightModeJoystickAttemptingStarted.getTime()) > 2000) {
-                        attemptDisengageReason = new Message(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_take_control_failed_title));
+                        attemptDisengageReason = new Message(context.getString(R.string.MissionDisengageReason_take_control_failed_title));
                         deactivate();
                         return false;
                     }

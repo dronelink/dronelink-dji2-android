@@ -77,6 +77,7 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
     private static final String TAG = DJI2DroneSession.class.getCanonicalName();
 
     private String id = UUID.randomUUID().toString();
+    private final Context context;
     private final DroneSessionManager manager;
     private final DJI2DroneAdapter droneAdapter;
     public boolean initialized = false;
@@ -98,11 +99,12 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
     private final MultiChannelCommandQueue cameraCommands = new MultiChannelCommandQueue();
     private final MultiChannelCommandQueue gimbalCommands = new MultiChannelCommandQueue();
 
-    public DJI2DroneSession(final DroneSessionManager manager) {
+    public DJI2DroneSession(final Context context, final DroneSessionManager manager) {
         Log.i(TAG, "Drone session opened (" + id + ")");
 
+        this.context = context;
         this.manager = manager;
-        this.droneAdapter = new DJI2DroneAdapter(new CommonCallbacks.CompletionCallbackWithParam<String>() {
+        this.droneAdapter = new DJI2DroneAdapter(context, new CommonCallbacks.CompletionCallbackWithParam<String>() {
             @Override
             public void onSuccess(final String s) {
                 if (!initialized) {
@@ -240,7 +242,7 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
 
     @Override
     public String getModel() {
-        return DronelinkDJI2.getString(droneAdapter.productType);
+        return DronelinkDJI2.getString(context, droneAdapter.productType);
     }
 
     @Override
@@ -266,7 +268,7 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
     @Override
     public Message getDisengageReason() {
         if (closed) {
-            return new Message(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_drone_disconnected_title));
+            return new Message(context.getString(R.string.MissionDisengageReason_drone_disconnected_title));
         }
 
         final FlightMode flightMode = droneAdapter.state.flightMode;
@@ -275,11 +277,11 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
         }
 
         if (isTelemetryDelayed()) {
-            return new Message(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_telemetry_delayed_title), Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_telemetry_delayed_details));
+            return new Message(context.getString(R.string.MissionDisengageReason_telemetry_delayed_title), context.getString(R.string.MissionDisengageReason_telemetry_delayed_details));
         }
 
         if (droneAdapter.state.isOutOfDistanceLimit) {
-            return new Message(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_drone_max_distance_title), Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_drone_max_distance_details));
+            return new Message(context.getString(R.string.MissionDisengageReason_drone_max_distance_title), context.getString(R.string.MissionDisengageReason_drone_max_distance_details));
         }
 
         switch (flightMode) {
@@ -290,10 +292,10 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
 
             case GPS_SPORT:
             case GPS_TRIPOD:
-                return new Message(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_take_control_failed_title), Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_take_control_failed_rc_mode_details));
+                return new Message(context.getString(R.string.MissionDisengageReason_take_control_failed_title), context.getString(R.string.MissionDisengageReason_take_control_failed_rc_mode_details));
 
             default:
-                return new Message(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_take_control_failed_title), Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_take_control_failed_flight_mode_details));
+                return new Message(context.getString(R.string.MissionDisengageReason_take_control_failed_title), context.getString(R.string.MissionDisengageReason_take_control_failed_flight_mode_details));
         }
 
         return null;
@@ -390,7 +392,7 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
             executor = finished -> {
                 onCommandExecuted(command);
                 finished.execute(null);
-                return droneAdapter.executeCommand((DroneCommand)command, finished);
+                return droneAdapter.executeCommand(context, (DroneCommand)command, finished);
             };
         }
         else if (command instanceof RemoteControllerCommand) {
@@ -399,9 +401,9 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
                 finished.execute(null);
                 final RemoteControllerAdapter remoteController = droneAdapter.getRemoteController(((RemoteControllerCommand) command).channel);
                 if (remoteController == null) {
-                    return new CommandError(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_drone_remote_controller_unavailable_title));
+                    return new CommandError(context.getString(R.string.MissionDisengageReason_drone_remote_controller_unavailable_title));
                 }
-                return ((DJI2RemoteControllerAdapter)remoteController).executeCommand((RemoteControllerCommand) command, finished);
+                return ((DJI2RemoteControllerAdapter)remoteController).executeCommand(context, (RemoteControllerCommand) command, finished);
             };
         }
         else if (command instanceof RTKCommand) {
@@ -410,9 +412,9 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
                 finished.execute(null);
                 final RTKAdapter rtk = droneAdapter.getRTK();
                 if (rtk == null) {
-                    return new CommandError(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_rtk_unavailable_title));
+                    return new CommandError(context.getString(R.string.MissionDisengageReason_rtk_unavailable_title));
                 }
-                return ((DJI2RTKAdapter)rtk).executeCommand((RTKCommand) command, finished);
+                return ((DJI2RTKAdapter)rtk).executeCommand(context, (RTKCommand) command, finished);
             };
         }
         else if (command instanceof LiveStreamingCommand) {
@@ -421,9 +423,9 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
                 finished.execute(null);
                 final LiveStreamingAdapter liveStreaming = droneAdapter.getLiveStreaming();
                 if (liveStreaming == null) {
-                    return new CommandError(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_live_streaming_unavailable_title));
+                    return new CommandError(context.getString(R.string.MissionDisengageReason_live_streaming_unavailable_title));
                 }
-                return ((DJI2LiveStreamingAdapter)liveStreaming).executeCommand((LiveStreamingCommand) command, finished);
+                return ((DJI2LiveStreamingAdapter)liveStreaming).executeCommand(context, (LiveStreamingCommand) command, finished);
             };
         }
         else if (command instanceof CameraCommand) {
@@ -431,9 +433,9 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
                 onCommandExecuted(command);
                 final CameraAdapter camera = droneAdapter.getCamera(((CameraCommand) command).channel);
                 if (camera == null) {
-                    return new CommandError(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_drone_camera_unavailable_title));
+                    return new CommandError(context.getString(R.string.MissionDisengageReason_drone_camera_unavailable_title));
                 }
-                return ((DJI2CameraAdapter)camera).executeCommand((CameraCommand)command, finished);
+                return ((DJI2CameraAdapter)camera).executeCommand(context, (CameraCommand)command, finished);
             };
         }
         else if (command instanceof GimbalCommand) {
@@ -441,9 +443,9 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
                 onCommandExecuted(command);
                 final GimbalAdapter gimbal = droneAdapter.getGimbal(((GimbalCommand) command).channel);
                 if (gimbal == null) {
-                    return new CommandError(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_drone_gimbal_unavailable_title));
+                    return new CommandError(context.getString(R.string.MissionDisengageReason_drone_gimbal_unavailable_title));
                 }
-                return ((DJI2GimbalAdapter)gimbal).executeCommand((GimbalCommand)command, finished);
+                return ((DJI2GimbalAdapter)gimbal).executeCommand(context, (GimbalCommand)command, finished);
             };
         }
 
@@ -500,10 +502,10 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
     }
 
     @Override
-    public DroneControlSession createControlSession(final ExecutionEngine executionEngine, final Executor executor) throws UnsupportedExecutionEngineException, UnsupportedDroneDJIExecutionEngineException {
+    public DroneControlSession createControlSession(final Context context, final ExecutionEngine executionEngine, final Executor executor) throws UnsupportedExecutionEngineException, UnsupportedDroneDJIExecutionEngineException {
         switch (executionEngine) {
             case DRONELINK_KERNEL:
-                return new DJI2VirtualStickSession(droneAdapter);
+                return new DJI2VirtualStickSession(context, droneAdapter);
 
             case DJI:
                 break;
