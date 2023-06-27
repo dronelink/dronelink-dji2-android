@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 
 import com.dronelink.core.Convert;
 import com.dronelink.core.DatedValue;
-import com.dronelink.core.Dronelink;
 import com.dronelink.core.adapters.BatteryAdapter;
 import com.dronelink.core.adapters.BatteryStateAdapter;
 import com.dronelink.core.adapters.CameraAdapter;
@@ -131,8 +130,8 @@ public class DJI2DroneAdapter implements DroneAdapter {
     private final DJI2RTKAdapter rtk;
     private final DJI2LiveStreamingAdapter liveStreaming;
 
-    public DJI2DroneAdapter(final CommonCallbacks.CompletionCallbackWithParam<String> onSerialNumber, final CameraFileGeneratedCallback cameraFileReceiver) {
-        state = new DJI2DroneStateAdapter(this);
+    public DJI2DroneAdapter(final Context context, final CommonCallbacks.CompletionCallbackWithParam<String> onSerialNumber, final CameraFileGeneratedCallback cameraFileReceiver) {
+        state = new DJI2DroneStateAdapter(context, this);
 
         listeners.init(KeyTools.createKey(FlightControllerKey.KeySerialNumber), (oldValue, newValue) -> {
             if (newValue != null) {
@@ -192,7 +191,7 @@ public class DJI2DroneAdapter implements DroneAdapter {
                             }
                         } else {
                             Log.i(TAG, "Camera connected: " + index.name());
-                            cameras.put(index, new DJI2CameraAdapter(this, index, info -> {
+                            cameras.put(index, new DJI2CameraAdapter(context, this, index, info -> {
                                 final Orientation3 orientation = state.getOrientation();
                                 final DatedValue<GimbalStateAdapter> gimbalState = getGimbalState(index.value());
                                 if (gimbalState != null) {
@@ -254,8 +253,8 @@ public class DJI2DroneAdapter implements DroneAdapter {
             });
         }
 
-        rtk = new DJI2RTKAdapter(this);
-        liveStreaming = new DJI2LiveStreamingAdapter(this);
+        rtk = new DJI2RTKAdapter(context, this);
+        liveStreaming = new DJI2LiveStreamingAdapter(context, this);
     }
 
     public void close() {
@@ -601,17 +600,17 @@ public class DJI2DroneAdapter implements DroneAdapter {
         }
     }
 
-    public CommandError executeCommand(final DroneCommand command, final Command.Finisher finished) {
+    public CommandError executeCommand(final Context context, final DroneCommand command, final Command.Finisher finished) {
         if (command instanceof FlightAssistantDroneCommand) {
-            return executeFlightAssistantDroneCommand((FlightAssistantDroneCommand) command, finished);
+            return executeFlightAssistantDroneCommand(context, (FlightAssistantDroneCommand) command, finished);
         }
 
         if (command instanceof OcuSyncDroneCommand) {
-            return executeOcuSyncDroneCommand((OcuSyncDroneCommand) command, finished);
+            return executeOcuSyncDroneCommand(context, (OcuSyncDroneCommand) command, finished);
         }
 
         if (command instanceof AccessoryDroneCommand) {
-            return executeAccessoryDroneCommand((AccessoryDroneCommand) command, finished);
+            return executeAccessoryDroneCommand(context, (AccessoryDroneCommand) command, finished);
         }
 
         if (command instanceof ConnectionFailSafeBehaviorDroneCommand) {
@@ -687,10 +686,10 @@ public class DJI2DroneAdapter implements DroneAdapter {
 //        MediaDataCenter.getInstance().getLiveStreamManager().setLiveVideoBitrateMode(LiveVideoBitrateMode.AUTO);
 //        MediaDataCenter.getInstance().getLiveStreamManager().setLiveVideoBitrate(0);
 
-        return new CommandError(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_command_type_unhandled) + ": " + command.type);
+        return new CommandError(context.getString(R.string.MissionDisengageReason_command_type_unhandled) + ": " + command.type);
     }
 
-    private CommandError executeFlightAssistantDroneCommand(final FlightAssistantDroneCommand command, final Command.Finisher finished) {
+    private CommandError executeFlightAssistantDroneCommand(final Context context, final FlightAssistantDroneCommand command, final Command.Finisher finished) {
         if (command instanceof AuxiliaryLightModeDroneCommand) {
             final AuxiliaryLightMode target = DronelinkDJI2.getDroneAuxiliaryLightMode(((AuxiliaryLightModeDroneCommand) command).auxiliaryLightMode);
             switch (((AuxiliaryLightModeDroneCommand) command).auxiliaryLightPosition) {
@@ -767,10 +766,10 @@ public class DJI2DroneAdapter implements DroneAdapter {
             return null;
         }
 
-        return new CommandError(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_command_type_unhandled) + ": " + command.type);
+        return new CommandError(context.getString(R.string.MissionDisengageReason_command_type_unhandled) + ": " + command.type);
     }
 
-    private CommandError executeOcuSyncDroneCommand(final OcuSyncDroneCommand command, final Command.Finisher finished) {
+    private CommandError executeOcuSyncDroneCommand(final Context context, final OcuSyncDroneCommand command, final Command.Finisher finished) {
         if (command instanceof OcuSyncChannelDroneCommand) {
             //TODO
 //            final int target = ((OcuSyncChannelDroneCommand) command).ocuSyncChannel;
@@ -803,10 +802,10 @@ public class DJI2DroneAdapter implements DroneAdapter {
             //TODO
         }
 
-        return new CommandError(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_command_type_unhandled) + ": " + command.type);
+        return new CommandError(context.getString(R.string.MissionDisengageReason_command_type_unhandled) + ": " + command.type);
     }
 
-    private CommandError executeAccessoryDroneCommand(final AccessoryDroneCommand command, final Command.Finisher finished) {
+    private CommandError executeAccessoryDroneCommand(final Context context, final AccessoryDroneCommand command, final Command.Finisher finished) {
         if (command instanceof BeaconDroneCommand) {
             //TODO
         }
@@ -815,6 +814,6 @@ public class DJI2DroneAdapter implements DroneAdapter {
             //TODO
         }
 
-        return new CommandError(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_command_type_unhandled) + ": " + command.type);
+        return new CommandError(context.getString(R.string.MissionDisengageReason_command_type_unhandled) + ": " + command.type);
     }
 }

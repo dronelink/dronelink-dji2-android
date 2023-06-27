@@ -134,6 +134,7 @@ public
 class DJI2CameraStateAdapter implements CameraStateAdapter {
     private static final String TAG = DJI2CameraStateAdapter.class.getCanonicalName();
 
+    private final Context context;
     private final DJI2DroneAdapter drone;
     public final ComponentIndexType index;
     public final CameraLensType lensType;
@@ -208,7 +209,8 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
     private int[] thermalZoomRatios;
     private Double currentThermalZoomRatio;
 
-    public DJI2CameraStateAdapter(final DJI2DroneAdapter drone, final ComponentIndexType index, final CameraLensType lensType) {
+    public DJI2CameraStateAdapter(final Context context, final DJI2DroneAdapter drone, final ComponentIndexType index, final CameraLensType lensType) {
+        this.context = context;
         this.drone = drone;
         this.index = index;
         this.lensType = lensType;
@@ -526,9 +528,9 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
             }
 
             if (storageRemainingSpace == 0 || percentFull == 100) {
-                messages.add(new Message(Dronelink.getInstance().context.getString(R.string.DJI2CameraStateAdapter_statusMessages_storage_remaining_space_none_title, storageName), Message.Level.WARNING));
+                messages.add(new Message(context.getString(R.string.DJI2CameraStateAdapter_statusMessages_storage_remaining_space_none_title, storageName), Message.Level.WARNING));
             } else if (percentFull >= 90) {
-                messages.add(new Message(Dronelink.getInstance().context.getString(R.string.DJI2CameraStateAdapter_statusMessages_storage_remaining_space_low_title, storageName, percentFull), Message.Level.WARNING));
+                messages.add(new Message(context.getString(R.string.DJI2CameraStateAdapter_statusMessages_storage_remaining_space_low_title, storageName, percentFull), Message.Level.WARNING));
             }
         }
 
@@ -834,7 +836,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
 
     @Override
     public String getLensDetails() {
-        return DronelinkDJI2.getString(lensType);
+        return DronelinkDJI2.getString(context, lensType);
     }
 
     @Override
@@ -900,7 +902,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
         return enumElements.get(parameter);
     }
 
-    public CommandError executeCommand(final CameraCommand command, final Command.Finisher finished) {
+    public CommandError executeCommand(final Context context, final CameraCommand command, final Command.Finisher finished) {
         if (command instanceof AEBCountCameraCommand) {
             final CameraAEBCount target = ((AEBCountCameraCommand) command).aebCount;
             Command.conditionallyExecute(target != getAEBCount(), finished, () -> KeyManager.getInstance().setValue(
@@ -1016,7 +1018,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
                         @Override
                         public void onSuccess() {
                             if (finished != null) {
-                                commandFinishFocusTargetVerifyRing((FocusCameraCommand) command, finished);
+                                commandFinishFocusTargetVerifyRing(context, (FocusCameraCommand) command, finished);
                             }
                         }
 
@@ -1034,7 +1036,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
             final FocusDistanceCameraCommand focusDistanceCameraCommand = (FocusDistanceCameraCommand)command;
             final CameraFocusCalibration cameraFocusCalibration = Dronelink.getInstance().getCameraFocusCalibration(focusDistanceCameraCommand.focusCalibration.withDroneSerialNumber(drone.serialNumber));
             if (cameraFocusCalibration == null) {
-                return new CommandError(Dronelink.getInstance().context.getString(R.string.DJI2CameraStateAdapter_cameraCommand_focus_distance_error) + ": " + (int)focusDistanceCameraCommand.focusCalibration.distance);
+                return new CommandError(context.getString(R.string.DJI2CameraStateAdapter_cameraCommand_focus_distance_error) + ": " + (int)focusDistanceCameraCommand.focusCalibration.distance);
             }
             KeyManager.getInstance().setValue(
                     createLensKey(CameraKey.KeyCameraFocusRingValue),
@@ -1269,22 +1271,22 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
             return null;
         }
 
-        return new CommandError(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_command_type_unhandled) + ": " + command.type);
+        return new CommandError(context.getString(R.string.MissionDisengageReason_command_type_unhandled) + ": " + command.type);
     }
 
 
-    private void commandFinishFocusTargetVerifyRing(final FocusCameraCommand command, final Command.Finisher finished) {
-        commandFinishFocusTargetVerifyRing(command, 0, 10, finished);
+    private void commandFinishFocusTargetVerifyRing(final Context context, final FocusCameraCommand command, final Command.Finisher finished) {
+        commandFinishFocusTargetVerifyRing(context, command, 0, 10, finished);
     }
 
-    private void commandFinishFocusTargetVerifyRing(final FocusCameraCommand command, final int attempt, final int maxAttempts, final Command.Finisher finished) {
+    private void commandFinishFocusTargetVerifyRing(final Context context, final FocusCameraCommand command, final int attempt, final int maxAttempts, final Command.Finisher finished) {
         if (command.focusRingPercentLimits == null) {
             finished.execute(null);
             return;
         }
 
         if (attempt >= maxAttempts) {
-            finished.execute(new CommandError(Dronelink.getInstance().context.getString(R.string.DJI2CameraStateAdapter_cameraCommand_focus_target_error)));
+            finished.execute(new CommandError(context.getString(R.string.DJI2CameraStateAdapter_cameraCommand_focus_target_error)));
             return;
         }
 
@@ -1295,7 +1297,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
                 final double focusRingPercent = focusRingValue / focusRingMax;
                 if (focusRingPercent < command.focusRingPercentLimits.min || focusRingPercent > command.focusRingPercentLimits.max) {
                     finished.execute(new CommandError(
-                            Dronelink.getInstance().context.getString(R.string.DJI2CameraStateAdapter_cameraCommand_focus_target_ring_invalid) + " " +
+                            context.getString(R.string.DJI2CameraStateAdapter_cameraCommand_focus_target_ring_invalid) + " " +
                                     Dronelink.getInstance().format("percent", command.focusRingPercentLimits.min, "") + " < " +
                                     Dronelink.getInstance().format("percent", focusRingPercent, "") + " < " +
                                     Dronelink.getInstance().format("percent", command.focusRingPercentLimits.max, "")
@@ -1309,6 +1311,6 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
         }
 
 
-        new Handler().postDelayed(() -> commandFinishFocusTargetVerifyRing(command, attempt + 1, maxAttempts, finished), 100);
+        new Handler().postDelayed(() -> commandFinishFocusTargetVerifyRing(context, command, attempt + 1, maxAttempts, finished), 100);
     }
 }
