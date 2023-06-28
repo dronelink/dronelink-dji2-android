@@ -6,6 +6,7 @@
 //
 package com.dronelink.dji2.adapters;
 
+import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
@@ -121,7 +122,6 @@ import dji.sdk.keyvalue.value.camera.VideoRecordMode;
 import dji.sdk.keyvalue.value.camera.VideoResolutionFrameRate;
 import dji.sdk.keyvalue.value.camera.VideoResolutionFrameRateAndFov;
 import dji.sdk.keyvalue.value.camera.VideoStandard;
-import dji.sdk.keyvalue.value.camera.ZoomRatiosRange;
 import dji.sdk.keyvalue.value.common.CameraLensType;
 import dji.sdk.keyvalue.value.common.ComponentIndexType;
 import dji.sdk.keyvalue.value.common.DoublePoint2D;
@@ -447,17 +447,24 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
             return;
         }
 
+        try {
+            setPercentZoomSpec(spec, zoomValue, zoomRatios);
+        } catch (final IllegalArgumentException e) {
+            Log.e(TAG, "Error initializing percent zoom spec: " + e.getMessage());
+        }
+    }
+
+    private void setPercentZoomSpec(final CameraHybridZoomSpec spec, final Integer zoomValue, final int[] zoomRatios) {
         final Double currentZoom = zoomValue.doubleValue();
+        //DJI SDK sometimes returns a focal length step of 0 which produces a wrong zoom spec. This is a hack to fix it.
+        final int step = spec.focalLengthStep == 0 ? 10 : spec.focalLengthStep;
         if (percentZoomSpec == null) {
-            try {
-                percentZoomSpec = new PercentZoomSpec(currentZoom, spec.minFocalLength, spec.maxFocalLength, spec.maxOpticalFocalLength, spec.focalLengthStep, zoomRatios);
-            } catch (final IllegalArgumentException e) {
-                Log.e(TAG, "Error initializing percent zoom spec" + e.getMessage());
-            }
+            percentZoomSpec = new PercentZoomSpec(currentZoom, spec.minFocalLength, spec.maxFocalLength,
+                    spec.maxOpticalFocalLength, step, zoomRatios);
             return;
         }
 
-        if (percentZoomSpec.getCurrentZoom() != currentZoom) {
+        if (!percentZoomSpec.getCurrentZoom().equals(currentZoom)) {
             percentZoomSpec.setCurrentZoom(currentZoom);
         }
         if (percentZoomSpec.getMin() != spec.minFocalLength) {
@@ -469,8 +476,11 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
         if (percentZoomSpec.getmaxOptical() != spec.maxOpticalFocalLength) {
             percentZoomSpec.setMaxOptical(spec.maxOpticalFocalLength);
         }
-        if (percentZoomSpec.getStep() != spec.focalLengthStep) {
-            percentZoomSpec.setStep(spec.focalLengthStep);
+        if (percentZoomSpec.getStep() != step) {
+            percentZoomSpec.setStep(step);
+        }
+        if (!(Arrays.equals(percentZoomSpec.getRatios(), zoomRatios))) {
+            percentZoomSpec.setRatios(zoomRatios);
         }
     }
 
@@ -482,19 +492,23 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
             return;
         }
 
+        try {
+            setRatioZoomSpec(thermalZoomRatios, currentThermalZoomRatio);
+        } catch (final IllegalArgumentException e) {
+            Log.e(TAG, "Error initializing ratio zoom spec: " + e.getMessage());
+        }
+    }
+
+    private void setRatioZoomSpec(final int[] thermalZoomRatios, final Double currentThermalZoomRatio) {
         if (ratioZoomSpec == null) {
-            try {
-                ratioZoomSpec = new RatioZoomSpec(currentThermalZoomRatio, thermalZoomRatios);
-            } catch (final IllegalArgumentException e) {
-                Log.e(TAG, "Error initializing ratio zoom spec" + e.getMessage());
-            }
+            ratioZoomSpec = new RatioZoomSpec(currentThermalZoomRatio, thermalZoomRatios);
             return;
         }
 
-        if (ratioZoomSpec.getCurrentRatio() != currentThermalZoomRatio) {
+        if (!ratioZoomSpec.getCurrentRatio().equals(currentThermalZoomRatio)) {
             ratioZoomSpec.setCurrentRatio(currentThermalZoomRatio);
         }
-        if (Arrays.equals(ratioZoomSpec.getRatios(), thermalZoomRatios)) {
+        if (!(Arrays.equals(ratioZoomSpec.getRatios(), thermalZoomRatios))) {
             ratioZoomSpec.setRatios(thermalZoomRatios);
         }
     }
@@ -864,12 +878,12 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
 
     @Override
     public boolean isPercentZoomSupported() {
-        return lensType == CameraLensType.CAMERA_LENS_ZOOM && isHybridZoomSupported && percentZoomSpec != null;
+        return lensType == CameraLensType.CAMERA_LENS_ZOOM && percentZoomSpec != null && isHybridZoomSupported;
     }
 
     @Override
     public boolean isRatioZoomSupported() {
-        return lensType == CameraLensType.CAMERA_LENS_THERMAL && ratioZoomSpec != null && ratioZoomSpec.getRatios().length > 0 && ratioZoomSpec.getCurrentRatio() != null;
+        return lensType == CameraLensType.CAMERA_LENS_THERMAL && ratioZoomSpec != null && ratioZoomSpec.getRatios().length > 0;
     }
 
     @Override
@@ -1065,8 +1079,8 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
 
         if (command instanceof ZoomPercentCameraCommand) {
             final CameraZoomSpec zoomSpec = getZoomSpec();
-            if (zoomSpec == null || !(zoomSpec instanceof PercentZoomSpec)) {
-                return new CommandError(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_command_type_unsupported));
+            if (!(zoomSpec instanceof PercentZoomSpec)) {
+                return new CommandError(context.getString(R.string.MissionDisengageReason_command_type_unsupported_lens));
             }
             final PercentZoomSpec spec = (PercentZoomSpec) zoomSpec;
             int zoomMax = spec.getMax();
@@ -1082,14 +1096,19 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
 
         if (command instanceof ZoomRatioCameraCommand) {
             final CameraZoomSpec zoomSpec = getZoomSpec();
-            if (zoomSpec == null || !(zoomSpec instanceof RatioZoomSpec)) {
-                return new CommandError(Dronelink.getInstance().context.getString(R.string.MissionDisengageReason_command_type_unsupported));
+            if (!(zoomSpec instanceof RatioZoomSpec)) {
+                return new CommandError(context.getString(R.string.MissionDisengageReason_command_type_unsupported_lens));
             }
+            final Double zoomRatio = ((ZoomRatioCameraCommand) command).zoomRatio;
             final RatioZoomSpec spec = (RatioZoomSpec) zoomSpec;
-            Command.conditionallyExecute(spec.getCurrentRatio() != ((ZoomRatioCameraCommand) command).zoomRatio,
+            if (!(spec.containsElement(zoomSpec.getRatios(), zoomRatio))) {
+                return new CommandError(context.getString(R.string.MissionDisengageReason_zoom_ratio_unsupported));
+            }
+
+            Command.conditionallyExecute(!spec.getCurrentRatio().equals(zoomRatio),
                     finished, () -> KeyManager.getInstance().setValue(
                     createLensKey(CameraKey.KeyThermalZoomRatios),
-                    spec.getCurrentRatio(),
+                    zoomRatio,
                     DronelinkDJI2.createCompletionCallback(finished)));
             return null;
         }

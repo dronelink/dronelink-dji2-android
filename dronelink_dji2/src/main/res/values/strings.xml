@@ -17,7 +17,8 @@
     <string name="MissionDisengageReason_drone_camera_unavailable_title">Camera Unavailable</string>
     <string name="MissionDisengageReason_drone_gimbal_unavailable_title">Gimbal Unavailable</string>
     <string name="MissionDisengageReason_command_type_unhandled">Unhandled Command Type</string>
-    <string name="MissionDisengageReason_command_type_unsupported">Command Type Unsupported on this Drone</string>
+    <string name="MissionDisengageReason_command_type_unsupported_lens">Command Type Unsupported on this Lens</string>
+    <string name="MissionDisengageReason_zoom_ratio_unsupported">Zoom Ratio Value Unsupported</string>
     <string name="MissionDisengageReason_command_value_invalid">Unable to Set Value</string>
     <string name="DJI2DroneSessionManager_initializing">Initializing DJI SDK</string>
     <string name="DJI2DroneSessionManager_register_failed">Unable to register DJI SDK</string>
