@@ -18,6 +18,8 @@
   <string name="MissionDisengageReason_drone_camera_unavailable_title">Aparat niedostępny</string>
   <string name="MissionDisengageReason_drone_gimbal_unavailable_title">Gimbal niedostępny</string>
   <string name="MissionDisengageReason_command_type_unhandled">Nieobsługiwany typ polecenia</string>
+  <string name="MissionDisengageReason_command_type_unsupported_lens">Typ polecenia nieobsługiwany w tym obiektywie</string>
+  <string name="MissionDisengageReason_zoom_ratio_unsupported">Wartość współczynnika powiększenia nieobsługiwana</string>
   <string name="MissionDisengageReason_command_value_invalid">Nie można ustawić wartości</string>
   <string name="DJI2DroneSessionManager_initializing">Inicjowanie DJI SDK</string>
   <string name="DJI2DroneSessionManager_register_failed">Nie można zarejestrować DJI SDK</string>

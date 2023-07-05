@@ -18,6 +18,8 @@
   <string name="MissionDisengageReason_drone_camera_unavailable_title">کیمرہ دستیاب نہیں ہے۔</string>
   <string name="MissionDisengageReason_drone_gimbal_unavailable_title">Gimbal دستیاب نہیں ہے۔</string>
   <string name="MissionDisengageReason_command_type_unhandled">غیر ہینڈل کمانڈ کی قسم</string>
+  <string name="MissionDisengageReason_command_type_unsupported_lens">اس لینس پر کمانڈ کی قسم غیر تعاون یافتہ ہے۔</string>
+  <string name="MissionDisengageReason_zoom_ratio_unsupported">زوم ریشو ویلیو غیر تعاون یافتہ</string>
   <string name="MissionDisengageReason_command_value_invalid">ویلیو سیٹ کرنے سے قاصر</string>
   <string name="DJI2DroneSessionManager_initializing">DJI SDK کو شروع کیا جا رہا ہے۔</string>
   <string name="DJI2DroneSessionManager_register_failed">DJI SDK رجسٹر کرنے سے قاصر</string>

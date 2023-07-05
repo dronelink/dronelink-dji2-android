@@ -18,6 +18,8 @@
   <string name="MissionDisengageReason_drone_camera_unavailable_title">Caméra indisponible</string>
   <string name="MissionDisengageReason_drone_gimbal_unavailable_title">Cardan indisponible</string>
   <string name="MissionDisengageReason_command_type_unhandled">Type de commande non géré</string>
+  <string name="MissionDisengageReason_command_type_unsupported_lens">Type de commande non pris en charge sur cet objectif</string>
+  <string name="MissionDisengageReason_zoom_ratio_unsupported">Valeur du taux de zoom non prise en charge</string>
   <string name="MissionDisengageReason_command_value_invalid">Impossible de définir la valeur</string>
   <string name="DJI2DroneSessionManager_initializing">Initialisation du SDK DJI</string>
   <string name="DJI2DroneSessionManager_register_failed">Impossible d\'enregistrer DJI SDK</string>

@@ -18,6 +18,8 @@
   <string name="MissionDisengageReason_drone_camera_unavailable_title">कैमरा अनुपलब्ध</string>
   <string name="MissionDisengageReason_drone_gimbal_unavailable_title">गिंबल अनुपलब्ध</string>
   <string name="MissionDisengageReason_command_type_unhandled">बिना क्रिया के कमांड प्रकार</string>
+  <string name="MissionDisengageReason_command_type_unsupported_lens">इस लेंस पर कमांड प्रकार असमर्थित है</string>
+  <string name="MissionDisengageReason_zoom_ratio_unsupported">ज़ूम अनुपात मान असमर्थित</string>
   <string name="MissionDisengageReason_command_value_invalid">मान सेट करने में असमर्थ</string>
   <string name="DJI2DroneSessionManager_initializing">डीजेआई एसडीके की शुरुआत</string>
   <string name="DJI2DroneSessionManager_register_failed">डीजेआई एसडीके पंजीकृत करने में असमर्थ</string>

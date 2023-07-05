@@ -18,6 +18,8 @@
   <string name="MissionDisengageReason_drone_camera_unavailable_title">Kameran är inte tillgänglig</string>
   <string name="MissionDisengageReason_drone_gimbal_unavailable_title">Gimbal ej tillgänglig</string>
   <string name="MissionDisengageReason_command_type_unhandled">Obehandlad kommandotyp</string>
+  <string name="MissionDisengageReason_command_type_unsupported_lens">Kommandotyp stöds inte på detta objektiv</string>
+  <string name="MissionDisengageReason_zoom_ratio_unsupported">Zoomförhållandet stöds inte</string>
   <string name="MissionDisengageReason_command_value_invalid">Det går inte att ställa in värde</string>
   <string name="DJI2DroneSessionManager_initializing">Initierar DJI SDK</string>
   <string name="DJI2DroneSessionManager_register_failed">Det gick inte att registrera DJI SDK</string>

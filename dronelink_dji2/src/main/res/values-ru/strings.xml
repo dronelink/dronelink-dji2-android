@@ -18,6 +18,8 @@
   <string name="MissionDisengageReason_drone_camera_unavailable_title">Камера недоступна</string>
   <string name="MissionDisengageReason_drone_gimbal_unavailable_title">Подвес недоступен</string>
   <string name="MissionDisengageReason_command_type_unhandled">Необработанный тип команды</string>
+  <string name="MissionDisengageReason_command_type_unsupported_lens">Тип команды не поддерживается этим объективом</string>
+  <string name="MissionDisengageReason_zoom_ratio_unsupported">Значение коэффициента масштабирования не поддерживается</string>
   <string name="MissionDisengageReason_command_value_invalid">Невозможно установить значение</string>
   <string name="DJI2DroneSessionManager_initializing">Инициализация DJI SDK</string>
   <string name="DJI2DroneSessionManager_register_failed">Не удалось зарегистрировать DJI SDK</string>

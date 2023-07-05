@@ -18,6 +18,8 @@
   <string name="MissionDisengageReason_drone_camera_unavailable_title">Camera nu este disponibilă</string>
   <string name="MissionDisengageReason_drone_gimbal_unavailable_title">Gimbal indisponibil</string>
   <string name="MissionDisengageReason_command_type_unhandled">Tip de comandă netratată</string>
+  <string name="MissionDisengageReason_command_type_unsupported_lens">Tip de comandă Neacceptat pe acest obiectiv</string>
+  <string name="MissionDisengageReason_zoom_ratio_unsupported">Valoarea raportului de zoom Neacceptată</string>
   <string name="MissionDisengageReason_command_value_invalid">Nu se poate seta valoarea</string>
   <string name="DJI2DroneSessionManager_initializing">Se inițializează DJI SDK</string>
   <string name="DJI2DroneSessionManager_register_failed">Nu se poate înregistra DJI SDK</string>
