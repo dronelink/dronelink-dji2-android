@@ -825,6 +825,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
         }
 
         try {
+            //Sometimes DJI SDK return a focal length step of 0 incorrectly, in those cases we hard code it to 10 so that a valid zoom spec is created.
             final int step = spec.focalLengthStep == 0 ? 10 : spec.focalLengthStep;
             return new PercentZoomSpec(zoomValue.doubleValue(), spec.minFocalLength, spec.maxFocalLength,
                     spec.maxOpticalFocalLength, step, zoomRatios);
