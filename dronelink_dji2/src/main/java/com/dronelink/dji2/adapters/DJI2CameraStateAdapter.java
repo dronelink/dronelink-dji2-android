@@ -1023,7 +1023,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
             final int min = spec.min;
             final int step = spec.step;
             final int hybridZoomFocalLength = (int)Math.round((((ZoomPercentCameraCommand) command).zoomPercent * (max - min) + min) / step) * step;
-            Command.conditionallyExecute(hybridZoomFocalLength != spec.currentZoom, finished, () -> KeyManager.getInstance().setValue(
+            Command.conditionallyExecute(hybridZoomFocalLength != spec.currentZoom.intValue(), finished, () -> KeyManager.getInstance().setValue(
                     createLensKey(CameraKey.KeyCameraHybridZoomFocalLength),
                     hybridZoomFocalLength,
                     DronelinkDJI2.createCompletionCallback(finished)));
