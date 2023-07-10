@@ -1051,7 +1051,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
                 return new CommandError(context.getString(R.string.MissionDisengageReason_zoom_ratio_unsupported));
             }
 
-            Command.conditionallyExecute(specification.currentRatio != zoomRatio,
+            Command.conditionallyExecute(Math.abs(specification.currentRatio - zoomRatio) >= 0.1,
                     finished, () -> KeyManager.getInstance().setValue(
                     createLensKey(CameraKey.KeyThermalZoomRatios),
                     zoomRatio,
