@@ -33,8 +33,8 @@ import dji.v5.manager.interfaces.IMediaDataCenter;
 public class DJI2LiveStreamingAdapter implements LiveStreamingAdapter {
     private final DJI2LiveStreamingStateAdapter state;
 
-    public DJI2LiveStreamingAdapter(final Context context, final DJI2DroneAdapter drone) {
-        this.state = new DJI2LiveStreamingStateAdapter(context, drone);
+    public DJI2LiveStreamingAdapter(final Context context) {
+        this.state = new DJI2LiveStreamingStateAdapter(context);
     }
 
     public void close() {

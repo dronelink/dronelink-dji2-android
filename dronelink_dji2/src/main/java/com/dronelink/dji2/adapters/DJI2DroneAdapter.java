@@ -254,7 +254,7 @@ public class DJI2DroneAdapter implements DroneAdapter {
         }
 
         rtk = new DJI2RTKAdapter(context, this);
-        liveStreaming = new DJI2LiveStreamingAdapter(context, this);
+        liveStreaming = new DJI2LiveStreamingAdapter(context);
     }
 
     public void close() {

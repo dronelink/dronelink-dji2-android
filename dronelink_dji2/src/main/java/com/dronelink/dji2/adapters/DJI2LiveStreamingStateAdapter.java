@@ -28,15 +28,13 @@ import dji.v5.manager.interfaces.IMediaDataCenter;
 
 public class DJI2LiveStreamingStateAdapter implements LiveStreamingStateAdapter, LiveStreamStatusListener {
     private final Context context;
-    private final DJI2DroneAdapter drone;
     private final DJI2ListenerGroup listeners = new DJI2ListenerGroup();
 
     private LiveStreamStatus status;
     private IDJIError error;
 
-    public DJI2LiveStreamingStateAdapter(final Context context, final DJI2DroneAdapter drone) {
+    public DJI2LiveStreamingStateAdapter(final Context context) {
         this.context = context;
-        this.drone = drone;
 
         final IMediaDataCenter mediaDataCenter = MediaDataCenter.getInstance();
         if (mediaDataCenter != null) {
