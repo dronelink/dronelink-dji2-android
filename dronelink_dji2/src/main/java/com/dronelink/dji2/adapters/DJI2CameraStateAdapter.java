@@ -95,7 +95,6 @@ import com.dronelink.dji2.DronelinkDJI2;
 import com.dronelink.dji2.R;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -105,6 +104,7 @@ import dji.sdk.keyvalue.key.DJIKeyInfo;
 import dji.sdk.keyvalue.key.KeyTools;
 import dji.sdk.keyvalue.value.camera.CameraExposureSettings;
 import dji.sdk.keyvalue.value.camera.CameraHybridZoomSpec;
+import dji.sdk.keyvalue.value.camera.CameraOpticalZoomSpec;
 import dji.sdk.keyvalue.value.camera.CameraVideoStreamSourceType;
 import dji.sdk.keyvalue.value.camera.CameraWhiteBalanceInfo;
 import dji.sdk.keyvalue.value.camera.CameraWhiteBalanceMode;
@@ -200,8 +200,11 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
     private boolean mechanicalShutterEnabled = false;
     private boolean dewarpingEnabled = false;
     private boolean isHybridZoomSupported = false;
+    private boolean isOpticalZoomSupported = false;
     private Integer hybridZoomFocalLength;
+    private Integer opticalZoomFocalLength;
     private CameraHybridZoomSpec hybridZoomSpecification;
+    private CameraOpticalZoomSpec opticalZoomSpecification;
     private int[] zoomRatios;
     private int[] thermalZoomRatios;
     private Double currentThermalZoomRatio;
@@ -409,8 +412,11 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
         listeners.init(createLensKey(CameraKey.KeyMechanicalShutterEnabled), (oldValue, newValue) -> mechanicalShutterEnabled = newValue != null && newValue);
         listeners.init(createLensKey(CameraKey.KeyDewarpingEnabled), (oldValue, newValue) -> dewarpingEnabled = newValue != null && newValue);
         listeners.init(createLensKey(CameraKey.KeyCameraHybridZoomSupported), (oldValue, newValue) -> isHybridZoomSupported = newValue != null && newValue);
+        listeners.init(createLensKey(CameraKey.KeyCameraOpticalZoomSupported), (oldValue, newValue) -> isOpticalZoomSupported = newValue != null && newValue);
         listeners.init(createLensKey(CameraKey.KeyCameraHybridZoomFocalLength), (oldValue, newValue) -> hybridZoomFocalLength = newValue);
+        listeners.init(createLensKey(CameraKey.KeyCameraOpticalZoomFocalLength), (oldValue, newValue) -> opticalZoomFocalLength = newValue);
         listeners.init(createLensKey(CameraKey.KeyCameraHybridZoomSpec), (oldValue, newValue) -> hybridZoomSpecification = newValue);
+        listeners.init(createLensKey(CameraKey.KeyCameraOpticalZoomSpec), (oldValue, newValue) -> opticalZoomSpecification = newValue);
         listeners.init(createLensKey(CameraKey.KeyThermalZoomRatios), (oldValue, newValue) -> currentThermalZoomRatio = newValue);
         listeners.init(createLensKey(CameraKey.KeyCameraZoomRatiosRange), (oldValue, newValue) -> {
             if (newValue != null) {
@@ -793,7 +799,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
 
     @Override
     public boolean isPercentZoomSupported() {
-        return lensType == CameraLensType.CAMERA_LENS_ZOOM && isHybridZoomSupported;
+        return lensType == CameraLensType.CAMERA_LENS_ZOOM && (isHybridZoomSupported || isOpticalZoomSupported);
     }
 
     @Override
@@ -821,20 +827,49 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
     }
 
     public PercentZoomSpecification getPercentZoomSpecification() {
+        if (!isPercentZoomSupported()) {
+            return null;
+        }
+        if (isHybridZoomSupported) {
+            return getHybridPercentZoomSpecification();
+        }
+        if (isOpticalZoomSupported) {
+            return getOpticalPercentZoomSpecification();
+        }
+        return null;
+    }
+
+    private PercentZoomSpecification getHybridPercentZoomSpecification() {
         final Integer zoomValue = this.hybridZoomFocalLength;
         final CameraHybridZoomSpec specification = this.hybridZoomSpecification;
         final int[] zoomRatios = this.zoomRatios;
-        if (!isPercentZoomSupported() || zoomValue == null || specification == null || zoomRatios == null) {
-            return null;
+        if (zoomValue != null && specification != null && zoomRatios != null) {
+            try {
+                //Sometimes DJI SDK return a focal length step of 0 incorrectly, in those cases we hard code it to 10 so that a valid zoom specification is created.
+                final int step = specification.focalLengthStep == 0 ? 10 : specification.focalLengthStep;
+                return new PercentZoomSpecification(zoomValue.doubleValue(), specification.minFocalLength, specification.maxFocalLength,
+                        specification.maxOpticalFocalLength, step, DJI2CameraStateAdapter.zoomRatiosResolved(zoomRatios));
+            } catch (final IllegalArgumentException e) {
+                Log.e(TAG, "Error initializing percent zoom specification: " + e.getMessage());
+            }
         }
+        return null;
+    }
 
-        try {
-            //Sometimes DJI SDK return a focal length step of 0 incorrectly, in those cases we hard code it to 10 so that a valid zoom specification is created.
-            final int step = specification.focalLengthStep == 0 ? 10 : specification.focalLengthStep;
-            return new PercentZoomSpecification(zoomValue.doubleValue(), specification.minFocalLength, specification.maxFocalLength,
-                    specification.maxOpticalFocalLength, step, DJI2CameraStateAdapter.zoomRatiosResolved(zoomRatios));
-        } catch (final IllegalArgumentException e) {
-            Log.e(TAG, "Error initializing percent zoom specification: " + e.getMessage());
+    private PercentZoomSpecification getOpticalPercentZoomSpecification() {
+        final Integer zoomValue = this.opticalZoomFocalLength;
+        final CameraOpticalZoomSpec specification = this.opticalZoomSpecification;
+        final int[] zoomRatios = this.zoomRatios;
+        if (zoomValue != null && specification != null && zoomRatios != null) {
+            try {
+                //Sometimes DJI SDK return a focal length step of 0 incorrectly, in those cases we hard code it to 10 so that a valid zoom specification is created.
+                final int step = specification.focalLengthStep == 0 ? 10 : specification.focalLengthStep;
+                //For a CameraOpticalZoomSpec, the parameters max and maxOptical in PercentZoomSpecification class will be the same.
+                return new PercentZoomSpecification(zoomValue.doubleValue(), specification.minFocalLength, specification.maxFocalLength,
+                        specification.maxFocalLength, step, DJI2CameraStateAdapter.zoomRatiosResolved(zoomRatios));
+            } catch (final IllegalArgumentException e) {
+                Log.e(TAG, "Error initializing percent zoom specification: " + e.getMessage());
+            }
         }
         return null;
     }
