@@ -860,6 +860,9 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
         final Integer zoomValue = this.opticalZoomFocalLength;
         final CameraOpticalZoomSpec specification = this.opticalZoomSpecification;
         final int[] zoomRatios = this.zoomRatios;
+        Log.e("ZOOMTEST", "optical zoomValue: " + zoomValue);
+        Log.e("ZOOMTEST", "optical specification: " + specification);
+        Log.e("ZOOMTEST", "zoom ratios: " + zoomRatios);
         if (zoomValue != null && specification != null && zoomRatios != null) {
             try {
                 //Sometimes DJI SDK return a focal length step of 0 incorrectly, in those cases we hard code it to 10 so that a valid zoom specification is created.
