@@ -200,11 +200,8 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
     private boolean mechanicalShutterEnabled = false;
     private boolean dewarpingEnabled = false;
     private boolean isHybridZoomSupported = false;
-    private boolean isOpticalZoomSupported = false;
     private Integer hybridZoomFocalLength;
-    private Integer opticalZoomFocalLength;
     private CameraHybridZoomSpec hybridZoomSpecification;
-    private CameraOpticalZoomSpec opticalZoomSpecification;
     private int[] zoomRatios;
     private int[] thermalZoomRatios;
     private Double currentThermalZoomRatio;
@@ -413,11 +410,8 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
         listeners.init(createLensKey(CameraKey.KeyMechanicalShutterEnabled), (oldValue, newValue) -> mechanicalShutterEnabled = newValue != null && newValue);
         listeners.init(createLensKey(CameraKey.KeyDewarpingEnabled), (oldValue, newValue) -> dewarpingEnabled = newValue != null && newValue);
         listeners.init(createLensKey(CameraKey.KeyCameraHybridZoomSupported), (oldValue, newValue) -> isHybridZoomSupported = newValue != null && newValue);
-        listeners.init(createLensKey(CameraKey.KeyCameraOpticalZoomSupported), (oldValue, newValue) -> isOpticalZoomSupported = newValue != null && newValue);
         listeners.init(createLensKey(CameraKey.KeyCameraHybridZoomFocalLength), (oldValue, newValue) -> hybridZoomFocalLength = newValue);
-        listeners.init(createLensKey(CameraKey.KeyCameraOpticalZoomFocalLength), (oldValue, newValue) -> opticalZoomFocalLength = newValue);
         listeners.init(createLensKey(CameraKey.KeyCameraHybridZoomSpec), (oldValue, newValue) -> hybridZoomSpecification = newValue);
-        listeners.init(createLensKey(CameraKey.KeyCameraOpticalZoomSpec), (oldValue, newValue) -> opticalZoomSpecification = newValue);
         listeners.init(createLensKey(CameraKey.KeyThermalZoomRatios), (oldValue, newValue) -> currentThermalZoomRatio = newValue);
         listeners.init(createLensKey(CameraKey.KeyCameraZoomRatios), (oldValue, newValue) -> currentZoomRatio = newValue);
         listeners.init(createLensKey(CameraKey.KeyCameraZoomRatiosRange), (oldValue, newValue) -> {
