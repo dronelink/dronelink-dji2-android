@@ -95,7 +95,6 @@ import com.dronelink.dji2.DronelinkDJI2;
 import com.dronelink.dji2.R;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -105,6 +104,7 @@ import dji.sdk.keyvalue.key.DJIKeyInfo;
 import dji.sdk.keyvalue.key.KeyTools;
 import dji.sdk.keyvalue.value.camera.CameraExposureSettings;
 import dji.sdk.keyvalue.value.camera.CameraHybridZoomSpec;
+import dji.sdk.keyvalue.value.camera.CameraOpticalZoomSpec;
 import dji.sdk.keyvalue.value.camera.CameraVideoStreamSourceType;
 import dji.sdk.keyvalue.value.camera.CameraWhiteBalanceInfo;
 import dji.sdk.keyvalue.value.camera.CameraWhiteBalanceMode;
@@ -205,6 +205,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
     private int[] zoomRatios;
     private int[] thermalZoomRatios;
     private Double currentThermalZoomRatio;
+    private Double currentZoomRatio;
 
     public DJI2CameraStateAdapter(final Context context, final DJI2DroneAdapter drone, final ComponentIndexType index, final CameraLensType lensType) {
         this.context = context;
@@ -412,7 +413,9 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
         listeners.init(createLensKey(CameraKey.KeyCameraHybridZoomFocalLength), (oldValue, newValue) -> hybridZoomFocalLength = newValue);
         listeners.init(createLensKey(CameraKey.KeyCameraHybridZoomSpec), (oldValue, newValue) -> hybridZoomSpecification = newValue);
         listeners.init(createLensKey(CameraKey.KeyThermalZoomRatios), (oldValue, newValue) -> currentThermalZoomRatio = newValue);
-        listeners.init(createLensKey(CameraKey.KeyCameraZoomRatiosRange), (oldValue, newValue) -> {
+        listeners.init(createLensKey(CameraKey.KeyCameraZoomRatios), (oldValue, newValue) -> currentZoomRatio = newValue);
+        //can't use createLensKey because for some reason, DJI SDK doesn't return zoomRatios for CAMERA_LENS_ZOOM lens type
+        listeners.init(createKey(CameraKey.KeyCameraZoomRatiosRange), (oldValue, newValue) -> {
             if (newValue != null) {
                 zoomRatios = newValue.getGears();
             } else {
@@ -798,7 +801,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
 
     @Override
     public boolean isRatioZoomSupported() {
-        return lensType == CameraLensType.CAMERA_LENS_THERMAL;
+        return lensType == CameraLensType.CAMERA_LENS_THERMAL || (lensType == CameraLensType.CAMERA_LENS_ZOOM && !isHybridZoomSupported);
     }
 
     @Override
@@ -807,13 +810,14 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
     }
 
     public RatioZoomSpecification getRatioZoomSpecification() {
-        final Double currentThermalZoomRatio = this.currentThermalZoomRatio;
-        final int[] thermalZoomRatios = this.thermalZoomRatios;
-        if (!isRatioZoomSupported() || currentThermalZoomRatio == null || thermalZoomRatios == null) {
+        final Double currentZoomRatio = lensType == CameraLensType.CAMERA_LENS_THERMAL ? this.currentThermalZoomRatio : this.currentZoomRatio;
+        final int[] zoomRatios = lensType == CameraLensType.CAMERA_LENS_THERMAL ? this.thermalZoomRatios : this.zoomRatios;
+        if (!isRatioZoomSupported() || currentZoomRatio == null || zoomRatios == null) {
             return null;
         }
+
         try {
-           return new RatioZoomSpecification(currentThermalZoomRatio, DJI2CameraStateAdapter.zoomRatiosResolved(thermalZoomRatios));
+           return new RatioZoomSpecification(currentZoomRatio, DJI2CameraStateAdapter.zoomRatiosResolved(zoomRatios));
         } catch (final IllegalArgumentException e) {
             Log.e(TAG, "Error initializing ratio zoom spec: " + e.getMessage());
         }
@@ -839,6 +843,8 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
         return null;
     }
 
+    /*TODO: As of 7/19/23, We are on an older version of java API that does not allow streams for 1 liner conversion between int[] and double[]
+       so we have to do it the old fashioned way. Error is "Call requires API level 24 (current min is 21):"*/
     private static double[] zoomRatiosResolved(final int[] zoomRatios) {
         final double[] zoomRatiosResolved = new double[zoomRatios.length];
         for (int i = 0; i < zoomRatios.length; i++) {
@@ -1043,7 +1049,10 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
 
         if (command instanceof ZoomRatioCameraCommand) {
             final RatioZoomSpecification specification = getRatioZoomSpecification();
-            if (specification == null) {
+            final DJIKeyInfo<Double> cameraKey = lensType == CameraLensType.CAMERA_LENS_THERMAL ? CameraKey.KeyThermalZoomRatios
+                    : lensType == CameraLensType.CAMERA_LENS_ZOOM ? CameraKey.KeyCameraZoomRatios
+                    : null;
+            if (specification == null || cameraKey == null) {
                 return new CommandError(context.getString(R.string.MissionDisengageReason_command_type_unsupported_lens));
             }
             final double zoomRatio = ((ZoomRatioCameraCommand) command).zoomRatio;
@@ -1053,7 +1062,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
 
             Command.conditionallyExecute(Math.abs(specification.currentRatio - zoomRatio) >= 0.1,
                     finished, () -> KeyManager.getInstance().setValue(
-                    createLensKey(CameraKey.KeyThermalZoomRatios),
+                    createLensKey(cameraKey),
                     zoomRatio,
                     DronelinkDJI2.createCompletionCallback(finished)));
             return null;
