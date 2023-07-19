@@ -414,7 +414,8 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
         listeners.init(createLensKey(CameraKey.KeyCameraHybridZoomSpec), (oldValue, newValue) -> hybridZoomSpecification = newValue);
         listeners.init(createLensKey(CameraKey.KeyThermalZoomRatios), (oldValue, newValue) -> currentThermalZoomRatio = newValue);
         listeners.init(createLensKey(CameraKey.KeyCameraZoomRatios), (oldValue, newValue) -> currentZoomRatio = newValue);
-        listeners.init(createLensKey(CameraKey.KeyCameraZoomRatiosRange), (oldValue, newValue) -> {
+        //can't use createLensKey because for some reason, DJI SDK doesn't return zoomRatios for CAMERA_LENS_ZOOM lens type
+        listeners.init(createKey(CameraKey.KeyCameraZoomRatiosRange), (oldValue, newValue) -> {
             if (newValue != null) {
                 zoomRatios = newValue.getGears();
             } else {
