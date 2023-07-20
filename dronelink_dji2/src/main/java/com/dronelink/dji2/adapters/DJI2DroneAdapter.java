@@ -393,16 +393,15 @@ public class DJI2DroneAdapter implements DroneAdapter {
     }
 
     private boolean isYawControlModeAngleAvailable() {
-        return false;
         //TODO test M30 and M300 to see what is possible here
-//        switch (productType) {
-//            case DJI_MAVIC_3:
-//            case DJI_MAVIC_3_ENTERPRISE_SERIES:
-//                return false;
-//
-//            default:
-//                return true;
-//        }
+        switch (productType) {
+            case DJI_MINI_3:
+            case DJI_MINI_3_PRO:
+                return true;
+
+            default:
+                return false;
+        }
     }
 
     private void setVirtualStickFlightControlParamYaw(final VirtualStickFlightControlParam param, final double heading) {
