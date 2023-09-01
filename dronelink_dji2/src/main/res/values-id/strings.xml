@@ -190,4 +190,9 @@
     <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_LOST">OSDK Hilang</string>
     <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_NEAR_BOUNDARY">Dekat Batas</string>
     <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN">Tidak dikenal</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_title">ID jarak jauh</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_value_WORKING">Bekerja</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_value_OPERATOR_LOCATION_LOST_ERROR">Lokasi Hilang</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_value_FIRMWARE_ERROR">Kesalahan Firmware</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_value_UNKNOWN_ERROR">Kesalahan yang tidak diketahui</string>
 </resources>

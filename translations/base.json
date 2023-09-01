@@ -189,7 +189,12 @@
         "DronelinkDJI2_FlightControlAuthorityChangeReason_BATTERY_SUPER_LOW_LANDING": "Low Battery Landing",
         "DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_LOST": "OSDK Lost",
         "DronelinkDJI2_FlightControlAuthorityChangeReason_NEAR_BOUNDARY": "Near Boundary",
-        "DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN": "Unknown"
+        "DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN": "Unknown",
+        "DronelinkDJI2_RemoteIdWorkingState_title": "Remote ID",
+        "DronelinkDJI2_RemoteIdWorkingState_value_WORKING": "Working",
+        "DronelinkDJI2_RemoteIdWorkingState_value_OPERATOR_LOCATION_LOST_ERROR": "Location Lost",
+        "DronelinkDJI2_RemoteIdWorkingState_value_FIRMWARE_ERROR": "Firmware Error",
+        "DronelinkDJI2_RemoteIdWorkingState_value_UNKNOWN_ERROR": "Unknown Error"
     },
     "fr": {
         "MissionDisengageReason_drone_disconnected_title": "Drone déconnecté",
@@ -381,7 +386,12 @@
         "DronelinkDJI2_FlightControlAuthorityChangeReason_BATTERY_SUPER_LOW_LANDING": "Atterrissage à batterie faible",
         "DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_LOST": "OSDK perdu",
         "DronelinkDJI2_FlightControlAuthorityChangeReason_NEAR_BOUNDARY": "Près de la limite",
-        "DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN": "Inconnu"
+        "DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN": "Inconnu",
+        "DronelinkDJI2_RemoteIdWorkingState_title": "ID distant",
+        "DronelinkDJI2_RemoteIdWorkingState_value_WORKING": "Fonctionnement",
+        "DronelinkDJI2_RemoteIdWorkingState_value_OPERATOR_LOCATION_LOST_ERROR": "Emplacement perdu",
+        "DronelinkDJI2_RemoteIdWorkingState_value_FIRMWARE_ERROR": "Erreur du micrologiciel",
+        "DronelinkDJI2_RemoteIdWorkingState_value_UNKNOWN_ERROR": "Erreur inconnue"
     },
     "de": {
         "MissionDisengageReason_drone_disconnected_title": "Drohne getrennt",
@@ -573,7 +583,12 @@
         "DronelinkDJI2_FlightControlAuthorityChangeReason_BATTERY_SUPER_LOW_LANDING": "Landung bei schwacher Batterie",
         "DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_LOST": "OSDK verloren",
         "DronelinkDJI2_FlightControlAuthorityChangeReason_NEAR_BOUNDARY": "Nahe der Grenze",
-        "DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN": "Unbekannt"
+        "DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN": "Unbekannt",
+        "DronelinkDJI2_RemoteIdWorkingState_title": "Remote-ID",
+        "DronelinkDJI2_RemoteIdWorkingState_value_WORKING": "Arbeiten",
+        "DronelinkDJI2_RemoteIdWorkingState_value_OPERATOR_LOCATION_LOST_ERROR": "Standort verloren",
+        "DronelinkDJI2_RemoteIdWorkingState_value_FIRMWARE_ERROR": "Firmware-Fehler",
+        "DronelinkDJI2_RemoteIdWorkingState_value_UNKNOWN_ERROR": "Unbekannter Fehler"
     },
     "it": {
         "MissionDisengageReason_drone_disconnected_title": "Drone disconnesso",
@@ -765,7 +780,12 @@
         "DronelinkDJI2_FlightControlAuthorityChangeReason_BATTERY_SUPER_LOW_LANDING": "Atterraggio con batteria scarica",
         "DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_LOST": "OSDK perso",
         "DronelinkDJI2_FlightControlAuthorityChangeReason_NEAR_BOUNDARY": "Vicino al confine",
-        "DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN": "Sconosciuto"
+        "DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN": "Sconosciuto",
+        "DronelinkDJI2_RemoteIdWorkingState_title": "Identificazione remota",
+        "DronelinkDJI2_RemoteIdWorkingState_value_WORKING": "Lavorando",
+        "DronelinkDJI2_RemoteIdWorkingState_value_OPERATOR_LOCATION_LOST_ERROR": "Posizione perduta",
+        "DronelinkDJI2_RemoteIdWorkingState_value_FIRMWARE_ERROR": "Errore firmware",
+        "DronelinkDJI2_RemoteIdWorkingState_value_UNKNOWN_ERROR": "Errore sconosciuto"
     },
     "pt": {
         "MissionDisengageReason_drone_disconnected_title": "drone desconectado",
@@ -957,7 +977,12 @@
         "DronelinkDJI2_FlightControlAuthorityChangeReason_BATTERY_SUPER_LOW_LANDING": "Pouso de bateria fraca",
         "DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_LOST": "OSDK perdido",
         "DronelinkDJI2_FlightControlAuthorityChangeReason_NEAR_BOUNDARY": "Perto do limite",
-        "DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN": "Desconhecido"
+        "DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN": "Desconhecido",
+        "DronelinkDJI2_RemoteIdWorkingState_title": "ID remoto",
+        "DronelinkDJI2_RemoteIdWorkingState_value_WORKING": "Trabalhando",
+        "DronelinkDJI2_RemoteIdWorkingState_value_OPERATOR_LOCATION_LOST_ERROR": "Localização perdida",
+        "DronelinkDJI2_RemoteIdWorkingState_value_FIRMWARE_ERROR": "Erro de firmware",
+        "DronelinkDJI2_RemoteIdWorkingState_value_UNKNOWN_ERROR": "Erro desconhecido"
     },
     "es": {
         "MissionDisengageReason_drone_disconnected_title": "Dron desconectado",
@@ -1149,7 +1174,12 @@
         "DronelinkDJI2_FlightControlAuthorityChangeReason_BATTERY_SUPER_LOW_LANDING": "Aterrizaje con batería baja",
         "DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_LOST": "OSDK perdido",
         "DronelinkDJI2_FlightControlAuthorityChangeReason_NEAR_BOUNDARY": "Cerca del límite",
-        "DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN": "Desconocido"
+        "DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN": "Desconocido",
+        "DronelinkDJI2_RemoteIdWorkingState_title": "Identificación remota",
+        "DronelinkDJI2_RemoteIdWorkingState_value_WORKING": "Laboral",
+        "DronelinkDJI2_RemoteIdWorkingState_value_OPERATOR_LOCATION_LOST_ERROR": "Ubicación perdida",
+        "DronelinkDJI2_RemoteIdWorkingState_value_FIRMWARE_ERROR": "Error de firmware",
+        "DronelinkDJI2_RemoteIdWorkingState_value_UNKNOWN_ERROR": "Error desconocido"
     },
     "hi": {
         "MissionDisengageReason_drone_disconnected_title": "ड्रोन डिस्कनेक्ट हो गया",
@@ -1341,7 +1371,12 @@
         "DronelinkDJI2_FlightControlAuthorityChangeReason_BATTERY_SUPER_LOW_LANDING": "कम बैटरी लैंडिंग",
         "DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_LOST": "ओएसडीके खो गया",
         "DronelinkDJI2_FlightControlAuthorityChangeReason_NEAR_BOUNDARY": "सीमा के पास",
-        "DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN": "अज्ञात"
+        "DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN": "अज्ञात",
+        "DronelinkDJI2_RemoteIdWorkingState_title": "रिमोट आईडी",
+        "DronelinkDJI2_RemoteIdWorkingState_value_WORKING": "कार्यरत",
+        "DronelinkDJI2_RemoteIdWorkingState_value_OPERATOR_LOCATION_LOST_ERROR": "स्थान खो गया",
+        "DronelinkDJI2_RemoteIdWorkingState_value_FIRMWARE_ERROR": "फ़र्मवेयर त्रुटि",
+        "DronelinkDJI2_RemoteIdWorkingState_value_UNKNOWN_ERROR": "अज्ञात त्रुटि"
     },
     "id": {
         "MissionDisengageReason_drone_disconnected_title": "Drone Terputus",
@@ -1533,7 +1568,12 @@
         "DronelinkDJI2_FlightControlAuthorityChangeReason_BATTERY_SUPER_LOW_LANDING": "Pendaratan Baterai Rendah",
         "DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_LOST": "OSDK Hilang",
         "DronelinkDJI2_FlightControlAuthorityChangeReason_NEAR_BOUNDARY": "Dekat Batas",
-        "DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN": "Tidak dikenal"
+        "DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN": "Tidak dikenal",
+        "DronelinkDJI2_RemoteIdWorkingState_title": "ID jarak jauh",
+        "DronelinkDJI2_RemoteIdWorkingState_value_WORKING": "Bekerja",
+        "DronelinkDJI2_RemoteIdWorkingState_value_OPERATOR_LOCATION_LOST_ERROR": "Lokasi Hilang",
+        "DronelinkDJI2_RemoteIdWorkingState_value_FIRMWARE_ERROR": "Kesalahan Firmware",
+        "DronelinkDJI2_RemoteIdWorkingState_value_UNKNOWN_ERROR": "Kesalahan yang tidak diketahui"
     },
     "pl": {
         "MissionDisengageReason_drone_disconnected_title": "Dron odłączony",
@@ -1725,7 +1765,12 @@
         "DronelinkDJI2_FlightControlAuthorityChangeReason_BATTERY_SUPER_LOW_LANDING": "Lądowanie przy niskim poziomie naładowania baterii",
         "DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_LOST": "OSDK utracone",
         "DronelinkDJI2_FlightControlAuthorityChangeReason_NEAR_BOUNDARY": "W pobliżu granicy",
-        "DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN": "Nieznany"
+        "DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN": "Nieznany",
+        "DronelinkDJI2_RemoteIdWorkingState_title": "Zdalny identyfikator",
+        "DronelinkDJI2_RemoteIdWorkingState_value_WORKING": "Pracujący",
+        "DronelinkDJI2_RemoteIdWorkingState_value_OPERATOR_LOCATION_LOST_ERROR": "Lokalizacja utracona",
+        "DronelinkDJI2_RemoteIdWorkingState_value_FIRMWARE_ERROR": "Błąd oprogramowania",
+        "DronelinkDJI2_RemoteIdWorkingState_value_UNKNOWN_ERROR": "Nieznany błąd"
     },
     "ro": {
         "MissionDisengageReason_drone_disconnected_title": "Dronă deconectată",
@@ -1917,7 +1962,12 @@
         "DronelinkDJI2_FlightControlAuthorityChangeReason_BATTERY_SUPER_LOW_LANDING": "Aterizare cu baterie scăzută",
         "DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_LOST": "OSDK pierdut",
         "DronelinkDJI2_FlightControlAuthorityChangeReason_NEAR_BOUNDARY": "Aproape de Graniță",
-        "DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN": "Necunoscut"
+        "DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN": "Necunoscut",
+        "DronelinkDJI2_RemoteIdWorkingState_title": "ID de la distanță",
+        "DronelinkDJI2_RemoteIdWorkingState_value_WORKING": "Lucru",
+        "DronelinkDJI2_RemoteIdWorkingState_value_OPERATOR_LOCATION_LOST_ERROR": "Locație pierdută",
+        "DronelinkDJI2_RemoteIdWorkingState_value_FIRMWARE_ERROR": "Eroare de firmware",
+        "DronelinkDJI2_RemoteIdWorkingState_value_UNKNOWN_ERROR": "Eroare necunoscută"
     },
     "ru": {
         "MissionDisengageReason_drone_disconnected_title": "Дрон отключен",
@@ -2109,7 +2159,12 @@
         "DronelinkDJI2_FlightControlAuthorityChangeReason_BATTERY_SUPER_LOW_LANDING": "Посадка с низким зарядом батареи",
         "DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_LOST": "OSDK потерян",
         "DronelinkDJI2_FlightControlAuthorityChangeReason_NEAR_BOUNDARY": "Рядом с границей",
-        "DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN": "Неизвестный"
+        "DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN": "Неизвестный",
+        "DronelinkDJI2_RemoteIdWorkingState_title": "Удаленный идентификатор",
+        "DronelinkDJI2_RemoteIdWorkingState_value_WORKING": "Работающий",
+        "DronelinkDJI2_RemoteIdWorkingState_value_OPERATOR_LOCATION_LOST_ERROR": "Местоположение потеряно",
+        "DronelinkDJI2_RemoteIdWorkingState_value_FIRMWARE_ERROR": "Ошибка прошивки",
+        "DronelinkDJI2_RemoteIdWorkingState_value_UNKNOWN_ERROR": "Неизвестная ошибка"
     },
     "sv": {
         "MissionDisengageReason_drone_disconnected_title": "Drönare frånkopplad",
@@ -2301,7 +2356,12 @@
         "DronelinkDJI2_FlightControlAuthorityChangeReason_BATTERY_SUPER_LOW_LANDING": "Lågt batteri landning",
         "DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_LOST": "OSDK förlorat",
         "DronelinkDJI2_FlightControlAuthorityChangeReason_NEAR_BOUNDARY": "Nära gränsen",
-        "DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN": "Okänd"
+        "DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN": "Okänd",
+        "DronelinkDJI2_RemoteIdWorkingState_title": "Fjärr-ID",
+        "DronelinkDJI2_RemoteIdWorkingState_value_WORKING": "Arbetssätt",
+        "DronelinkDJI2_RemoteIdWorkingState_value_OPERATOR_LOCATION_LOST_ERROR": "Plats förlorat",
+        "DronelinkDJI2_RemoteIdWorkingState_value_FIRMWARE_ERROR": "Firmware-fel",
+        "DronelinkDJI2_RemoteIdWorkingState_value_UNKNOWN_ERROR": "Okänt fel"
     },
     "ur": {
         "MissionDisengageReason_drone_disconnected_title": "ڈرون کا رابطہ منقطع ہو گیا۔",
@@ -2493,6 +2553,11 @@
         "DronelinkDJI2_FlightControlAuthorityChangeReason_BATTERY_SUPER_LOW_LANDING": "کم بیٹری لینڈنگ",
         "DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_LOST": "OSDK کھو گیا۔",
         "DronelinkDJI2_FlightControlAuthorityChangeReason_NEAR_BOUNDARY": "باؤنڈری کے قریب",
-        "DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN": "نامعلوم"
+        "DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN": "نامعلوم",
+        "DronelinkDJI2_RemoteIdWorkingState_title": "ریموٹ ID",
+        "DronelinkDJI2_RemoteIdWorkingState_value_WORKING": "کام کرنا",
+        "DronelinkDJI2_RemoteIdWorkingState_value_OPERATOR_LOCATION_LOST_ERROR": "مقام کھو گیا۔",
+        "DronelinkDJI2_RemoteIdWorkingState_value_FIRMWARE_ERROR": "فرم ویئر کی خرابی۔",
+        "DronelinkDJI2_RemoteIdWorkingState_value_UNKNOWN_ERROR": "نامعلوم خامی"
     }
 }

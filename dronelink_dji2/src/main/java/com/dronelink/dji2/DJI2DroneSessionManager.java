@@ -32,6 +32,9 @@ import dji.v5.common.error.IDJIError;
 import dji.v5.common.register.DJISDKInitEvent;
 import dji.v5.manager.KeyManager;
 import dji.v5.manager.SDKManager;
+import dji.v5.manager.aircraft.uas.UASRemoteIDManager;
+import dji.v5.manager.aircraft.uas.UASRemoteIDStatus;
+import dji.v5.manager.aircraft.uas.UASRemoteIDStatusListener;
 import dji.v5.manager.interfaces.SDKManagerCallback;
 
 public class DJI2DroneSessionManager implements DroneSessionManager {
@@ -43,16 +46,11 @@ public class DJI2DroneSessionManager implements DroneSessionManager {
     private DJISDKInitEvent initEvent;
     private Boolean registered;
     private IDJIError registerError;
-    private final List<Listener> listeners = new LinkedList<>();
+    private UASRemoteIDStatus uasRemoteIDStatus;
 
+    private final List<Listener> listeners = new LinkedList<>();
     public DJI2DroneSessionManager(final Context context) {
         this.context = context;
-
-        initAppActivationManagerStateListener(0);
-    }
-
-    private void initAppActivationManagerStateListener(final int attempt) {
-        SDKManager.getInstance().registerApp();
     }
 
     @Override
@@ -121,6 +119,14 @@ public class DJI2DroneSessionManager implements DroneSessionManager {
             }
         }
 
+        final UASRemoteIDStatus uasRemoteIDStatus = this.uasRemoteIDStatus;
+        if (uasRemoteIDStatus != null) {
+            final Message status = DronelinkDJI2.getMessage(context, uasRemoteIDStatus);
+            if (status != null) {
+                messages.add(status);
+            }
+        }
+
         return messages;
     }
 
@@ -154,6 +160,10 @@ public class DJI2DroneSessionManager implements DroneSessionManager {
                                 }
                             }
                         }
+                    });
+
+                    UASRemoteIDManager.getInstance().addUASRemoteIDStatusListener(status -> {
+                        uasRemoteIDStatus = status;
                     });
                 }
 

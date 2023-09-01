@@ -97,6 +97,7 @@ import dji.sdk.keyvalue.value.rtkmobilestation.RTKError;
 import dji.sdk.keyvalue.value.rtkmobilestation.RTKPositioningSolution;
 import dji.v5.common.callback.CommonCallbacks;
 import dji.v5.common.error.IDJIError;
+import dji.v5.manager.aircraft.uas.UASRemoteIDStatus;
 import dji.v5.manager.aircraft.waypoint3.model.WaypointMissionExecuteState;
 import dji.v5.manager.diagnostic.DJIDeviceStatus;
 
@@ -3448,5 +3449,36 @@ public class DronelinkDJI2 {
             }
         }
         return RTKServiceState.UNKNOWN;
+    }
+
+    public static Message getMessage(final Context context, final @Nullable UASRemoteIDStatus value) {
+        if (value != null) {
+            String details = null;
+            Message.Level level = null;
+
+            switch (value.getRemoteIdWorkingState()) {
+                case IDLE:
+                case WORKING:
+                    return null;
+
+                case OPERATOR_LOCATION_LOST_ERROR:
+                    details = context.getString(R.string.DronelinkDJI2_RemoteIdWorkingState_value_OPERATOR_LOCATION_LOST_ERROR);
+                    level = Message.Level.WARNING;
+                    break;
+
+                case FIRMWARE_ERROR:
+                    details = context.getString(R.string.DronelinkDJI2_RemoteIdWorkingState_value_FIRMWARE_ERROR);
+                    level = Message.Level.ERROR;
+                    break;
+
+                case UNKNOWN_ERROR:
+                    details = context.getString(R.string.DronelinkDJI2_RemoteIdWorkingState_value_UNKNOWN_ERROR);
+                    level = Message.Level.ERROR;
+                    break;
+            }
+
+            return new Message(context.getString(R.string.DronelinkDJI2_RemoteIdWorkingState_title), details, level);
+        }
+        return null;
     }
 }

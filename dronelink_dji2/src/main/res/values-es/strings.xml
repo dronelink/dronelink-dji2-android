@@ -190,4 +190,9 @@
     <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_LOST">OSDK perdido</string>
     <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_NEAR_BOUNDARY">Cerca del límite</string>
     <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN">Desconocido</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_title">Identificación remota</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_value_WORKING">Laboral</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_value_OPERATOR_LOCATION_LOST_ERROR">Ubicación perdida</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_value_FIRMWARE_ERROR">Error de firmware</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_value_UNKNOWN_ERROR">Error desconocido</string>
 </resources>

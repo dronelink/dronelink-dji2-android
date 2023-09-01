@@ -190,4 +190,9 @@
     <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_LOST">OSDK Lost</string>
     <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_NEAR_BOUNDARY">Near Boundary</string>
     <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN">Unknown</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_title">Remote ID</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_value_WORKING">Working</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_value_OPERATOR_LOCATION_LOST_ERROR">Location Lost</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_value_FIRMWARE_ERROR">Firmware Error</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_value_UNKNOWN_ERROR">Unknown Error</string>
 </resources>

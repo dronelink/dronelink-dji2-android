@@ -190,4 +190,9 @@
     <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_LOST">OSDK کھو گیا۔</string>
     <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_NEAR_BOUNDARY">باؤنڈری کے قریب</string>
     <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN">نامعلوم</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_title">ریموٹ ID</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_value_WORKING">کام کرنا</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_value_OPERATOR_LOCATION_LOST_ERROR">مقام کھو گیا۔</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_value_FIRMWARE_ERROR">فرم ویئر کی خرابی۔</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_value_UNKNOWN_ERROR">نامعلوم خامی</string>
 </resources>

@@ -190,4 +190,9 @@
     <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_LOST">ओएसडीके खो गया</string>
     <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_NEAR_BOUNDARY">सीमा के पास</string>
     <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN">अज्ञात</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_title">रिमोट आईडी</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_value_WORKING">कार्यरत</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_value_OPERATOR_LOCATION_LOST_ERROR">स्थान खो गया</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_value_FIRMWARE_ERROR">फ़र्मवेयर त्रुटि</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_value_UNKNOWN_ERROR">अज्ञात त्रुटि</string>
 </resources>

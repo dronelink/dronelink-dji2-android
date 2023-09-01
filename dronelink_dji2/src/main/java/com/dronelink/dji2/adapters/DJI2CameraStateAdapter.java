@@ -108,6 +108,7 @@ import dji.sdk.keyvalue.value.camera.CameraOpticalZoomSpec;
 import dji.sdk.keyvalue.value.camera.CameraVideoStreamSourceType;
 import dji.sdk.keyvalue.value.camera.CameraWhiteBalanceInfo;
 import dji.sdk.keyvalue.value.camera.CameraWhiteBalanceMode;
+import dji.sdk.keyvalue.value.camera.CustomExpandNameSettings;
 import dji.sdk.keyvalue.value.camera.PhotoAEBExposureOffset;
 import dji.sdk.keyvalue.value.camera.PhotoAEBSettings;
 import dji.sdk.keyvalue.value.camera.PhotoBurstCount;

@@ -190,4 +190,9 @@
     <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_OSDK_LOST">OSDK förlorat</string>
     <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_NEAR_BOUNDARY">Nära gränsen</string>
     <string name="DronelinkDJI2_FlightControlAuthorityChangeReason_UNKNOWN">Okänd</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_title">Fjärr-ID</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_value_WORKING">Arbetssätt</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_value_OPERATOR_LOCATION_LOST_ERROR">Plats förlorat</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_value_FIRMWARE_ERROR">Firmware-fel</string>
+    <string name="DronelinkDJI2_RemoteIdWorkingState_value_UNKNOWN_ERROR">Okänt fel</string>
 </resources>
