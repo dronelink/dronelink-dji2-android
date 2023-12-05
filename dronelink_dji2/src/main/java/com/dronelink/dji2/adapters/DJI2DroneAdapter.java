@@ -66,7 +66,6 @@ import com.dronelink.core.kernel.core.GeoCoordinate;
 import com.dronelink.core.kernel.core.Message;
 import com.dronelink.core.kernel.core.Orientation3;
 import com.dronelink.core.kernel.core.Vector2;
-import com.dronelink.core.kernel.core.enums.DroneAuxiliaryLightMode;
 import com.dronelink.core.kernel.core.enums.DroneOcuSyncFrequencyBand;
 import com.dronelink.core.kernel.core.enums.GimbalMode;
 import com.dronelink.dji2.DJI2CameraFile;
@@ -105,8 +104,6 @@ import dji.v5.manager.aircraft.virtualstick.VirtualStickRange;
 import dji.v5.manager.datacenter.MediaDataCenter;
 import dji.v5.manager.datacenter.livestream.LiveStreamSettings;
 import dji.v5.manager.datacenter.livestream.LiveStreamType;
-import dji.v5.manager.datacenter.livestream.LiveVideoBitrateMode;
-import dji.v5.manager.datacenter.livestream.StreamQuality;
 import dji.v5.manager.datacenter.livestream.settings.RtmpSettings;
 
 public class DJI2DroneAdapter implements DroneAdapter {
@@ -393,15 +390,7 @@ public class DJI2DroneAdapter implements DroneAdapter {
     }
 
     private boolean isYawControlModeAngleAvailable() {
-        //TODO test M30 and M300 to see what is possible here
-        switch (productType) {
-            case DJI_MINI_3:
-            case DJI_MINI_3_PRO:
-                return true;
-
-            default:
-                return false;
-        }
+        return false;
     }
 
     private void setVirtualStickFlightControlParamYaw(final VirtualStickFlightControlParam param, final double heading) {

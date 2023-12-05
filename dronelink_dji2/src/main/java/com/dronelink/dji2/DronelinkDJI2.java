@@ -99,6 +99,7 @@ import dji.v5.common.callback.CommonCallbacks;
 import dji.v5.common.error.IDJIError;
 import dji.v5.manager.aircraft.uas.UASRemoteIDStatus;
 import dji.v5.manager.aircraft.waypoint3.model.WaypointMissionExecuteState;
+import dji.v5.manager.diagnostic.DJIDeviceHealthInfo;
 import dji.v5.manager.diagnostic.DJIDeviceStatus;
 
 public class DronelinkDJI2 {
@@ -354,6 +355,44 @@ public class DronelinkDJI2 {
             if (level != null) {
                 return new Message(value.description(), level);
             }
+        }
+        return null;
+    }
+
+    public static List<Message> getMessages(final @Nullable List<DJIDeviceHealthInfo> value) {
+        if (value != null) {
+            final List<Message> messages = new ArrayList<>();
+            for (final DJIDeviceHealthInfo healthInfo : value) {
+                Message.Level level = null;
+                switch (healthInfo.warningLevel()) {
+                    case NOTICE:
+                        level = Message.Level.INFO;
+                        break;
+
+                    case CAUTION:
+                    case WARNING:
+                        level = Message.Level.WARNING;
+                        break;
+
+                    case SERIOUS_WARNING:
+                        level = Message.Level.DANGER;
+                        break;
+
+                    case NORMAL:
+                    case UNKNOWN:
+                        break;
+                }
+
+                if (level != null) {
+                    final Message message = new Message(healthInfo.title(), healthInfo.description(), level);
+                    if (message.title == null || message.title.isEmpty()) {
+                        message.title = message.details;
+                        message.details = "";
+                    }
+                    messages.add(message);
+                }
+            }
+            return messages;
         }
         return null;
     }

@@ -44,7 +44,7 @@ public class DJI2CameraFile implements CameraFile {
 
     @Override
     public CameraLensType getLensType() {
-        return DronelinkDJI2.getCameraLensType(generatedMediaFileInfo.dcf_type);
+        return DronelinkDJI2.getCameraLensType(generatedMediaFileInfo.getDcf_type());
     }
 
     @SuppressLint("DefaultLocale")
@@ -133,7 +133,7 @@ public class DJI2CameraFile implements CameraFile {
 
     @Override
     public long getSize() {
-        return mediaFile == null ? generatedMediaFileInfo.FileSize : mediaFile.getFileSize();
+        return mediaFile == null ? generatedMediaFileInfo.getFileSize() : mediaFile.getFileSize();
     }
 
     @Override

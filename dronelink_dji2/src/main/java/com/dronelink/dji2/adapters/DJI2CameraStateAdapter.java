@@ -494,7 +494,8 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
                 || isShootingSinglePhoto
                 || isShootingSinglePhotoInRAWFormat
                 || isShootingSuperResolutionPhoto
-                || isShootingVisionBokehPhoto;
+                || isShootingVisionBokehPhoto
+                || isCapturingContinuous();
     }
 
     @Override

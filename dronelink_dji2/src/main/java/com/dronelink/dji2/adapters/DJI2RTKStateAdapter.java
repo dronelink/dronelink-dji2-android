@@ -23,7 +23,6 @@ import java.util.Date;
 import java.util.List;
 
 import dji.sdk.keyvalue.value.common.LocationCoordinate3D;
-import dji.sdk.keyvalue.value.rtkmobilestation.RTKLocation;
 import dji.sdk.keyvalue.value.rtkmobilestation.RTKPositioningSolution;
 import dji.v5.common.error.IDJIError;
 import dji.v5.manager.aircraft.rtk.RTKCenter;
@@ -164,7 +163,6 @@ public class DJI2RTKStateAdapter implements RTKStateAdapter, RTKSystemStateListe
 
         return messages;
     }
-
     @Override
     public void onErrorCodeUpdate(final IDJIError code) {
         this.customNetworkError = code;
