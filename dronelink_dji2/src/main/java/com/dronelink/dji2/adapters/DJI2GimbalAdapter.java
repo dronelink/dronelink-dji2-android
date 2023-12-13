@@ -117,7 +117,6 @@ public class DJI2GimbalAdapter implements GimbalAdapter {
         final GimbalAngleRotation rotation = new GimbalAngleRotation();
         rotation.setDuration(DronelinkDJI2.GimbalRotationMinTime);
         rotation.setMode(GimbalAngleRotationMode.ABSOLUTE_ANGLE);
-        rotation.setPitch(-12.0);
         rotation.setRoll(0.0);
         if (isYawAdjustSupported && state.getMode() != GimbalMode.YAW_FOLLOW) {
             KeyManager.getInstance().setValue(createKey(GimbalKey.KeyGimbalMode), dji.sdk.keyvalue.value.gimbal.GimbalMode.YAW_FOLLOW, null);
