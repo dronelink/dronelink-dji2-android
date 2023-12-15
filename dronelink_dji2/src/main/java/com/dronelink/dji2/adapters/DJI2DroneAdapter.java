@@ -701,7 +701,21 @@ public class DJI2DroneAdapter implements DroneAdapter {
             return null;
         }
 
+        if (command instanceof UpwardsAvoidanceDroneCommand) {
+            final boolean target = ((UpwardsAvoidanceDroneCommand) command).enabled;
+            Command.conditionallyExecute(target != state.upwardsAvoidanceEnabled, finished, () -> KeyManager.getInstance().setValue(
+                    KeyTools.createKey(FlightAssistantKey.KeyOmniUpwardsObstacleAvoidanceEnabled),
+                    target,
+                    DronelinkDJI2.createCompletionCallback(finished)));
+            return null;
+        }
+
         if (command instanceof DownwardAvoidanceDroneCommand) {
+            final boolean target = ((DownwardAvoidanceDroneCommand) command).enabled;
+            Command.conditionallyExecute(target != state.down, finished, () -> KeyManager.getInstance().setValue(
+                    KeyTools.createKey(FlightAssistantKey.KeyOmniDownwardsObstacleAvoidanceEnabled),
+                    target,
+                    DronelinkDJI2.createCompletionCallback(finished)));
             //KeyDownwardsAvoidanceEnable doesn't work, and KeyOmniDownwardsObstacleAvoidanceEnabled does not exist?
         }
 
@@ -734,15 +748,6 @@ public class DJI2DroneAdapter implements DroneAdapter {
 
         if (command instanceof ReturnHomeRemoteObstacleAvoidanceDroneCommand) {
             //TODO
-        }
-
-        if (command instanceof UpwardsAvoidanceDroneCommand) {
-            final boolean target = ((UpwardsAvoidanceDroneCommand) command).enabled;
-            Command.conditionallyExecute(target != state.upwardsAvoidanceEnabled, finished, () -> KeyManager.getInstance().setValue(
-                    KeyTools.createKey(FlightAssistantKey.KeyOmniUpwardsObstacleAvoidanceEnabled),
-                    target,
-                    DronelinkDJI2.createCompletionCallback(finished)));
-            return null;
         }
 
         if (command instanceof VisionAssistedPositioningDroneCommand) {
