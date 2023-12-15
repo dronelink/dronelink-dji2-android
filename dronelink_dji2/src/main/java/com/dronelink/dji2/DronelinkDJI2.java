@@ -47,6 +47,8 @@ import com.dronelink.core.kernel.core.enums.CameraVideoStreamSource;
 import com.dronelink.core.kernel.core.enums.CameraWhiteBalancePreset;
 import com.dronelink.core.kernel.core.enums.DroneAuxiliaryLightMode;
 import com.dronelink.core.kernel.core.enums.DroneConnectionFailSafeBehavior;
+import com.dronelink.core.kernel.core.enums.DroneObstacleAvoidanceDirection;
+import com.dronelink.core.kernel.core.enums.DroneObstacleAvoidanceMode;
 import com.dronelink.core.kernel.core.enums.DroneOcuSyncChannelSelectionMode;
 import com.dronelink.core.kernel.core.enums.DroneOcuSyncFrequencyBand;
 import com.dronelink.core.kernel.core.enums.RTKReferenceStationSource;
@@ -97,6 +99,8 @@ import dji.sdk.keyvalue.value.rtkmobilestation.RTKError;
 import dji.sdk.keyvalue.value.rtkmobilestation.RTKPositioningSolution;
 import dji.v5.common.callback.CommonCallbacks;
 import dji.v5.common.error.IDJIError;
+import dji.v5.manager.aircraft.perception.data.ObstacleAvoidanceType;
+import dji.v5.manager.aircraft.perception.data.PerceptionDirection;
 import dji.v5.manager.aircraft.uas.UASRemoteIDStatus;
 import dji.v5.manager.aircraft.waypoint3.model.WaypointMissionExecuteState;
 import dji.v5.manager.diagnostic.DJIDeviceHealthInfo;
@@ -3073,6 +3077,48 @@ public class DronelinkDJI2 {
             }
         }
         return CameraVideoStreamSourceType.UNKNOWN;
+    }
+
+    public static DroneObstacleAvoidanceMode getDroneObstacleAvoidanceMode(final @Nullable ObstacleAvoidanceType value) {
+        if (value != null) {
+            switch (value) {
+                case BRAKE:
+                    return DroneObstacleAvoidanceMode.BRAKE;
+                case BYPASS:
+                    return DroneObstacleAvoidanceMode.AVOID;
+                case CLOSE:
+                    return DroneObstacleAvoidanceMode.OFF;
+            }
+        }
+        return DroneObstacleAvoidanceMode.OFF;
+    }
+
+    public static ObstacleAvoidanceType getDroneObstacleAvoidanceMode(final @Nullable DroneObstacleAvoidanceMode value) {
+        if (value != null) {
+            switch (value) {
+                case BRAKE:
+                    return ObstacleAvoidanceType.BRAKE;
+                case AVOID:
+                    return ObstacleAvoidanceType.BYPASS;
+                case OFF:
+                    return ObstacleAvoidanceType.CLOSE;
+            }
+        }
+        return ObstacleAvoidanceType.CLOSE;
+    }
+
+    public static PerceptionDirection getDroneObstacleAvoidanceDirection(final @Nullable DroneObstacleAvoidanceDirection value) {
+        if (value != null) {
+            switch (value) {
+                case HORIZONTAL:
+                    return PerceptionDirection.HORIZONTAL;
+                case UPWARD:
+                    return PerceptionDirection.UPWARD;
+                case DOWNWARD:
+                    return PerceptionDirection.DOWNWARD;
+            }
+        }
+        return PerceptionDirection.HORIZONTAL;
     }
 
     public static FailsafeAction getDroneConnectionFailSafeBehavior(final @Nullable DroneConnectionFailSafeBehavior value) {
