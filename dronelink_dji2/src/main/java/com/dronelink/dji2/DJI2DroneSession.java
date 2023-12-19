@@ -89,6 +89,7 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
     public boolean isClosed() {
         return closed;
     }
+    private boolean sessionReturnHomeIssued = false;
 
     private final List<Listener> listeners = new LinkedList<>();
     private final ExecutorService listenerExecutor = Executors.newSingleThreadExecutor();
@@ -183,6 +184,19 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
                                         KeyManager.getInstance().performAction(djiGimbalAdapter.createKey(GimbalKey.KeyRotateBySpeed), speedRotation, null);
                                     }
                                 }
+                            }
+                            //Sometimes the DJI SDK does not automatically issue a RTH on low battery.
+                            //If the battery drops a few percentage below the threshold and is still engaged, manually issue the RTH
+                            if (!sessionReturnHomeIssued && droneAdapter.state.getBatteryPercent() <= droneAdapter.state.getLowBatteryThreshold() - 2) {
+                                droneAdapter.startReturnHome(new Command.Finisher() {
+                                    @Override
+                                    public void execute(CommandError error) {
+                                        if (error != null) {
+                                            Log.e(TAG, "Failed to start RTH: " + error.description);
+                                        }
+                                    }
+                                });
+                                sessionReturnHomeIssued = true;
                             }
                         }
 
