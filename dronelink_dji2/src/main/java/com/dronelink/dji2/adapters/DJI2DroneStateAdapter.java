@@ -8,19 +8,18 @@ package com.dronelink.dji2.adapters;
 
 import android.content.Context;
 import android.location.Location;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.dronelink.core.Convert;
 import com.dronelink.core.DatedValue;
 import com.dronelink.core.adapters.DroneStateAdapter;
+import com.dronelink.core.kernel.core.DroneObstacleAvoidanceSpecification;
 import com.dronelink.core.kernel.core.Message;
 import com.dronelink.core.kernel.core.Orientation3;
 import com.dronelink.core.kernel.core.enums.DroneAuxiliaryLightMode;
 import com.dronelink.core.kernel.core.enums.DroneLightbridgeFrequencyBand;
 import com.dronelink.core.kernel.core.enums.DroneObstacleAvoidanceDirection;
-import com.dronelink.core.kernel.core.enums.DroneObstacleAvoidanceMode;
 import com.dronelink.core.kernel.core.enums.DroneOcuSyncFrequencyBand;
 import com.dronelink.dji2.DJI2ListenerGroup;
 import com.dronelink.dji2.DronelinkDJI2;
@@ -28,6 +27,7 @@ import com.dronelink.dji2.R;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import dji.sdk.keyvalue.key.AirLinkKey;
@@ -50,12 +50,9 @@ import dji.sdk.keyvalue.value.flightcontroller.FlightMode;
 import dji.sdk.keyvalue.value.flightcontroller.GPSSignalLevel;
 import dji.sdk.keyvalue.value.flightcontroller.GoHomeState;
 import dji.sdk.keyvalue.value.flightcontroller.WindWarning;
-import dji.v5.common.callback.CommonCallbacks;
-import dji.v5.common.error.IDJIError;
 import dji.v5.manager.aircraft.perception.PerceptionManager;
 import dji.v5.manager.aircraft.perception.data.ObstacleAvoidanceType;
 import dji.v5.manager.aircraft.perception.data.ObstacleData;
-import dji.v5.manager.aircraft.perception.data.PerceptionDirection;
 import dji.v5.manager.aircraft.perception.data.PerceptionInfo;
 import dji.v5.manager.aircraft.perception.listener.ObstacleDataListener;
 import dji.v5.manager.aircraft.perception.listener.PerceptionInformationListener;
@@ -114,19 +111,19 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, PerceptionInfor
     private AirSenseSystemInformation airSenseSystemInformation;
     public FailsafeAction failSafeAction;
     private ObstacleData obstacleData;
-    public ObstacleAvoidanceType obstacleAvoidanceType;
-    public boolean horizontalAvoidanceEnabled = false;
-    public boolean upwardsAvoidanceEnabled = false;
-    public boolean downwardsAvoidanceEnabled = false;
+    private ObstacleAvoidanceType obstacleAvoidanceType;
+    private boolean horizontalAvoidanceEnabled = false;
+    private boolean upwardAvoidanceEnabled = false;
+    private boolean downwardAvoidanceEnabled = false;
     public boolean landingProtectionEnabled = false;
     public boolean precisionLandingEnabled = false;
-    public double horizontalBrakingDistance = 0;
-    public double upwardsBrakingDistance = 0;
-    public double downwardsBrakingDistance = 0;
-    public double horizontalWarningDistance = 0;
-    public double upwardsWarningDistance = 0;
-    public double downwardsWarningDistance = 0;
-    public boolean returnHomeObstacleAvoidanceEnabled = false;
+    private double horizontalBrakingDistance = 0;
+    private double upwardBrakingDistance = 0;
+    private double downwardBrakingDistance = 0;
+    private double horizontalWarningDistance = 0;
+    private double upwardWarningDistance = 0;
+    private double downwardWarningDistance = 0;
+    private boolean returnHomeObstacleAvoidanceEnabled = false;
     public boolean visionPositioningEnabled = false;
     private WaypointMissionExecuteState waypointMissionExecuteState;
 
@@ -181,11 +178,6 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, PerceptionInfor
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyWindWarning), (oldValue, newValue) -> windWarning = newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyAirSenseSystemInformation), (oldValue, newValue) -> airSenseSystemInformation = newValue);
         listeners.init(KeyTools.createKey(FlightControllerKey.KeyFailsafeAction), (oldValue, newValue) -> failSafeAction = newValue);
-
-        //TODO N deal with
-//        listeners.init(KeyTools.createKey(FlightAssistantKey.KeyOmniHorizontalObstacleAvoidanceEnabled), (oldValue, newValue) -> horizontalAvoidanceEnabled = newValue != null && newValue);
-//        listeners.init(KeyTools.createKey(FlightAssistantKey.KeyOmniUpwardsObstacleAvoidanceEnabled), (oldValue, newValue) -> upwardsAvoidanceEnabled = newValue != null && newValue);
-
         listeners.init(KeyTools.createKey(FlightAssistantKey.KeyLandingProtectionEnabled), (oldValue, newValue) -> landingProtectionEnabled = newValue != null && newValue);
         listeners.init(KeyTools.createKey(FlightAssistantKey.KeyPrecisionLandingEnabled), (oldValue, newValue) -> precisionLandingEnabled = newValue != null && newValue);
         listeners.init(KeyTools.createKey(FlightAssistantKey.KeyRTHObstacleAvoidanceEnabled), (oldValue, newValue) -> returnHomeObstacleAvoidanceEnabled = newValue != null && newValue);
@@ -197,55 +189,8 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, PerceptionInfor
         listeners.init(KeyTools.createKey(AirLinkKey.KeyFrequencyBand), (oldValue, newValue) -> ocuSyncFrequencyBand = newValue);
         listeners.init(KeyTools.createKey(FlightAssistantKey.KeyBottomAuxiliaryLightMode), (oldValue, newValue) -> auxiliaryLightModeBottom = newValue);
 
-        //TODO N
-        //PerceptionManager.getInstance().addObstacleDataListener(this);
         perceptionManager.addPerceptionInformationListener(this);
         perceptionManager.addObstacleDataListener(this);
-
-        //TODO N probably do not need these callbacks. everything is in the listeners.
-        perceptionManager.getObstacleAvoidanceType(new CommonCallbacks.CompletionCallbackWithParam<ObstacleAvoidanceType>() {
-            @Override
-            public void onSuccess(ObstacleAvoidanceType avoidanceType) {
-                Log.e("Test", "constructor ObstacleAvoidanceType: " + avoidanceType);
-                obstacleAvoidanceType = avoidanceType;
-            }
-            @Override
-            public void onFailure(@NonNull IDJIError error) {
-            }
-        });
-
-        perceptionManager.getObstacleAvoidanceEnabled(PerceptionDirection.HORIZONTAL, new CommonCallbacks.CompletionCallbackWithParam<Boolean>() {
-            @Override
-            public void onSuccess(Boolean enabled) {
-                Log.e("Test", "constructor PerceptionDirection.HORIZONTAL enabled: " + enabled);
-                horizontalAvoidanceEnabled = enabled;
-            }
-            @Override
-            public void onFailure(@NonNull IDJIError error) {
-            }
-        });
-
-        perceptionManager.getObstacleAvoidanceEnabled(PerceptionDirection.UPWARD, new CommonCallbacks.CompletionCallbackWithParam<Boolean>() {
-            @Override
-            public void onSuccess(Boolean enabled) {
-                Log.e("Test", "constructor PerceptionDirection.UPWARD enabled: " + enabled);
-                upwardsAvoidanceEnabled = enabled;
-            }
-            @Override
-            public void onFailure(@NonNull IDJIError error) {
-            }
-        });
-
-        perceptionManager.getObstacleAvoidanceEnabled(PerceptionDirection.DOWNWARD, new CommonCallbacks.CompletionCallbackWithParam<Boolean>() {
-            @Override
-            public void onSuccess(Boolean enabled) {
-                Log.e("Test", "constructor PerceptionDirection.DOWNWARD enabled: " + enabled);
-                downwardsAvoidanceEnabled = enabled;
-            }
-            @Override
-            public void onFailure(@NonNull IDJIError error) {
-            }
-        });
 
         WaypointMissionManager.getInstance().addWaypointMissionExecuteStateListener(this);
     }
@@ -253,8 +198,7 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, PerceptionInfor
 
     public void close() {
         listeners.cancelAll();
-        //TODO N deal with
-        //PerceptionManager.getInstance().removeObstacleDataListener(this);
+        perceptionManager.removePerceptionInformationListener(this);
         perceptionManager.removeObstacleDataListener(this);
         WaypointMissionManager.getInstance().removeWaypointMissionExecuteStateListener(this);
     }
@@ -508,8 +452,26 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, PerceptionInfor
     }
 
     @Override
-    public DroneObstacleAvoidanceMode getObstacleAvoidanceMode() {
-        return DronelinkDJI2.getDroneObstacleAvoidanceMode(obstacleAvoidanceType);
+    public DroneObstacleAvoidanceSpecification getObstacleAvoidanceSpecification() {
+        return new DroneObstacleAvoidanceSpecification(
+                DronelinkDJI2.getDroneObstacleAvoidanceMode(obstacleAvoidanceType),
+                new HashMap<DroneObstacleAvoidanceDirection, Boolean>() {{
+                    put(DroneObstacleAvoidanceDirection.HORIZONTAL, horizontalAvoidanceEnabled);
+                    put(DroneObstacleAvoidanceDirection.UPWARD, upwardAvoidanceEnabled);
+                    put(DroneObstacleAvoidanceDirection.DOWNWARD, downwardAvoidanceEnabled);
+                }},
+                new HashMap<DroneObstacleAvoidanceDirection, Double>() {{
+                    put(DroneObstacleAvoidanceDirection.HORIZONTAL, horizontalBrakingDistance);
+                    put(DroneObstacleAvoidanceDirection.UPWARD, upwardBrakingDistance);
+                    put(DroneObstacleAvoidanceDirection.DOWNWARD, downwardBrakingDistance);
+                }},
+                new HashMap<DroneObstacleAvoidanceDirection, Double>() {{
+                    put(DroneObstacleAvoidanceDirection.HORIZONTAL, horizontalWarningDistance);
+                    put(DroneObstacleAvoidanceDirection.UPWARD, upwardWarningDistance);
+                    put(DroneObstacleAvoidanceDirection.DOWNWARD, downwardWarningDistance);
+                }},
+                returnHomeObstacleAvoidanceEnabled
+        );
     }
 
     @Override
@@ -594,64 +556,16 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, PerceptionInfor
 
     @Override
     public void onUpdate(@NonNull PerceptionInfo information) {
-        //TODO N remove Log statements
-        Log.e("test", "onUpdate ObstacleAvoidanceType: " + information.getObstacleAvoidanceType());
         this.obstacleAvoidanceType = information.getObstacleAvoidanceType();
-
-        Log.e("Test", "onUpdate horizontalObstacleAvoidanceEnabled: " + information.isHorizontalObstacleAvoidanceEnabled());
         this.horizontalAvoidanceEnabled = information.isHorizontalObstacleAvoidanceEnabled();
-
-        Log.e("Test", "onUpdate isUpwardObstacleAvoidanceEnabled: " + information.isUpwardObstacleAvoidanceEnabled());
-        this.upwardsAvoidanceEnabled = information.isUpwardObstacleAvoidanceEnabled();
-
-        Log.e("Test", "onUpdate isDownwardObstacleAvoidanceEnabled: " + information.isDownwardObstacleAvoidanceEnabled());
-        this.downwardsAvoidanceEnabled = information.isDownwardObstacleAvoidanceEnabled();
-
-        Log.e("Test", "onUpdate horizontalBrakingDistance: " + information.getHorizontalObstacleAvoidanceBrakingDistance());
+        this.upwardAvoidanceEnabled = information.isUpwardObstacleAvoidanceEnabled();
+        this.downwardAvoidanceEnabled = information.isDownwardObstacleAvoidanceEnabled();
         this.horizontalBrakingDistance = information.getHorizontalObstacleAvoidanceBrakingDistance();
-
-        Log.e("Test", "onUpdate upwardsBrakingDistance: " + information.getUpwardObstacleAvoidanceBrakingDistance());
-        this.upwardsBrakingDistance = information.getUpwardObstacleAvoidanceBrakingDistance();
-
-        Log.e("Test", "onUpdate downwardsBrakingDistance: " + information.getDownwardObstacleAvoidanceBrakingDistance());
-        this.downwardsBrakingDistance = information.getDownwardObstacleAvoidanceBrakingDistance();
-
-        Log.e("Test", "onUpdate horizontalWarningDistance: " + information.getHorizontalObstacleAvoidanceWarningDistance());
+        this.upwardBrakingDistance = information.getUpwardObstacleAvoidanceBrakingDistance();
+        this.downwardBrakingDistance = information.getDownwardObstacleAvoidanceBrakingDistance();
         this.horizontalWarningDistance = information.getHorizontalObstacleAvoidanceWarningDistance();
+        this.upwardWarningDistance = information.getUpwardObstacleAvoidanceWarningDistance();
+        this.downwardWarningDistance = information.getDownwardObstacleAvoidanceWarningDistance();
 
-        Log.e("Test", "onUpdate upwardsWarningDistance: " + information.getUpwardObstacleAvoidanceWarningDistance());
-        this.upwardsWarningDistance = information.getUpwardObstacleAvoidanceWarningDistance();
-
-        Log.e("Test", "onUpdate downwardsWarningDistance: " + information.getDownwardObstacleAvoidanceWarningDistance());
-        this.downwardsWarningDistance = information.getDownwardObstacleAvoidanceWarningDistance();
-
-    }
-
-    //TODO N refactor into a spec
-    public double getObstacleAvoidanceBrakingDistance(DroneObstacleAvoidanceDirection direction) {
-        switch (direction) {
-            case HORIZONTAL:
-                return horizontalBrakingDistance;
-            case UPWARD:
-                return upwardsBrakingDistance;
-            case DOWNWARD:
-                return downwardsBrakingDistance;
-            default:
-                return 0;
-        }
-    }
-
-    //TODO N refactor into a spec
-    public double getObstacleAvoidanceWarningDistance(DroneObstacleAvoidanceDirection direction) {
-        switch (direction) {
-            case HORIZONTAL:
-                return horizontalWarningDistance;
-            case UPWARD:
-                return upwardsWarningDistance;
-            case DOWNWARD:
-                return downwardsWarningDistance;
-            default:
-                return 0;
-        }
     }
 }
