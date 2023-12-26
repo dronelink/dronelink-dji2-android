@@ -688,7 +688,7 @@ public class DronelinkDJI2 {
                     break;
                 case RTK_START_PROCESSING:
                     details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_RTK_START_PROCESSING);
-                    level = Message.Level.INFO;
+                    level = Message.Level.WARNING;
                     break;
                 case UNKNOWN:
                     break;
@@ -2370,7 +2370,7 @@ public class DronelinkDJI2 {
 
     public static CameraVideoFieldOfView getCameraVideoFieldOfView(final @Nullable VideoResolutionFrameRateAndFov value) {
         if (value != null) {
-            switch (value.fov) {
+            switch (value.getFov()) {
                 case NONE:
                     return CameraVideoFieldOfView.DEFAULT;
                 case MEDIUM:
@@ -2407,7 +2407,7 @@ public class DronelinkDJI2 {
 
     public static CameraVideoFrameRate getCameraVideoFrameRate(final @Nullable VideoResolutionFrameRateAndFov value) {
         if (value != null) {
-            switch (value.frameRateAndResolution.frameRate) {
+            switch (value.getFrameRateAndResolution().getFrameRate()) {
                 case RATE_24FPS:
                     return CameraVideoFrameRate._23_DOT_976;
                 case RATE_PRECISE_24FPS:
@@ -2655,7 +2655,7 @@ public class DronelinkDJI2 {
 
     public static CameraVideoResolution getCameraVideoResolution(final @Nullable VideoResolutionFrameRateAndFov value) {
         if (value != null) {
-            switch (value.frameRateAndResolution.resolution) {
+            switch (value.getFrameRateAndResolution().getResolution()) {
                 case RESOLUTION_640x480:
                     return CameraVideoResolution._640x480;
                 case RESOLUTION_640x512:

@@ -650,7 +650,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
     public Double getPhotoInterval() {
         final PhotoIntervalShootSettings settings = photoIntervalShootSettings;
         if (settings != null) {
-            return photoIntervalShootSettings.interval;
+            return photoIntervalShootSettings.getInterval();
         }
         return null;
     }
@@ -662,7 +662,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
 
     @Override
     public CameraAEBCount getAEBCount() {
-        return DronelinkDJI2.getCameraPhotoAEBCount(photoAEBSettings == null ? null : photoAEBSettings.count);
+        return DronelinkDJI2.getCameraPhotoAEBCount(photoAEBSettings == null ? null : photoAEBSettings.getCount());
     }
 
     @Override
@@ -712,7 +712,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
     public Integer getISOActual() {
         final CameraExposureSettings settings = exposureSettings;
         if (settings != null) {
-            return settings.iso;
+            return settings.getIso();
         }
         return null;
     }
@@ -726,7 +726,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
     public CameraShutterSpeed getShutterSpeedActual() {
         final CameraExposureSettings settings = exposureSettings;
         if (settings != null) {
-            return DronelinkDJI2.getCameraShutterSpeed(settings.shutterSpeed);
+            return DronelinkDJI2.getCameraShutterSpeed(settings.getShutterSpeed());
         }
         return null;
     }
@@ -740,7 +740,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
     public CameraAperture getApertureActual() {
         final CameraExposureSettings settings = exposureSettings;
         if (settings != null) {
-            return DronelinkDJI2.getCameraAperture(settings.aperture);
+            return DronelinkDJI2.getCameraAperture(settings.getAperture());
         }
         return null;
     }
@@ -749,7 +749,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
     public CameraWhiteBalancePreset getWhiteBalancePreset() {
         final CameraWhiteBalanceInfo whiteBalance = this.whiteBalance;
         if (whiteBalance != null) {
-            return DronelinkDJI2.getCameraWhiteBalancePreset(whiteBalance.whiteBalanceMode);
+            return DronelinkDJI2.getCameraWhiteBalancePreset(whiteBalance.getWhiteBalanceMode());
         }
         return null;
     }
@@ -758,7 +758,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
     public Integer getWhiteBalanceColorTemperature() {
         final CameraWhiteBalanceInfo whiteBalance = this.whiteBalance;
         if (whiteBalance != null) {
-            return whiteBalance.colorTemperature;
+            return whiteBalance.getColorTemperature();
         }
         return null;
     }
@@ -836,9 +836,9 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
 
         try {
             //Sometimes DJI SDK return a focal length step of 0 incorrectly, in those cases we hard code it to 10 so that a valid zoom specification is created.
-            final int step = specification.focalLengthStep == 0 ? 10 : specification.focalLengthStep;
-            return new PercentZoomSpecification(zoomValue.doubleValue(), specification.minFocalLength, specification.maxFocalLength,
-                    specification.maxOpticalFocalLength, step, DJI2CameraStateAdapter.zoomRatiosResolved(zoomRatios));
+            final int step = specification.getFocalLengthStep() == 0 ? 10 : specification.getFocalLengthStep();
+            return new PercentZoomSpecification(zoomValue.doubleValue(), specification.getMinFocalLength(), specification.getMaxFocalLength(),
+                    specification.getMaxOpticalFocalLength(), step, DJI2CameraStateAdapter.zoomRatiosResolved(zoomRatios));
         } catch (final IllegalArgumentException e) {
             Log.e(TAG, "Error initializing percent zoom specification: " + e.getMessage());
         }
@@ -1230,7 +1230,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
         if (command instanceof WhiteBalanceCustomCameraCommand) {
             final int target = ((WhiteBalanceCustomCameraCommand) command).whiteBalanceCustom;
             final CameraWhiteBalanceInfo whiteBalance = this.whiteBalance;
-            final Integer current = whiteBalance == null ? null : whiteBalance.colorTemperature;
+            final Integer current = whiteBalance == null ? null : whiteBalance.getColorTemperature();
             Command.conditionallyExecute(getWhiteBalancePreset() != CameraWhiteBalancePreset.CUSTOM || current == null || current != target, finished, () -> KeyManager.getInstance().setValue(
                     createLensKey(CameraKey.KeyWhiteBalance),
                     new CameraWhiteBalanceInfo(CameraWhiteBalanceMode.MANUAL, target),

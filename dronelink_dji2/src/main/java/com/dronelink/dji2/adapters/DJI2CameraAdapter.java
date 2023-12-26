@@ -415,7 +415,7 @@ public class DJI2CameraAdapter implements CameraAdapter {
         if (mostRecentGeneratedMediaFileInfo != null) {
             final long timeSinceMostRecentCameraFile = mostRecentGeneratedMediaFileInfo.date.getTime() - started.getTime();
             if (timeSinceMostRecentCameraFile > 0) {
-                Log.d(TAG, "Camera start shoot photo found camera file (" + mostRecentGeneratedMediaFileInfo.value.index + ") after " + timeSinceMostRecentCameraFile + "ms (" + command.id + ")");
+                Log.d(TAG, "Camera start shoot photo found camera file (" + mostRecentGeneratedMediaFileInfo.value.getIndex() + ") after " + timeSinceMostRecentCameraFile + "ms (" + command.id + ")");
                 commandFinishNotBusy(command, finished);
                 return;
             }
