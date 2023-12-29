@@ -272,7 +272,7 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, PerceptionInfor
         final List<CompassState> compassStates = this.compassStates;
         if (compassStates != null) {
             for (final CompassState state : compassStates) {
-                final Message message = DronelinkDJI2.getMessage(context, state.compassSensorState);
+                final Message message = DronelinkDJI2.getMessage(context, state.getCompassSensorState());
                 if (message != null) {
                     messages.add(message);
                 }
@@ -494,9 +494,9 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, PerceptionInfor
         final Orientation3 orientation = new Orientation3();
         final Attitude attitude = this.attitude;
         if (attitude != null) {
-            orientation.x = Convert.DegreesToRadians(attitude.pitch);
-            orientation.y = Convert.DegreesToRadians(attitude.roll);
-            orientation.z = Convert.DegreesToRadians(attitude.yaw);
+            orientation.x = Convert.DegreesToRadians(attitude.getPitch());
+            orientation.y = Convert.DegreesToRadians(attitude.getRoll());
+            orientation.z = Convert.DegreesToRadians(attitude.getYaw());
         }
         return orientation;
     }

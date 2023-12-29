@@ -132,22 +132,22 @@ public class DJI2RemoteControllerStateAdapter implements RemoteControllerStateAd
 
     @Override
     public RemoteControllerButton getUpButton() {
-        return new RemoteControllerButton(fiveDimensionPressedStatus != null, fiveDimensionPressedStatus != null && fiveDimensionPressedStatus.upwards != null && fiveDimensionPressedStatus.upwards);
+        return new RemoteControllerButton(fiveDimensionPressedStatus != null, fiveDimensionPressedStatus != null && fiveDimensionPressedStatus.getUpwards() != null && fiveDimensionPressedStatus.getUpwards());
     }
 
     @Override
     public RemoteControllerButton getDownButton() {
-        return new RemoteControllerButton(fiveDimensionPressedStatus != null, fiveDimensionPressedStatus != null && fiveDimensionPressedStatus.downwards != null && fiveDimensionPressedStatus.downwards);
+        return new RemoteControllerButton(fiveDimensionPressedStatus != null, fiveDimensionPressedStatus != null && fiveDimensionPressedStatus.getDownwards() != null && fiveDimensionPressedStatus.getDownwards());
     }
 
     @Override
     public RemoteControllerButton getLeftButton() {
-        return new RemoteControllerButton(fiveDimensionPressedStatus != null, fiveDimensionPressedStatus != null && fiveDimensionPressedStatus.leftwards != null && fiveDimensionPressedStatus.leftwards);
+        return new RemoteControllerButton(fiveDimensionPressedStatus != null, fiveDimensionPressedStatus != null && fiveDimensionPressedStatus.getLeftwards() != null && fiveDimensionPressedStatus.getLeftwards());
     }
 
     @Override
     public RemoteControllerButton getRightButton() {
-        return new RemoteControllerButton(fiveDimensionPressedStatus != null, fiveDimensionPressedStatus != null && fiveDimensionPressedStatus.rightwards != null && fiveDimensionPressedStatus.rightwards);
+        return new RemoteControllerButton(fiveDimensionPressedStatus != null, fiveDimensionPressedStatus != null && fiveDimensionPressedStatus.getRightwards() != null && fiveDimensionPressedStatus.getRightwards());
     }
 
     @Override
