@@ -195,7 +195,6 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, PerceptionInfor
         WaypointMissionManager.getInstance().addWaypointMissionExecuteStateListener(this);
     }
 
-
     public void close() {
         listeners.cancelAll();
         perceptionManager.removePerceptionInformationListener(this);
