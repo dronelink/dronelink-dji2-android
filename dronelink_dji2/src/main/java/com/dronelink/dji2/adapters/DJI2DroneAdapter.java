@@ -765,9 +765,6 @@ public class DJI2DroneAdapter implements DroneAdapter {
             return null;
         }
 
-        
-
-
         if (command instanceof LandingProtectionDroneCommand) {
             final boolean target = ((LandingProtectionDroneCommand) command).enabled;
             Command.conditionallyExecute(target != state.landingProtectionEnabled, finished, () -> KeyManager.getInstance().setValue(
