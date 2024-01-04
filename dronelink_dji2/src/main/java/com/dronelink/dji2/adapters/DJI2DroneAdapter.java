@@ -53,6 +53,7 @@ import com.dronelink.core.kernel.command.drone.OcuSyncVideoFeedSourcesDroneComma
 import com.dronelink.core.kernel.command.drone.PrecisionLandingDroneCommand;
 import com.dronelink.core.kernel.command.drone.RemoteControllerSticksDroneCommand;
 import com.dronelink.core.kernel.command.drone.ReturnHomeAltitudeDroneCommand;
+import com.dronelink.core.kernel.command.drone.ReturnHomeDroneCommand;
 import com.dronelink.core.kernel.command.drone.ReturnHomeObstacleAvoidanceDroneCommand;
 import com.dronelink.core.kernel.command.drone.ReturnHomeRemoteObstacleAvoidanceDroneCommand;
 import com.dronelink.core.kernel.command.drone.SeriousLowBatteryWarningThresholdDroneCommand;
@@ -650,6 +651,11 @@ public class DJI2DroneAdapter implements DroneAdapter {
             final int target = (int)((ReturnHomeAltitudeDroneCommand) command).returnHomeAltitude;
             Command.conditionallyExecute(target != state.returnHomeAltitude, finished, () -> KeyManager.getInstance().setValue(
                     KeyTools.createKey(FlightControllerKey.KeyGoHomeHeight), target, DronelinkDJI2.createCompletionCallback(finished)));
+            return null;
+        }
+
+        if (command instanceof ReturnHomeDroneCommand) {
+            Command.conditionallyExecute(state.isFlying() && !state.isReturningHome(), finished, () -> startReturnHome(finished));
             return null;
         }
 
