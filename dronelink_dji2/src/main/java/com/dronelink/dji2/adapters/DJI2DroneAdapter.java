@@ -105,6 +105,7 @@ import dji.sdk.keyvalue.value.flightcontroller.YawControlMode;
 import dji.sdk.keyvalue.value.product.ProductType;
 import dji.v5.common.callback.CommonCallbacks;
 import dji.v5.manager.KeyManager;
+import dji.v5.manager.aircraft.perception.PerceptionManager;
 import dji.v5.manager.aircraft.perception.data.PerceptionDirection;
 import dji.v5.manager.aircraft.virtualstick.VirtualStickManager;
 import dji.v5.manager.aircraft.virtualstick.VirtualStickRange;
@@ -704,7 +705,7 @@ public class DJI2DroneAdapter implements DroneAdapter {
           final DroneObstacleAvoidanceSpecification spec = state.getObstacleAvoidanceSpecification();
           if (spec != null) {
               Command.conditionallyExecute(!target.equals(spec.avoidanceEnabled.get(DroneObstacleAvoidanceDirection.HORIZONTAL)), finished,
-                      () -> state.perceptionManager.setObstacleAvoidanceEnabled(target, PerceptionDirection.HORIZONTAL, DronelinkDJI2.createCompletionCallback(finished)));
+                      () -> PerceptionManager.getInstance().setObstacleAvoidanceEnabled(target, PerceptionDirection.HORIZONTAL, DronelinkDJI2.createCompletionCallback(finished)));
           }
           return null;
         }
@@ -714,7 +715,7 @@ public class DJI2DroneAdapter implements DroneAdapter {
             final DroneObstacleAvoidanceSpecification spec = state.getObstacleAvoidanceSpecification();
             if (spec != null) {
                 Command.conditionallyExecute(!target.equals(spec.avoidanceEnabled.get(DroneObstacleAvoidanceDirection.UPWARD)), finished,
-                        () -> state.perceptionManager.setObstacleAvoidanceEnabled(target, PerceptionDirection.UPWARD, DronelinkDJI2.createCompletionCallback(finished)));
+                        () -> PerceptionManager.getInstance().setObstacleAvoidanceEnabled(target, PerceptionDirection.UPWARD, DronelinkDJI2.createCompletionCallback(finished)));
             }
             return null;
         }
@@ -724,7 +725,7 @@ public class DJI2DroneAdapter implements DroneAdapter {
             final DroneObstacleAvoidanceSpecification spec = state.getObstacleAvoidanceSpecification();
             if (spec != null) {
                 Command.conditionallyExecute(!target.equals(spec.avoidanceEnabled.get(DroneObstacleAvoidanceDirection.DOWNWARD)), finished,
-                        () -> state.perceptionManager.setObstacleAvoidanceEnabled(target, PerceptionDirection.DOWNWARD, DronelinkDJI2.createCompletionCallback(finished)));
+                        () -> PerceptionManager.getInstance().setObstacleAvoidanceEnabled(target, PerceptionDirection.DOWNWARD, DronelinkDJI2.createCompletionCallback(finished)));
             }
             return null;
         }
@@ -734,7 +735,7 @@ public class DJI2DroneAdapter implements DroneAdapter {
             final DroneObstacleAvoidanceSpecification spec = state.getObstacleAvoidanceSpecification();
             if (spec != null) {
                 Command.conditionallyExecute(target != spec.mode, finished,
-                        () -> state.perceptionManager.setObstacleAvoidanceType(DronelinkDJI2.getDroneObstacleAvoidanceMode(target), DronelinkDJI2.createCompletionCallback(finished)));
+                        () -> PerceptionManager.getInstance().setObstacleAvoidanceType(DronelinkDJI2.getDroneObstacleAvoidanceMode(target), DronelinkDJI2.createCompletionCallback(finished)));
             }
             return null;
         }
@@ -750,7 +751,7 @@ public class DJI2DroneAdapter implements DroneAdapter {
                     final Double brakingDistance = brakingDistances.get(targetDirection);
                     if (brakingDistance != null) {
                         Command.conditionallyExecute(Math.abs(target - brakingDistance) >= 0.1, finished,
-                                () -> state.perceptionManager.setObstacleAvoidanceBrakingDistance(target, DronelinkDJI2.getDroneObstacleAvoidanceDirection(targetDirection),
+                                () -> PerceptionManager.getInstance().setObstacleAvoidanceBrakingDistance(target, DronelinkDJI2.getDroneObstacleAvoidanceDirection(targetDirection),
                                 DronelinkDJI2.createCompletionCallback(finished)));
                     }
                 }
@@ -769,7 +770,7 @@ public class DJI2DroneAdapter implements DroneAdapter {
                     final Double warningDistance = warningDistances.get(targetDirection);
                     if (warningDistance != null) {
                         Command.conditionallyExecute(Math.abs(target - warningDistance) >= 0.1, finished,
-                                () -> state.perceptionManager.setObstacleAvoidanceWarningDistance(target, DronelinkDJI2.getDroneObstacleAvoidanceDirection(targetDirection),
+                                () -> PerceptionManager.getInstance().setObstacleAvoidanceWarningDistance(target, DronelinkDJI2.getDroneObstacleAvoidanceDirection(targetDirection),
                                 DronelinkDJI2.createCompletionCallback(finished)));
                     }
                 }
