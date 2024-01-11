@@ -701,29 +701,41 @@ public class DJI2DroneAdapter implements DroneAdapter {
 
         if (command instanceof CollisionAvoidanceDroneCommand) {
           final Boolean target = ((CollisionAvoidanceDroneCommand) command).enabled;
-            Command.conditionallyExecute(!target.equals(state.getObstacleAvoidanceSpecification().avoidanceEnabled.get(DroneObstacleAvoidanceDirection.HORIZONTAL)), finished,
-                    () -> state.perceptionManager.setObstacleAvoidanceEnabled(target, PerceptionDirection.HORIZONTAL, DronelinkDJI2.createCompletionCallback(finished)));
-            return null;
+          final DroneObstacleAvoidanceSpecification spec = state.getObstacleAvoidanceSpecification();
+          if (spec != null) {
+              Command.conditionallyExecute(!target.equals(spec.avoidanceEnabled.get(DroneObstacleAvoidanceDirection.HORIZONTAL)), finished,
+                      () -> state.perceptionManager.setObstacleAvoidanceEnabled(target, PerceptionDirection.HORIZONTAL, DronelinkDJI2.createCompletionCallback(finished)));
+          }
+          return null;
         }
 
         if (command instanceof UpwardsAvoidanceDroneCommand) {
             final Boolean target = ((UpwardsAvoidanceDroneCommand) command).enabled;
-            Command.conditionallyExecute(!target.equals(state.getObstacleAvoidanceSpecification().avoidanceEnabled.get(DroneObstacleAvoidanceDirection.UPWARD)), finished,
-                    () -> state.perceptionManager.setObstacleAvoidanceEnabled(target, PerceptionDirection.UPWARD, DronelinkDJI2.createCompletionCallback(finished)));
+            final DroneObstacleAvoidanceSpecification spec = state.getObstacleAvoidanceSpecification();
+            if (spec != null) {
+                Command.conditionallyExecute(!target.equals(spec.avoidanceEnabled.get(DroneObstacleAvoidanceDirection.UPWARD)), finished,
+                        () -> state.perceptionManager.setObstacleAvoidanceEnabled(target, PerceptionDirection.UPWARD, DronelinkDJI2.createCompletionCallback(finished)));
+            }
             return null;
         }
 
         if (command instanceof DownwardAvoidanceDroneCommand) {
             final Boolean target = ((DownwardAvoidanceDroneCommand) command).enabled;
-            Command.conditionallyExecute(!target.equals(state.getObstacleAvoidanceSpecification().avoidanceEnabled.get(DroneObstacleAvoidanceDirection.DOWNWARD)), finished,
-                    () -> state.perceptionManager.setObstacleAvoidanceEnabled(target, PerceptionDirection.DOWNWARD, DronelinkDJI2.createCompletionCallback(finished)));
+            final DroneObstacleAvoidanceSpecification spec = state.getObstacleAvoidanceSpecification();
+            if (spec != null) {
+                Command.conditionallyExecute(!target.equals(spec.avoidanceEnabled.get(DroneObstacleAvoidanceDirection.DOWNWARD)), finished,
+                        () -> state.perceptionManager.setObstacleAvoidanceEnabled(target, PerceptionDirection.DOWNWARD, DronelinkDJI2.createCompletionCallback(finished)));
+            }
             return null;
         }
 
         if (command instanceof ObstacleAvoidanceModeDroneCommand) {
             final DroneObstacleAvoidanceMode target = ((ObstacleAvoidanceModeDroneCommand) command).obstacleAvoidanceMode;
-            Command.conditionallyExecute(target != state.getObstacleAvoidanceSpecification().mode, finished,
-                    () -> state.perceptionManager.setObstacleAvoidanceType(DronelinkDJI2.getDroneObstacleAvoidanceMode(target), DronelinkDJI2.createCompletionCallback(finished)));
+            final DroneObstacleAvoidanceSpecification spec = state.getObstacleAvoidanceSpecification();
+            if (spec != null) {
+                Command.conditionallyExecute(target != spec.mode, finished,
+                        () -> state.perceptionManager.setObstacleAvoidanceType(DronelinkDJI2.getDroneObstacleAvoidanceMode(target), DronelinkDJI2.createCompletionCallback(finished)));
+            }
             return null;
         }
 
@@ -785,10 +797,13 @@ public class DJI2DroneAdapter implements DroneAdapter {
 
         if (command instanceof ReturnHomeObstacleAvoidanceDroneCommand) {
             final boolean target = ((ReturnHomeObstacleAvoidanceDroneCommand) command).enabled;
-            Command.conditionallyExecute(target != state.getObstacleAvoidanceSpecification().returnHomeObstacleAvoidanceEnabled, finished, () -> KeyManager.getInstance().setValue(
-                    KeyTools.createKey(FlightAssistantKey.KeyRTHObstacleAvoidanceEnabled),
-                    target,
-                    DronelinkDJI2.createCompletionCallback(finished)));
+            final DroneObstacleAvoidanceSpecification spec = state.getObstacleAvoidanceSpecification();
+            if (spec != null) {
+                Command.conditionallyExecute(target != spec.returnHomeObstacleAvoidanceEnabled, finished, () -> KeyManager.getInstance().setValue(
+                        KeyTools.createKey(FlightAssistantKey.KeyRTHObstacleAvoidanceEnabled),
+                        target,
+                        DronelinkDJI2.createCompletionCallback(finished)));
+            }
             return null;
         }
 
