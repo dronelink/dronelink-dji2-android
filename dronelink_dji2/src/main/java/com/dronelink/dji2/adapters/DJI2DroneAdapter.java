@@ -62,7 +62,7 @@ import com.dronelink.core.kernel.command.drone.SeriousLowBatteryWarningThreshold
 import com.dronelink.core.kernel.command.drone.SmartReturnHomeDroneCommand;
 import com.dronelink.core.kernel.command.drone.SpotlightBrightnessDroneCommand;
 import com.dronelink.core.kernel.command.drone.SpotlightDroneCommand;
-import com.dronelink.core.kernel.command.drone.UpwardAvoidanceDroneCommand;
+import com.dronelink.core.kernel.command.drone.UpwardsAvoidanceDroneCommand;
 import com.dronelink.core.kernel.command.drone.VelocityDroneCommand;
 import com.dronelink.core.kernel.command.drone.VisionAssistedPositioningDroneCommand;
 import com.dronelink.core.kernel.core.DroneObstacleAvoidanceSpecification;
@@ -706,8 +706,8 @@ public class DJI2DroneAdapter implements DroneAdapter {
             return null;
         }
 
-        if (command instanceof UpwardAvoidanceDroneCommand) {
-            final Boolean target = ((UpwardAvoidanceDroneCommand) command).enabled;
+        if (command instanceof UpwardsAvoidanceDroneCommand) {
+            final Boolean target = ((UpwardsAvoidanceDroneCommand) command).enabled;
             Command.conditionallyExecute(!target.equals(state.getObstacleAvoidanceSpecification().avoidanceEnabled.get(DroneObstacleAvoidanceDirection.UPWARD)), finished,
                     () -> state.perceptionManager.setObstacleAvoidanceEnabled(target, PerceptionDirection.UPWARD, DronelinkDJI2.createCompletionCallback(finished)));
             return null;
