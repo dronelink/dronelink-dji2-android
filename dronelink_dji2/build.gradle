@@ -28,6 +28,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.github.dronelink:dronelink-core-android:4.9.0'
-    compileOnly 'com.dji:dji-sdk-v5-aircraft-alpha:5.8.0-a6'
-    compileOnly 'com.dji:dji-sdk-v5-aircraft-provided-alpha:5.8.0-a6'
+    compileOnly 'com.dji:dji-sdk-v5-aircraft:5.8.0'
+    compileOnly 'com.dji:dji-sdk-v5-aircraft-provided:5.8.0'
 }

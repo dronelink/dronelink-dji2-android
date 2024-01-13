@@ -370,9 +370,6 @@ public class DronelinkDJI2 {
                 Message.Level level = null;
                 switch (healthInfo.warningLevel()) {
                     case NOTICE:
-                        level = Message.Level.INFO;
-                        break;
-
                     case CAUTION:
                     case WARNING:
                         level = Message.Level.WARNING;
@@ -393,7 +390,10 @@ public class DronelinkDJI2 {
                         message.title = message.details;
                         message.details = "";
                     }
-                    messages.add(message);
+
+                    if (message.title != null && !message.title.isEmpty()) {
+                        messages.add(message);
+                    }
                 }
             }
             return messages;
@@ -632,15 +632,14 @@ public class DronelinkDJI2 {
                     break;
                 case RTCM_CONNECTING:
                     details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_RTCM_CONNECTING);
-                    level = Message.Level.INFO;
+                    level = Message.Level.ERROR;
                     break;
                 case RTCM_ACTIVATED_FAILED:
                     details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_RTCM_ACTIVATED_FAILED);
                     level = Message.Level.ERROR;
                     break;
                 case DISABLED:
-                    details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_DISABLED);
-                    level = Message.Level.ERROR;
+                    level = null;
                     break;
                 case AIRCRAFT_DISCONNECTED:
                     details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_AIRCRAFT_DISCONNECTED);
@@ -648,7 +647,7 @@ public class DronelinkDJI2 {
                     break;
                 case CONNECTING:
                     details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_CONNECTING);
-                    level = Message.Level.INFO;
+                    level = Message.Level.ERROR;
                     break;
                 case TRANSMITTING:
                     details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_TRANSMITTING);
@@ -680,7 +679,7 @@ public class DronelinkDJI2 {
                     break;
                 case DISCONNECTED:
                     details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_DISCONNECTED);
-                    level = Message.Level.WARNING;
+                    level = Message.Level.ERROR;
                     break;
                 case READY:
                     details = context.getString(R.string.DronelinkDJI2_RTKServiceState_value_READY);
