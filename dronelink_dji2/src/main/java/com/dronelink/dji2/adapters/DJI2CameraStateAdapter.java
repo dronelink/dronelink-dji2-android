@@ -59,6 +59,7 @@ import com.dronelink.core.kernel.command.camera.WhiteBalancePresetCameraCommand;
 import com.dronelink.core.kernel.command.camera.ZoomPercentCameraCommand;
 import com.dronelink.core.kernel.command.camera.ZoomRatioCameraCommand;
 import com.dronelink.core.kernel.core.CameraFocusCalibration;
+import com.dronelink.core.kernel.core.CameraVideoResolutionFrameRateSpecification;
 import com.dronelink.core.kernel.core.CameraZoomSpecification;
 import com.dronelink.core.kernel.core.Message;
 import com.dronelink.core.kernel.core.PercentZoomSpecification;
@@ -96,7 +97,9 @@ import com.dronelink.dji2.R;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import dji.sdk.keyvalue.key.CameraKey;
 import dji.sdk.keyvalue.key.DJIKey;
@@ -104,11 +107,9 @@ import dji.sdk.keyvalue.key.DJIKeyInfo;
 import dji.sdk.keyvalue.key.KeyTools;
 import dji.sdk.keyvalue.value.camera.CameraExposureSettings;
 import dji.sdk.keyvalue.value.camera.CameraHybridZoomSpec;
-import dji.sdk.keyvalue.value.camera.CameraOpticalZoomSpec;
 import dji.sdk.keyvalue.value.camera.CameraVideoStreamSourceType;
 import dji.sdk.keyvalue.value.camera.CameraWhiteBalanceInfo;
 import dji.sdk.keyvalue.value.camera.CameraWhiteBalanceMode;
-import dji.sdk.keyvalue.value.camera.CustomExpandNameSettings;
 import dji.sdk.keyvalue.value.camera.PhotoAEBExposureOffset;
 import dji.sdk.keyvalue.value.camera.PhotoAEBSettings;
 import dji.sdk.keyvalue.value.camera.PhotoBurstCount;
@@ -119,7 +120,9 @@ import dji.sdk.keyvalue.value.camera.SSDTotalSpace;
 import dji.sdk.keyvalue.value.camera.ThermalDisplayMode;
 import dji.sdk.keyvalue.value.camera.VideoFileCompressionStandard;
 import dji.sdk.keyvalue.value.camera.VideoFileFormat;
+import dji.sdk.keyvalue.value.camera.VideoFrameRate;
 import dji.sdk.keyvalue.value.camera.VideoRecordMode;
+import dji.sdk.keyvalue.value.camera.VideoResolution;
 import dji.sdk.keyvalue.value.camera.VideoResolutionFrameRate;
 import dji.sdk.keyvalue.value.camera.VideoResolutionFrameRateAndFov;
 import dji.sdk.keyvalue.value.camera.VideoStandard;
@@ -207,6 +210,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
     private int[] thermalZoomRatios;
     private Double currentThermalZoomRatio;
     private Double currentZoomRatio;
+    private List<VideoResolutionFrameRateAndFov> videoResolutionFrameRateAndFovRange;
 
     public DJI2CameraStateAdapter(final Context context, final DJI2DroneAdapter drone, final ComponentIndexType index, final CameraLensType lensType) {
         this.context = context;
@@ -380,6 +384,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
         listeners.init(createLensKey(CameraKey.KeyVideoFileFormat), (oldValue, newValue) -> videoFileFormat = newValue);
         listeners.init(createLensKey(CameraKey.KeyVideoRecordMode), (oldValue, newValue) -> videoRecordMode = newValue);
         listeners.init(createLensKey(CameraKey.KeyVideoResolutionFrameRateAndFov), (oldValue, newValue) -> videoResolutionFrameRateFov = newValue);
+        listeners.init(createLensKey(CameraKey.KeyVideoResolutionFrameRateAndFovRange), (oldValue, newValue) -> videoResolutionFrameRateAndFovRange = newValue);
         listeners.init(createLensKey(CameraKey.KeyRecordingTime), (oldValue, newValue) -> recordingTime = newValue);
         listeners.init(createLensKey(CameraKey.KeyVideoStandard), (oldValue, newValue) -> videoStandard = newValue);
         listeners.init(createLensKey(CameraKey.KeyExposureMode), (oldValue, newValue) -> exposureMode = newValue);
@@ -670,18 +675,53 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
         return DronelinkDJI2.getCameraVideoFileFormat(videoFileFormat);
     }
 
-    public CameraVideoFieldOfView getVideoFieldOfView() {
-        return DronelinkDJI2.getCameraVideoFieldOfView(videoResolutionFrameRateFov);
-    }
-
+    //TODO N remove
     @Override
-    public CameraVideoFrameRate getVideoFrameRate() {
+    public CameraVideoFrameRate getVideoFrameRateTest() {
         return DronelinkDJI2.getCameraVideoFrameRate(videoResolutionFrameRateFov);
     }
 
+    //TODO N remove
     @Override
-    public CameraVideoResolution getVideoResolution() {
+    public CameraVideoResolution getVideoResolutionTest() {
         return DronelinkDJI2.getCameraVideoResolution(videoResolutionFrameRateFov);
+    }
+
+    @Override
+    public CameraVideoResolutionFrameRateSpecification getVideoResolutionFrameRateSpecification() {
+        return new CameraVideoResolutionFrameRateSpecification(
+                DronelinkDJI2.getCameraVideoResolution(videoResolutionFrameRateFov),
+                DronelinkDJI2.getCameraVideoFrameRate(videoResolutionFrameRateFov),
+                resolutionFrameRateOptions()
+
+        );
+    }
+
+    private Map<CameraVideoResolution, List<CameraVideoFrameRate>> resolutionFrameRateOptions() {
+        final List<VideoResolutionFrameRateAndFov> range = videoResolutionFrameRateAndFovRange;
+        if (range == null) {
+            return null;
+        }
+
+        final Map<CameraVideoResolution, List<CameraVideoFrameRate>> options = new LinkedHashMap<>();
+        for (final VideoResolutionFrameRateAndFov videoResolutionFrameRateAndFov : range) {
+            final VideoResolution keyResolution = videoResolutionFrameRateAndFov.getFrameRateAndResolution().getResolution();
+            if (keyResolution != null) {
+                final List<CameraVideoFrameRate> frameRates = new ArrayList<>();
+                for (final VideoResolutionFrameRateAndFov resFrameRateAndFov: range) {
+                    final VideoResolution resolution = resFrameRateAndFov.getFrameRateAndResolution().getResolution();
+                    if (resolution != null && resolution == keyResolution) {
+                        frameRates.add(DronelinkDJI2.getCameraVideoFrameRate(resFrameRateAndFov));
+                    }
+                }
+                options.put(DronelinkDJI2.getCameraVideoResolution(videoResolutionFrameRateAndFov), frameRates);
+            }
+        }
+        return options;
+    }
+
+    public CameraVideoFieldOfView getVideoFieldOfView() {
+        return DronelinkDJI2.getCameraVideoFieldOfView(videoResolutionFrameRateFov);
     }
 
     @Override
@@ -1200,7 +1240,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
             final CameraVideoResolution videoResolution = ((VideoResolutionFrameRateCameraCommand) command).videoResolution;
             final CameraVideoFrameRate videoFrameRate = ((VideoResolutionFrameRateCameraCommand) command).videoFrameRate;
             final CameraVideoFieldOfView videoFieldOfView = ((VideoResolutionFrameRateCameraCommand) command).videoFieldOfView;
-            Command.conditionallyExecute(videoResolution != getVideoResolution() || videoFrameRate != getVideoFrameRate() || videoFieldOfView != getVideoFieldOfView(), finished, () -> KeyManager.getInstance().setValue(
+            Command.conditionallyExecute(videoResolution != getVideoResolutionFrameRateSpecification().currentResolution || videoFrameRate != getVideoFrameRate() || videoFieldOfView != getVideoFieldOfView(), finished, () -> KeyManager.getInstance().setValue(
                     createLensKey(CameraKey.KeyVideoResolutionFrameRateAndFov),
                     new VideoResolutionFrameRateAndFov(
                             new VideoResolutionFrameRate(DronelinkDJI2.getCameraVideoResolution(videoResolution), DronelinkDJI2.getCameraVideoFrameRate(videoFrameRate)),
