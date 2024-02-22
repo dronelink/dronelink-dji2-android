@@ -368,18 +368,32 @@ public class DJI2CameraAdapter implements CameraAdapter {
             final String target = ((StorageCustomFolderNameCameraCommand) command).folderName;
             final String current = customExpandNameSettings == null ? null : customExpandNameSettings.getCustomContent();
 
+            //TODO N Test:
+            //1.) What happens when only numbers
+            //2.) What happens without conditionally execute
+            if (target == null) {
+                return new CommandError(context.getString(R.string.MissionDisengageReason_command_value_invalid));
+            }
             if (state.isCapturingVideo()) {
+                //TODO N localize: Unable to set camera custom folder name during video recording.
                 return new CommandError(context.getString(R.string.DJI2CameraAdapter_cameraCommand_custom_folder_name_video_error));
             }
-
-            if (Pattern.matches("\\d+", target) || Pattern.matches("[a-zA-Z0-9]+", target)) {
-                //TODO N localize: Storage custom folder name cannot contain special character or only pure numbers.
+            if (Pattern.matches("\\d+", target) || !Pattern.matches("[a-zA-Z0-9]+", target)) {
+                //TODO N localize: Camera custom folder name cannot contain special characters or contain only numbers.
                 return new CommandError(context.getString(R.string.DJI2CameraAdapter_cameraCommand_custom_folder_name_invalid));
             }
-            Command.conditionallyExecute(target != null && !target.equals(current), finished, () -> KeyManager.getInstance().setValue(
-                    createKey(CameraKey.KeyCustomExpandDirectoryNameSettings),
-                    new CustomExpandNameSettings().set,
-                    DronelinkDJI2.createCompletionCallback(finished)));
+
+            if (!target.equals(current)) {
+                customExpandNameSettings.setCustomContent(target);
+                Command.conditionallyExecute(true, finished, () -> KeyManager.getInstance().setValue(
+                        createKey(CameraKey.KeyCustomExpandDirectoryNameSettings),
+                        customExpandNameSettings,
+                        DronelinkDJI2.createCompletionCallback(finished)));
+//                Command.conditionallyExecute(!target.equals(current), finished, () -> KeyManager.getInstance().setValue(
+//                        createKey(CameraKey.KeyCustomExpandDirectoryNameSettings),
+//                        customExpandNameSettings,
+//                        DronelinkDJI2.createCompletionCallback(finished)));
+            }
             return null;
         }
 

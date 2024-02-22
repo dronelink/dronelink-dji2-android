@@ -37,8 +37,8 @@
     <string name="DJI2RTKStateAdapter_custom_network">Custom Network RTK</string>
     <string name="DJI2RTKStateAdapter_custom_network_location">RTK Location</string>
     <string name="DJI2RTKStateAdapter_custom_network_location_unavailable">Location Unavailable</string>
-    <string name="DJI2CameraAdapter_cameraCommand_custom_folder_name_invalid">Storage custom folder name cannot contain special character or only pure numbers.</string>
-    <string name="DJI2CameraAdapter_cameraCommand_custom_folder_name_video_error">Cannot set storage custom folder name during video recording.</string>
+    <string name="DJI2CameraAdapter_cameraCommand_custom_folder_name_invalid">Camera custom folder name cannot contain special characters or contain only numbers.</string>
+    <string name="DJI2CameraAdapter_cameraCommand_custom_folder_name_video_error">Unable to set camera custom folder name during video recording.</string>
     <string name="DJI2CameraAdapter_cameraCommand_stop_capture_error">Camera still capturing</string>
     <string name="DJI2CameraAdapter_cameraCommand_start_shoot_photo_no_file">Media File Not Created</string>
     <string name="DJI2CameraStateAdapter_cameraCommand_focus_target_error">Camera Busy</string>
