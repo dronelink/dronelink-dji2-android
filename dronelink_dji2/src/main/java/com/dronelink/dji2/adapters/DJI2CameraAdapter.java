@@ -368,9 +368,6 @@ public class DJI2CameraAdapter implements CameraAdapter {
             final String target = ((StorageCustomFolderNameCameraCommand) command).folderName;
             final String current = customExpandNameSettings == null ? null : customExpandNameSettings.getCustomContent();
 
-            //TODO N Test:
-            //1.) What happens when only numbers
-            //2.) What happens without conditionally execute
             if (target == null) {
                 return new CommandError(context.getString(R.string.MissionDisengageReason_command_value_invalid));
             }
@@ -389,10 +386,6 @@ public class DJI2CameraAdapter implements CameraAdapter {
                         createKey(CameraKey.KeyCustomExpandDirectoryNameSettings),
                         customExpandNameSettings,
                         DronelinkDJI2.createCompletionCallback(finished)));
-//                Command.conditionallyExecute(!target.equals(current), finished, () -> KeyManager.getInstance().setValue(
-//                        createKey(CameraKey.KeyCustomExpandDirectoryNameSettings),
-//                        customExpandNameSettings,
-//                        DronelinkDJI2.createCompletionCallback(finished)));
             }
             return null;
         }
