@@ -58,6 +58,7 @@ import dji.v5.manager.aircraft.perception.listener.PerceptionInformationListener
 import dji.v5.manager.aircraft.waypoint3.WaypointMissionExecuteStateListener;
 import dji.v5.manager.aircraft.waypoint3.WaypointMissionManager;
 import dji.v5.manager.aircraft.waypoint3.model.WaypointMissionExecuteState;
+import dji.v5.manager.diagnostic.DJIDeviceHealthInfo;
 import dji.v5.manager.diagnostic.DeviceHealthManager;
 import dji.v5.manager.diagnostic.DeviceStatusManager;
 
@@ -275,9 +276,13 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, PerceptionInfor
             messages.add(deviceStatusMessage);
         }
 
-        final List<Message> healthStatusMessages = DronelinkDJI2.getMessages(DeviceHealthManager.getInstance().getCurrentDJIDeviceHealthInfos());
-        if (healthStatusMessages != null) {
-            messages.addAll(healthStatusMessages);
+        final List<DJIDeviceHealthInfo> deviceHealthInfos = DeviceHealthManager.getInstance().getCurrentDJIDeviceHealthInfos();
+        if (deviceHealthInfos != null && !deviceHealthInfos.isEmpty()) {
+            //create a copy since DJI seems to modify this list while we are iterating
+            final List<Message> healthStatusMessages = DronelinkDJI2.getMessages(new ArrayList<>(deviceHealthInfos));
+            if (healthStatusMessages != null) {
+                messages.addAll(healthStatusMessages);
+            }
         }
 
         messages.addAll(drone.getStatusMessages());
