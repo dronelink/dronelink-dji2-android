@@ -375,7 +375,7 @@ public class DJI2CameraAdapter implements CameraAdapter {
                 //TODO N localize: Unable to set camera custom folder name during video recording.
                 return new CommandError(context.getString(R.string.DJI2CameraAdapter_cameraCommand_custom_folder_name_video_error));
             }
-            if (Pattern.matches("\\d+", target) || !Pattern.matches("[a-zA-Z0-9]+", target)) {
+            if (Pattern.matches("\\d+", target) || !Pattern.matches("[a-zA-Z0-9\\-]+", target)) {
                 //TODO N localize: Camera custom folder name cannot contain special characters or contain only numbers.
                 return new CommandError(context.getString(R.string.DJI2CameraAdapter_cameraCommand_custom_folder_name_invalid));
             }
