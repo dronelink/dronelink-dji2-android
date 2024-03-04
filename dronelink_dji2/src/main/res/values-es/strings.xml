@@ -37,6 +37,8 @@
     <string name="DJI2RTKStateAdapter_custom_network">Red personalizada RTK</string>
     <string name="DJI2RTKStateAdapter_custom_network_location">Ubicación RTK</string>
     <string name="DJI2RTKStateAdapter_custom_network_location_unavailable">Ubicación no disponible</string>
+    <string name="DJI2CameraAdapter_cameraCommand_custom_folder_name_invalid">El nombre de la carpeta personalizada de la cámara no puede contener caracteres especiales ni contener solo números.</string>
+    <string name="DJI2CameraAdapter_cameraCommand_custom_folder_name_video_error">No se puede configurar el nombre de la carpeta personalizada de la cámara durante la grabación de video.</string>
     <string name="DJI2CameraAdapter_cameraCommand_stop_capture_error">La cámara sigue capturando</string>
     <string name="DJI2CameraAdapter_cameraCommand_start_shoot_photo_no_file">Archivo multimedia no creado</string>
     <string name="DJI2CameraStateAdapter_cameraCommand_focus_target_error">Cámara ocupada</string>

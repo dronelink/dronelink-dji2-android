@@ -37,6 +37,8 @@
     <string name="DJI2RTKStateAdapter_custom_network">कस्टम नेटवर्क आरटीके</string>
     <string name="DJI2RTKStateAdapter_custom_network_location">आरटीके स्थान</string>
     <string name="DJI2RTKStateAdapter_custom_network_location_unavailable">स्थान अनुपलब्ध</string>
+    <string name="DJI2CameraAdapter_cameraCommand_custom_folder_name_invalid">कैमरा कस्टम फ़ोल्डर नाम में विशेष वर्ण या केवल संख्याएँ नहीं हो सकतीं।</string>
+    <string name="DJI2CameraAdapter_cameraCommand_custom_folder_name_video_error">वीडियो रिकॉर्डिंग के दौरान कैमरा कस्टम फ़ोल्डर नाम सेट करने में असमर्थ।</string>
     <string name="DJI2CameraAdapter_cameraCommand_stop_capture_error">कैमरा अभी भी कैप्चर कर रहा है</string>
     <string name="DJI2CameraAdapter_cameraCommand_start_shoot_photo_no_file">मीडिया फ़ाइल नहीं बनाई गई</string>
     <string name="DJI2CameraStateAdapter_cameraCommand_focus_target_error">कैमरा व्यस्त</string>

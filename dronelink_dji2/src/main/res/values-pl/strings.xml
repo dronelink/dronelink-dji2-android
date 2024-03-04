@@ -37,6 +37,8 @@
     <string name="DJI2RTKStateAdapter_custom_network">Niestandardowa sieć RTK</string>
     <string name="DJI2RTKStateAdapter_custom_network_location">Lokalizacja firmy RTK</string>
     <string name="DJI2RTKStateAdapter_custom_network_location_unavailable">Lokalizacja niedostępna</string>
+    <string name="DJI2CameraAdapter_cameraCommand_custom_folder_name_invalid">Nazwa folderu niestandardowego aparatu nie może zawierać znaków specjalnych ani zawierać wyłącznie cyfr.</string>
+    <string name="DJI2CameraAdapter_cameraCommand_custom_folder_name_video_error">Nie można ustawić niestandardowej nazwy folderu aparatu podczas nagrywania wideo.</string>
     <string name="DJI2CameraAdapter_cameraCommand_stop_capture_error">Aparat nadal przechwytuje</string>
     <string name="DJI2CameraAdapter_cameraCommand_start_shoot_photo_no_file">Plik multimedialny nie został utworzony</string>
     <string name="DJI2CameraStateAdapter_cameraCommand_focus_target_error">Aparat zajęty</string>
