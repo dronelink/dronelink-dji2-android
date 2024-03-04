@@ -13,7 +13,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.dronelink.core.DatedValue;
+import com.dronelink.core.DroneSession;
+import com.dronelink.core.DroneSessionManager;
+import com.dronelink.core.Dronelink;
 import com.dronelink.core.Kernel;
+import com.dronelink.core.MissionExecutor;
 import com.dronelink.core.adapters.CameraAdapter;
 import com.dronelink.core.adapters.CameraStateAdapter;
 import com.dronelink.core.adapters.EnumElement;
@@ -367,26 +371,43 @@ public class DJI2CameraAdapter implements CameraAdapter {
         if (command instanceof StorageCustomFolderNameCameraCommand) {
             final String target = ((StorageCustomFolderNameCameraCommand) command).folderName;
             final String current = customExpandNameSettings == null ? null : customExpandNameSettings.getCustomContent();
-
             if (target == null) {
                 return new CommandError(context.getString(R.string.MissionDisengageReason_command_value_invalid));
             }
             if (state.isCapturingVideo()) {
-                //TODO N localize: Unable to set camera custom folder name during video recording.
                 return new CommandError(context.getString(R.string.DJI2CameraAdapter_cameraCommand_custom_folder_name_video_error));
             }
-            if (Pattern.matches("\\d+", target) || !Pattern.matches("[a-zA-Z0-9\\-]+", target)) {
-                //TODO N localize: Camera custom folder name cannot contain special characters or contain only numbers.
+
+            String droneName = "";
+            String missionName = "";
+            final DroneSessionManager droneSessionManager = Dronelink.getInstance().getTargetDroneSessionManager();
+            if (droneSessionManager != null) {
+                final DroneSession session = droneSessionManager.getSession();
+                if (session != null) {
+                    droneName = session.getName() == null ? "" : session.getName();
+                }
+            }
+            final MissionExecutor missionExecutor = Dronelink.getInstance().getMissionExecutor();
+            if (missionExecutor != null) {
+                missionName = missionExecutor.descriptors == null ? "" : missionExecutor.descriptors.name;
+            }
+
+            //Secret target syntax {drone.name} and {mission.name} to insert drone name and mission name into command. Only supported in english.
+            final String targetResolved = target.replace("{drone.name}", droneName).replace("{mission.name}", missionName).replace(" ", "-");
+
+            //validation that the target is a valid folder name per DJI SDK docs. The regex means targetResolved contains at least one letter, number, or hyphen, ensuring that it's not just numeric and doesn't contain other special symbols.
+            if (Pattern.matches("\\d+", targetResolved) || !Pattern.matches("[\\p{L}\\p{N}\\-]+", targetResolved)) {
                 return new CommandError(context.getString(R.string.DJI2CameraAdapter_cameraCommand_custom_folder_name_invalid));
             }
 
-            if (!target.equals(current)) {
-                customExpandNameSettings.setCustomContent(target);
-                Command.conditionallyExecute(true, finished, () -> KeyManager.getInstance().setValue(
-                        createKey(CameraKey.KeyCustomExpandDirectoryNameSettings),
-                        customExpandNameSettings,
-                        DronelinkDJI2.createCompletionCallback(finished)));
+            final boolean executeCondition = !targetResolved.equals(current);
+            if (executeCondition) {
+                customExpandNameSettings.setCustomContent(targetResolved);
             }
+            Command.conditionallyExecute(executeCondition, finished, () -> KeyManager.getInstance().setValue(
+                    createKey(CameraKey.KeyCustomExpandDirectoryNameSettings),
+                    customExpandNameSettings,
+                    DronelinkDJI2.createCompletionCallback(finished)));
             return null;
         }
 
