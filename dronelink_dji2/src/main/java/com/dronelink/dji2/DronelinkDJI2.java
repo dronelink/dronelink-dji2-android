@@ -3541,10 +3541,6 @@ public class DronelinkDJI2 {
             Message.Level level = null;
 
             switch (value.getRemoteIdWorkingState()) {
-                case IDLE:
-                case WORKING:
-                    return null;
-
                 case OPERATOR_LOCATION_LOST_ERROR:
                     details = context.getString(R.string.DronelinkDJI2_RemoteIdWorkingState_value_OPERATOR_LOCATION_LOST_ERROR);
                     level = Message.Level.WARNING;
@@ -3559,6 +3555,13 @@ public class DronelinkDJI2 {
                     details = context.getString(R.string.DronelinkDJI2_RemoteIdWorkingState_value_UNKNOWN_ERROR);
                     level = Message.Level.ERROR;
                     break;
+
+                case IDLE:
+                case WORKING:
+                case NOT_SUPPORTED:
+                case NO_BROADCAST:
+                default:
+                    return null;
             }
 
             return new Message(context.getString(R.string.DronelinkDJI2_RemoteIdWorkingState_title), details, level);
