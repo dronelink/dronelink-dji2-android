@@ -1240,7 +1240,8 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
             final CameraVideoResolution videoResolution = ((VideoResolutionFrameRateCameraCommand) command).videoResolution;
             final CameraVideoFrameRate videoFrameRate = ((VideoResolutionFrameRateCameraCommand) command).videoFrameRate;
             final CameraVideoFieldOfView videoFieldOfView = ((VideoResolutionFrameRateCameraCommand) command).videoFieldOfView;
-            Command.conditionallyExecute(videoResolution != getVideoResolutionFrameRateSpecification().currentResolution || videoFrameRate != getVideoFrameRate() || videoFieldOfView != getVideoFieldOfView(), finished, () -> KeyManager.getInstance().setValue(
+            final CameraVideoResolutionFrameRateSpecification specification = getVideoResolutionFrameRateSpecification();
+            Command.conditionallyExecute(videoResolution != specification.currentResolution || videoFrameRate != specification.currentFrameRate || videoFieldOfView != getVideoFieldOfView(), finished, () -> KeyManager.getInstance().setValue(
                     createLensKey(CameraKey.KeyVideoResolutionFrameRateAndFov),
                     new VideoResolutionFrameRateAndFov(
                             new VideoResolutionFrameRate(DronelinkDJI2.getCameraVideoResolution(videoResolution), DronelinkDJI2.getCameraVideoFrameRate(videoFrameRate)),
