@@ -393,18 +393,15 @@ public class DJI2CameraAdapter implements CameraAdapter {
             }
 
             //Secret target syntax {drone.name} and {mission.name} to insert drone name and mission name into command. Only supported in english.
-            final String targetResolved = target.replace("{drone.name}", droneName).replace("{mission.name}", missionName).replace(" ", "-");
+            final String targetResolved = target.replace("{drone.name}", droneName).replace("{mission.name}", missionName).replaceAll("[^a-zA-Z0-9]+", "-");
 
-            //validation that the target is a valid folder name per DJI SDK docs. The regex means targetResolved contains at least one letter, number, or hyphen, ensuring that it's not just numeric and doesn't contain other special symbols.
+            //validation that the target is a valid folder name per DJI SDK docs. The regex ensures its not just a number and only contains letters (in all languages), numbers, and hyphens.
             if (Pattern.matches("\\d+", targetResolved) || !Pattern.matches("[\\p{L}\\p{N}\\-]+", targetResolved)) {
                 return new CommandError(context.getString(R.string.DJI2CameraAdapter_cameraCommand_custom_folder_name_invalid));
             }
 
-            final boolean executeCondition = !targetResolved.equals(current);
-            if (executeCondition) {
-                customExpandNameSettings.setCustomContent(targetResolved);
-            }
-            Command.conditionallyExecute(executeCondition, finished, () -> KeyManager.getInstance().setValue(
+            customExpandNameSettings.setCustomContent(targetResolved);
+            Command.conditionallyExecute(!targetResolved.equals(current), finished, () -> KeyManager.getInstance().setValue(
                     createKey(CameraKey.KeyCustomExpandDirectoryNameSettings),
                     customExpandNameSettings,
                     DronelinkDJI2.createCompletionCallback(finished)));
