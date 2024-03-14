@@ -37,8 +37,8 @@
     <string name="DJI2RTKStateAdapter_custom_network">Benutzerdefiniertes Netzwerk RTK</string>
     <string name="DJI2RTKStateAdapter_custom_network_location">RTK-Standort</string>
     <string name="DJI2RTKStateAdapter_custom_network_location_unavailable">Standort nicht verfügbar</string>
-    <string name="DJI2CameraAdapter_cameraCommand_custom_folder_name_invalid">Der benutzerdefinierte Ordnername der Kamera darf keine Sonderzeichen oder nur Zahlen enthalten.</string>
-    <string name="DJI2CameraAdapter_cameraCommand_custom_folder_name_video_error">Der benutzerdefinierte Ordnername der Kamera kann während der Videoaufzeichnung nicht festgelegt werden.</string>
+    <string name="DJI2CameraAdapter_cameraCommand_storage_custom_folder_name_invalid">Der benutzerdefinierte Ordnername der Kamera darf keine Sonderzeichen oder nur Zahlen enthalten.</string>
+    <string name="DJI2CameraAdapter_cameraCommand_storage_custom_folder_name_video_error">Der benutzerdefinierte Ordnername der Kamera kann während der Videoaufzeichnung nicht festgelegt werden.</string>
     <string name="DJI2CameraAdapter_cameraCommand_stop_capture_error">Die Kamera nimmt immer noch auf</string>
     <string name="DJI2CameraAdapter_cameraCommand_start_shoot_photo_no_file">Mediendatei nicht erstellt</string>
     <string name="DJI2CameraStateAdapter_cameraCommand_focus_target_error">Kamera beschäftigt</string>

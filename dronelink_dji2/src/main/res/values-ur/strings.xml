@@ -37,8 +37,8 @@
     <string name="DJI2RTKStateAdapter_custom_network">کسٹم نیٹ ورک RTK</string>
     <string name="DJI2RTKStateAdapter_custom_network_location">RTK مقام</string>
     <string name="DJI2RTKStateAdapter_custom_network_location_unavailable">مقام دستیاب نہیں ہے۔</string>
-    <string name="DJI2CameraAdapter_cameraCommand_custom_folder_name_invalid">کیمرہ کسٹم فولڈر کا نام خصوصی حروف پر مشتمل نہیں ہو سکتا یا صرف نمبرز پر مشتمل نہیں ہو سکتا۔</string>
-    <string name="DJI2CameraAdapter_cameraCommand_custom_folder_name_video_error">ویڈیو ریکارڈنگ کے دوران کیمرہ کسٹم فولڈر کا نام سیٹ کرنے سے قاصر۔</string>
+    <string name="DJI2CameraAdapter_cameraCommand_storage_custom_folder_name_invalid">کیمرہ کسٹم فولڈر کا نام خصوصی حروف پر مشتمل نہیں ہو سکتا یا صرف نمبرز پر مشتمل نہیں ہو سکتا۔</string>
+    <string name="DJI2CameraAdapter_cameraCommand_storage_custom_folder_name_video_error">ویڈیو ریکارڈنگ کے دوران کیمرہ کسٹم فولڈر کا نام سیٹ کرنے سے قاصر۔</string>
     <string name="DJI2CameraAdapter_cameraCommand_stop_capture_error">کیمرہ اب بھی کیپچر کر رہا ہے۔</string>
     <string name="DJI2CameraAdapter_cameraCommand_start_shoot_photo_no_file">میڈیا فائل نہیں بنائی گئی۔</string>
     <string name="DJI2CameraStateAdapter_cameraCommand_focus_target_error">کیمرہ مصروف</string>

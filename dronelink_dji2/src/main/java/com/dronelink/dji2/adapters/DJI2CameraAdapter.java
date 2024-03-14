@@ -375,7 +375,7 @@ public class DJI2CameraAdapter implements CameraAdapter {
                 return new CommandError(context.getString(R.string.MissionDisengageReason_command_value_invalid));
             }
             if (state.isCapturingVideo()) {
-                return new CommandError(context.getString(R.string.DJI2CameraAdapter_cameraCommand_custom_folder_name_video_error));
+                return new CommandError(context.getString(R.string.DJI2CameraAdapter_cameraCommand_storage_custom_folder_name_video_error));
             }
 
             String droneName = "";
@@ -397,7 +397,7 @@ public class DJI2CameraAdapter implements CameraAdapter {
 
             //validation that the target is a valid folder name per DJI SDK docs. The regex ensures its not just a number and only contains letters (in all languages), numbers, and hyphens.
             if (Pattern.matches("\\d+", targetResolved) || !Pattern.matches("[\\p{L}\\p{N}\\-]+", targetResolved)) {
-                return new CommandError(context.getString(R.string.DJI2CameraAdapter_cameraCommand_custom_folder_name_invalid));
+                return new CommandError(context.getString(R.string.DJI2CameraAdapter_cameraCommand_storage_custom_folder_name_invalid));
             }
 
             customExpandNameSettings.setCustomContent(targetResolved);

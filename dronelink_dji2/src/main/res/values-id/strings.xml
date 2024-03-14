@@ -37,8 +37,8 @@
     <string name="DJI2RTKStateAdapter_custom_network">RTK Jaringan Khusus</string>
     <string name="DJI2RTKStateAdapter_custom_network_location">Lokasi RTK</string>
     <string name="DJI2RTKStateAdapter_custom_network_location_unavailable">Lokasi Tidak Tersedia</string>
-    <string name="DJI2CameraAdapter_cameraCommand_custom_folder_name_invalid">Nama folder khusus kamera tidak boleh berisi karakter khusus atau hanya berisi angka.</string>
-    <string name="DJI2CameraAdapter_cameraCommand_custom_folder_name_video_error">Tidak dapat menyetel nama folder khusus kamera selama perekaman video.</string>
+    <string name="DJI2CameraAdapter_cameraCommand_storage_custom_folder_name_invalid">Nama folder khusus kamera tidak boleh berisi karakter khusus atau hanya berisi angka.</string>
+    <string name="DJI2CameraAdapter_cameraCommand_storage_custom_folder_name_video_error">Tidak dapat menyetel nama folder khusus kamera selama perekaman video.</string>
     <string name="DJI2CameraAdapter_cameraCommand_stop_capture_error">Kamera masih merekam</string>
     <string name="DJI2CameraAdapter_cameraCommand_start_shoot_photo_no_file">File Media Tidak Dibuat</string>
     <string name="DJI2CameraStateAdapter_cameraCommand_focus_target_error">Kamera Sibuk</string>
