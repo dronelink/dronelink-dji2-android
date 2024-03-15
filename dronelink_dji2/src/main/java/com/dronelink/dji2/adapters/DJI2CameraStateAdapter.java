@@ -17,7 +17,9 @@ import com.dronelink.core.Dronelink;
 import com.dronelink.core.Kernel;
 import com.dronelink.core.adapters.CameraStateAdapter;
 import com.dronelink.core.adapters.EnumElement;
+import com.dronelink.core.adapters.EnumElementTuple;
 import com.dronelink.core.adapters.EnumElementsCollection;
+import com.dronelink.core.adapters.EnumElementsTupleCollection;
 import com.dronelink.core.command.Command;
 import com.dronelink.core.command.CommandError;
 import com.dronelink.core.kernel.command.camera.AEBCountCameraCommand;
@@ -144,6 +146,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
     public final CameraLensType lensType;
     private final DJI2ListenerGroup listeners = new DJI2ListenerGroup();
     private final EnumElementsCollection enumElements = new EnumElementsCollection();
+    private final EnumElementsTupleCollection enumElementTuples = new EnumElementsTupleCollection();
     private boolean isShootingPhoto = false;
     private Date isShootingPhotoUpdated = new Date();
     private Integer photoIntervalCountdown;
@@ -343,6 +346,21 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
             enumElements.update("CameraWhiteBalancePreset", range);
         });
 
+        listeners.init(createLensKey(CameraKey.KeyVideoResolutionFrameRateAndFovRange), (oldValue, newValue) -> {
+            videoResolutionFrameRateAndFovRange = newValue;
+            final List<List<String>> range = new ArrayList<>();
+            if (newValue != null) {
+                for (final VideoResolutionFrameRateAndFov value : newValue) {
+                    final List<String> tuple = new ArrayList<>();
+                    tuple.add(Kernel.enumRawValue(DronelinkDJI2.getCameraVideoResolution(value)));
+                    tuple.add(Kernel.enumRawValue(DronelinkDJI2.getCameraVideoFrameRate(value)));
+                    range.add(tuple);
+                }
+            }
+            enumElementTuples.update("CameraVideoResolutionFrameRate", range);
+        });
+
+
         listeners.init(createKey(CameraKey.KeyIsShootingPhoto), (oldValue, newValue) -> {
             isShootingPhoto = newValue != null && newValue;
             isShootingPhotoUpdated = new Date();
@@ -384,7 +402,6 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
         listeners.init(createLensKey(CameraKey.KeyVideoFileFormat), (oldValue, newValue) -> videoFileFormat = newValue);
         listeners.init(createLensKey(CameraKey.KeyVideoRecordMode), (oldValue, newValue) -> videoRecordMode = newValue);
         listeners.init(createLensKey(CameraKey.KeyVideoResolutionFrameRateAndFov), (oldValue, newValue) -> videoResolutionFrameRateFov = newValue);
-        listeners.init(createLensKey(CameraKey.KeyVideoResolutionFrameRateAndFovRange), (oldValue, newValue) -> videoResolutionFrameRateAndFovRange = newValue);
         listeners.init(createLensKey(CameraKey.KeyRecordingTime), (oldValue, newValue) -> recordingTime = newValue);
         listeners.init(createLensKey(CameraKey.KeyVideoStandard), (oldValue, newValue) -> videoStandard = newValue);
         listeners.init(createLensKey(CameraKey.KeyExposureMode), (oldValue, newValue) -> exposureMode = newValue);
@@ -912,6 +929,10 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
 
     public List<EnumElement> getEnumElements(final String parameter) {
         return enumElements.get(parameter);
+    }
+
+    public List<EnumElementTuple> getEnumElementTuples(final String parameter) {
+        return enumElementTuples.get(parameter);
     }
 
     public CommandError executeCommand(final Context context, final CameraCommand command, final Command.Finisher finished) {
