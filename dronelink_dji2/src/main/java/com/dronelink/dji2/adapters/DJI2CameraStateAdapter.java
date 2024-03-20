@@ -692,26 +692,14 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
         return DronelinkDJI2.getCameraVideoFileFormat(videoFileFormat);
     }
 
-    //TODO N remove
     @Override
-    public CameraVideoFrameRate getVideoFrameRateTest() {
+    public CameraVideoFrameRate getVideoFrameRate() {
         return DronelinkDJI2.getCameraVideoFrameRate(videoResolutionFrameRateFov);
     }
 
-    //TODO N remove
     @Override
-    public CameraVideoResolution getVideoResolutionTest() {
+    public CameraVideoResolution getVideoResolution() {
         return DronelinkDJI2.getCameraVideoResolution(videoResolutionFrameRateFov);
-    }
-
-    @Override
-    public CameraVideoResolutionFrameRateSpecification getVideoResolutionFrameRateSpecification() {
-        return new CameraVideoResolutionFrameRateSpecification(
-                DronelinkDJI2.getCameraVideoResolution(videoResolutionFrameRateFov),
-                DronelinkDJI2.getCameraVideoFrameRate(videoResolutionFrameRateFov),
-                resolutionFrameRateOptions()
-
-        );
     }
 
     private Map<CameraVideoResolution, List<CameraVideoFrameRate>> resolutionFrameRateOptions() {
