@@ -369,7 +369,7 @@ public class DJI2CameraAdapter implements CameraAdapter {
         }
 
         if (command instanceof StorageCustomFolderNameCameraCommand) {
-            final String target = ((StorageCustomFolderNameCameraCommand) command).folderName;
+            final String target = ((StorageCustomFolderNameCameraCommand) command).customFolderName;
             final String current = customExpandNameSettings == null ? null : customExpandNameSettings.getCustomContent();
             if (target == null) {
                 return new CommandError(context.getString(R.string.MissionDisengageReason_command_value_invalid));
