@@ -98,9 +98,7 @@ import com.dronelink.dji2.R;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import dji.sdk.keyvalue.key.CameraKey;
 import dji.sdk.keyvalue.key.DJIKey;

@@ -19,7 +19,6 @@ import com.dronelink.core.adapters.CameraStateAdapter;
 import com.dronelink.core.adapters.EnumElement;
 import com.dronelink.core.adapters.EnumElementTuple;
 import com.dronelink.core.adapters.EnumElementsCollection;
-import com.dronelink.core.adapters.EnumElementsTupleCollection;
 import com.dronelink.core.command.Command;
 import com.dronelink.core.command.CommandError;
 import com.dronelink.core.kernel.command.camera.CameraCommand;
