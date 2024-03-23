@@ -21,6 +21,7 @@ import com.dronelink.core.MissionExecutor;
 import com.dronelink.core.adapters.CameraAdapter;
 import com.dronelink.core.adapters.CameraStateAdapter;
 import com.dronelink.core.adapters.EnumElement;
+import com.dronelink.core.adapters.EnumElementTuple;
 import com.dronelink.core.adapters.EnumElementsCollection;
 import com.dronelink.core.command.Command;
 import com.dronelink.core.command.CommandError;
@@ -213,6 +214,11 @@ public class DJI2CameraAdapter implements CameraAdapter {
             return elements;
         }
         return getActiveState().getEnumElements(parameter);
+    }
+
+    @Override
+    public List<EnumElementTuple> getTupleEnumElements(String parameter) {
+        return getActiveState().getEnumElementTuples(parameter);
     }
 
     public CommandError executeCommand(final Context context, final CameraCommand command, final Command.Finisher finished) {
