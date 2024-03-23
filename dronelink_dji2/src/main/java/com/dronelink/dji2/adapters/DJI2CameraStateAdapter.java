@@ -344,16 +344,22 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
         });
 
         listeners.init(createLensKey(CameraKey.KeyVideoResolutionFrameRateAndFovRange), (oldValue, newValue) -> {
-            final List<List<String>> range = new ArrayList<>();
+            final List<List<String>> tupleDisplayRange = new ArrayList<>();
+            final List<List<String>> tupleValueRange = new ArrayList<>();
             if (newValue != null) {
                 for (final VideoResolutionFrameRateAndFov value : newValue) {
-                    final List<String> tuple = new ArrayList<>();
-                    tuple.add(Kernel.enumRawValue(DronelinkDJI2.getCameraVideoResolution(value)));
-                    tuple.add(Kernel.enumRawValue(DronelinkDJI2.getCameraVideoFrameRate(value)));
-                    range.add(tuple);
+                    final List<String> valueTuple = new ArrayList<>();
+                    valueTuple.add(Kernel.enumRawValue(DronelinkDJI2.getCameraVideoResolution(value)));
+                    valueTuple.add(Kernel.enumRawValue(DronelinkDJI2.getCameraVideoFrameRate(value)));
+                    tupleValueRange.add(valueTuple);
+
+                    final List<String> displayTuple = new ArrayList<>();
+                    displayTuple.add(Dronelink.getInstance().formatEnum("CameraVideoResolution", Kernel.enumRawValue(DronelinkDJI2.getCameraVideoResolution(value))));
+                    displayTuple.add(Dronelink.getInstance().formatEnum("CameraVideoFrameRate", Kernel.enumRawValue(DronelinkDJI2.getCameraVideoFrameRate(value))));
+                    tupleDisplayRange.add(displayTuple);
                 }
             }
-            enumElementTuples.update("CameraVideoResolutionFrameRate", range);
+            enumElementTuples.update("CameraVideoResolutionFrameRate", tupleDisplayRange, tupleValueRange);
         });
 
 
