@@ -13,7 +13,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.dronelink.core.DatedValue;
+import com.dronelink.core.DroneSession;
+import com.dronelink.core.DroneSessionManager;
+import com.dronelink.core.Dronelink;
 import com.dronelink.core.Kernel;
+import com.dronelink.core.MissionExecutor;
 import com.dronelink.core.adapters.CameraAdapter;
 import com.dronelink.core.adapters.CameraStateAdapter;
 import com.dronelink.core.adapters.EnumElement;
@@ -21,6 +25,7 @@ import com.dronelink.core.adapters.EnumElementsCollection;
 import com.dronelink.core.command.Command;
 import com.dronelink.core.command.CommandError;
 import com.dronelink.core.kernel.command.camera.CameraCommand;
+import com.dronelink.core.kernel.command.camera.StorageCustomFolderNameCameraCommand;
 import com.dronelink.core.kernel.command.camera.ModeCameraCommand;
 import com.dronelink.core.kernel.command.camera.PhotoModeCameraCommand;
 import com.dronelink.core.kernel.command.camera.StartCaptureCameraCommand;
@@ -41,6 +46,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import dji.sdk.keyvalue.key.CameraKey;
 import dji.sdk.keyvalue.key.DJIActionKeyInfo;
@@ -49,6 +55,7 @@ import dji.sdk.keyvalue.key.DJIKeyInfo;
 import dji.sdk.keyvalue.key.KeyTools;
 import dji.sdk.keyvalue.value.camera.CameraType;
 import dji.sdk.keyvalue.value.camera.CameraVideoStreamSourceType;
+import dji.sdk.keyvalue.value.camera.CustomExpandNameSettings;
 import dji.sdk.keyvalue.value.camera.GeneratedMediaFileInfo;
 import dji.sdk.keyvalue.value.common.CameraLensType;
 import dji.sdk.keyvalue.value.common.ComponentIndexType;
@@ -71,6 +78,7 @@ public class DJI2CameraAdapter implements CameraAdapter {
     private final DJI2CameraStateAdapter defaultState;
     private final Map<CameraLensType, DJI2CameraStateAdapter> lensStates = new HashMap<>();
     private CameraVideoStreamSourceType videoStreamSource;
+    private CustomExpandNameSettings customExpandNameSettings;
     private DatedValue<GeneratedMediaFileInfo> mostRecentGeneratedMediaFileInfo;
 
     public DJI2CameraAdapter(final Context context, final DJI2DroneAdapter drone, final ComponentIndexType index, final GeneratedMediaFileInfoCallback generatedMediaFileInfoReceiver) {
@@ -118,6 +126,7 @@ public class DJI2CameraAdapter implements CameraAdapter {
                 mostRecentGeneratedMediaFileInfo = new DatedValue<>(newValue);
             }
         });
+        listeners.init(KeyTools.createKey(CameraKey.KeyCustomExpandDirectoryNameSettings), (oldValue, newValue) -> customExpandNameSettings = newValue);
     }
 
     private <T> DJIKey<T> createKey(final DJIKeyInfo<T> keyInfo) {
@@ -355,6 +364,46 @@ public class DJI2CameraAdapter implements CameraAdapter {
             Command.conditionallyExecute(target != state.getPhotoMode(), finished, () -> KeyManager.getInstance().setValue(
                     createKey(CameraKey.KeyCameraFlatMode),
                     DronelinkDJI2.getCameraFlatMode(target),
+                    DronelinkDJI2.createCompletionCallback(finished)));
+            return null;
+        }
+
+        if (command instanceof StorageCustomFolderNameCameraCommand) {
+            final String target = ((StorageCustomFolderNameCameraCommand) command).customFolderName;
+            final String current = customExpandNameSettings == null ? null : customExpandNameSettings.getCustomContent();
+            if (target == null) {
+                return new CommandError(context.getString(R.string.MissionDisengageReason_command_value_invalid));
+            }
+            if (state.isCapturingVideo()) {
+                return new CommandError(context.getString(R.string.DJI2CameraAdapter_cameraCommand_storage_custom_folder_name_video_error));
+            }
+
+            String droneName = "";
+            String missionName = "";
+            final DroneSessionManager droneSessionManager = Dronelink.getInstance().getTargetDroneSessionManager();
+            if (droneSessionManager != null) {
+                final DroneSession session = droneSessionManager.getSession();
+                if (session != null) {
+                    droneName = session.getName() == null ? "" : session.getName();
+                }
+            }
+            final MissionExecutor missionExecutor = Dronelink.getInstance().getMissionExecutor();
+            if (missionExecutor != null) {
+                missionName = missionExecutor.descriptors == null ? "" : missionExecutor.descriptors.name;
+            }
+
+            //Secret target syntax {drone.name} and {mission.name} to insert drone name and mission name into command. Only supported in english.
+            final String targetResolved = target.replace("{drone.name}", droneName).replace("{mission.name}", missionName).replaceAll("[^a-zA-Z0-9]+", "-");
+
+            //validation that the target is a valid folder name per DJI SDK docs. The regex ensures its not just a number and only contains letters (in all languages), numbers, and hyphens.
+            if (Pattern.matches("\\d+", targetResolved) || !Pattern.matches("[\\p{L}\\p{N}\\-]+", targetResolved)) {
+                return new CommandError(context.getString(R.string.DJI2CameraAdapter_cameraCommand_storage_custom_folder_name_invalid));
+            }
+
+            customExpandNameSettings.setCustomContent(targetResolved);
+            Command.conditionallyExecute(!targetResolved.equals(current), finished, () -> KeyManager.getInstance().setValue(
+                    createKey(CameraKey.KeyCustomExpandDirectoryNameSettings),
+                    customExpandNameSettings,
                     DronelinkDJI2.createCompletionCallback(finished)));
             return null;
         }
