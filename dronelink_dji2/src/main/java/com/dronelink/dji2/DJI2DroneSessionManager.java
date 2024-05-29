@@ -10,6 +10,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.dronelink.core.DroneSession;
@@ -32,6 +33,13 @@ import dji.v5.common.error.IDJIError;
 import dji.v5.common.register.DJISDKInitEvent;
 import dji.v5.manager.KeyManager;
 import dji.v5.manager.SDKManager;
+import dji.v5.manager.aircraft.flysafe.FlySafeNotificationListener;
+import dji.v5.manager.aircraft.flysafe.FlyZoneManager;
+import dji.v5.manager.aircraft.flysafe.info.FlySafeReturnToHomeInformation;
+import dji.v5.manager.aircraft.flysafe.info.FlySafeSeriousWarningInformation;
+import dji.v5.manager.aircraft.flysafe.info.FlySafeTipInformation;
+import dji.v5.manager.aircraft.flysafe.info.FlySafeWarningInformation;
+import dji.v5.manager.aircraft.flysafe.info.FlyZoneInformation;
 import dji.v5.manager.aircraft.uas.UASRemoteIDManager;
 import dji.v5.manager.aircraft.uas.UASRemoteIDStatus;
 import dji.v5.manager.interfaces.SDKManagerCallback;
@@ -46,6 +54,8 @@ public class DJI2DroneSessionManager implements DroneSessionManager {
     private Boolean registered;
     private IDJIError registerError;
     private UASRemoteIDStatus uasRemoteIDStatus;
+    private FlySafeWarningInformation flySafeWarningInformation;
+    private FlySafeSeriousWarningInformation flySafeSeriousWarningInformation;
 
     private final List<Listener> listeners = new LinkedList<>();
     public DJI2DroneSessionManager(final Context context) {
@@ -126,6 +136,22 @@ public class DJI2DroneSessionManager implements DroneSessionManager {
             }
         }
 
+        final FlySafeWarningInformation flySafeWarningInformation = this.flySafeWarningInformation;
+        if (flySafeWarningInformation != null) {
+            final Message status = DronelinkDJI2.getMessage(context, flySafeWarningInformation);
+            if (status != null) {
+                messages.add(status);
+            }
+        }
+
+        final FlySafeSeriousWarningInformation flySafeSeriousWarningInformation = this.flySafeSeriousWarningInformation;
+        if (flySafeSeriousWarningInformation != null) {
+            final Message status = DronelinkDJI2.getMessage(context, flySafeSeriousWarningInformation);
+            if (status != null) {
+                messages.add(status);
+            }
+        }
+
         return messages;
     }
 
@@ -163,6 +189,25 @@ public class DJI2DroneSessionManager implements DroneSessionManager {
 
                     UASRemoteIDManager.getInstance().addUASRemoteIDStatusListener(status -> {
                         uasRemoteIDStatus = status;
+                    });
+
+                    FlyZoneManager.getInstance().addFlySafeNotificationListener(new FlySafeNotificationListener() {
+                        @Override
+                        public void onWarningNotificationUpdate(@NonNull FlySafeWarningInformation info) {
+                            flySafeWarningInformation = info;
+                        }
+
+                        @Override
+                        public void onSeriousWarningNotificationUpdate(@NonNull FlySafeSeriousWarningInformation info) {
+                            flySafeSeriousWarningInformation = info;
+                        }
+
+                        @Override
+                        public void onTipNotificationUpdate(@NonNull FlySafeTipInformation info) {}
+                        @Override
+                        public void onReturnToHomeNotificationUpdate(@NonNull FlySafeReturnToHomeInformation info) {}
+                        @Override
+                        public void onSurroundingFlyZonesUpdate(@NonNull List<FlyZoneInformation> infos) {}
                     });
                 }
 

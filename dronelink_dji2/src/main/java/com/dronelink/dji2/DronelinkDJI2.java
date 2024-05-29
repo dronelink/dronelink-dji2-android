@@ -99,6 +99,8 @@ import dji.sdk.keyvalue.value.rtkmobilestation.RTKError;
 import dji.sdk.keyvalue.value.rtkmobilestation.RTKPositioningSolution;
 import dji.v5.common.callback.CommonCallbacks;
 import dji.v5.common.error.IDJIError;
+import dji.v5.manager.aircraft.flysafe.info.FlySafeSeriousWarningInformation;
+import dji.v5.manager.aircraft.flysafe.info.FlySafeWarningInformation;
 import dji.v5.manager.aircraft.perception.data.ObstacleAvoidanceType;
 import dji.v5.manager.aircraft.perception.data.PerceptionDirection;
 import dji.v5.manager.aircraft.uas.UASRemoteIDStatus;
@@ -3565,6 +3567,61 @@ public class DronelinkDJI2 {
             }
 
             return new Message(context.getString(R.string.DronelinkDJI2_RemoteIdWorkingState_title), details, level);
+        }
+        return null;
+    }
+
+    public static Message getMessage(final Context context, final @Nullable FlySafeWarningInformation value) {
+        if (value != null) {
+            Message.Level level = null;
+
+            switch (value.getEvent()) {
+                case TAKE_OFF_FAILED_IN_NO_FLY_ZONE:
+                case TAKE_OFF_FAILED_IN_NO_FLY_ZONE_WITHOUT_GPS:
+                case TAKE_OFF_FAILED_WITHOUT_CUSTOM_UNLOCKING:
+                case TAKE_OFF_FAILED_IN_AUTHORIZED_AREA_WITHOUT_GPS_AND_UNLOCKING:
+                case TAKE_OFF_FAILED_IN_AUTHORIZED_ZONE_WITHOUT_UNLOCKING:
+                case TAKE_OFF_FAILED_IN_AUTHORIZED_ZONE:
+                case TAKE_OFF_FAILED_UNDER_LIMIT_AREA_WITH_GPS_ONCE:
+                    level = Message.Level.ERROR;
+                    break;
+                case TAKE_OFF_IN_ENHANCED_WARNING_ZONE:
+                case TAKE_OFF_NEAR_NO_FLY_ZONE:
+                case LIMITED_RESTRICTIONS_NEARBY:
+                case AUTHORIZED_ZONE_WITHOUT_UNLOCKING_NEARBY:
+                case AUTHORIZED_ZONE_AND_RESTRICTIONS_NEARBY:
+                case RESTRICTIONS_IN_LIMITED_FLY_ZONE_NEARBY:
+                case IN_AUTHORIZATION_ZONE:
+                case HAVE_ONE_HOUR_WILL_APPLY_TFRS:
+                    level = Message.Level.WARNING;
+                    break;
+                default:
+                    return null;
+            }
+
+            //TODO N Localize?
+            return new Message("FlySafe Warning", value.getDescription(), level);
+        }
+        return null;
+    }
+
+    public static Message getMessage(final Context context, final @Nullable FlySafeSeriousWarningInformation value) {
+        if (value != null) {
+            Message.Level level = null;
+
+            switch (value.getEvent()) {
+                case IN_NO_FLY_ZONE:
+                case IN_LIMIT_HEIGHT_AREA:
+                case IN_AUTHORIZATION_ZONE_WITHOUT_UNLOCKING:
+                case HAVE_THREE_MIN_WILL_APPLY_TFRS:
+                    level = Message.Level.WARNING;
+                    break;
+                default:
+                    return null;
+            }
+
+            //TODO N Localize?
+            return new Message("FlySafe Serious Warning", value.getDescription(), level);
         }
         return null;
     }
