@@ -138,18 +138,15 @@ public class DJI2DroneSessionManager implements DroneSessionManager {
 
         final FlySafeWarningInformation flySafeWarningInformation = this.flySafeWarningInformation;
         if (flySafeWarningInformation != null) {
-            final Message status = DronelinkDJI2.getMessage(context, flySafeWarningInformation);
-            if (status != null) {
-                messages.add(status);
+            final Message message = DronelinkDJI2.getMessage(flySafeWarningInformation);
+            if (message != null) {
+                messages.add(message);
             }
         }
 
         final FlySafeSeriousWarningInformation flySafeSeriousWarningInformation = this.flySafeSeriousWarningInformation;
         if (flySafeSeriousWarningInformation != null) {
-            final Message status = DronelinkDJI2.getMessage(context, flySafeSeriousWarningInformation);
-            if (status != null) {
-                messages.add(status);
-            }
+            messages.add(new Message(flySafeSeriousWarningInformation.getDescription(), Message.Level.ERROR));
         }
 
         return messages;

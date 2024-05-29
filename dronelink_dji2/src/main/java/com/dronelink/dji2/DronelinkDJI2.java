@@ -3571,7 +3571,7 @@ public class DronelinkDJI2 {
         return null;
     }
 
-    public static Message getMessage(final Context context, final @Nullable FlySafeWarningInformation value) {
+    public static Message getMessage(final @Nullable FlySafeWarningInformation value) {
         if (value != null) {
             Message.Level level = null;
 
@@ -3599,29 +3599,7 @@ public class DronelinkDJI2 {
                     return null;
             }
 
-            //TODO N Localize?
-            return new Message("FlySafe Warning", value.getDescription(), level);
-        }
-        return null;
-    }
-
-    public static Message getMessage(final Context context, final @Nullable FlySafeSeriousWarningInformation value) {
-        if (value != null) {
-            Message.Level level = null;
-
-            switch (value.getEvent()) {
-                case IN_NO_FLY_ZONE:
-                case IN_LIMIT_HEIGHT_AREA:
-                case IN_AUTHORIZATION_ZONE_WITHOUT_UNLOCKING:
-                case HAVE_THREE_MIN_WILL_APPLY_TFRS:
-                    level = Message.Level.WARNING;
-                    break;
-                default:
-                    return null;
-            }
-
-            //TODO N Localize?
-            return new Message("FlySafe Serious Warning", value.getDescription(), level);
+            return new Message(value.getDescription(), level);
         }
         return null;
     }
