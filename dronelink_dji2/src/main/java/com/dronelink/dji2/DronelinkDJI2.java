@@ -70,7 +70,7 @@ import dji.sdk.keyvalue.value.camera.PhotoBurstCount;
 import dji.sdk.keyvalue.value.camera.PhotoFileFormat;
 import dji.sdk.keyvalue.value.camera.PhotoRatio;
 import dji.sdk.keyvalue.value.camera.ThermalDisplayMode;
-import dji.sdk.keyvalue.value.camera.VideoFileCompressionStandard;
+import dji.sdk.keyvalue.value.camera.VideoMimeType;
 import dji.sdk.keyvalue.value.camera.VideoFileFormat;
 import dji.sdk.keyvalue.value.camera.VideoFovType;
 import dji.sdk.keyvalue.value.camera.VideoFrameRate;
@@ -2297,7 +2297,7 @@ public class DronelinkDJI2 {
         return dji.sdk.keyvalue.value.camera.CameraShutterSpeed.UNKNOWN;
     }
 
-    public static CameraVideoFileCompressionStandard getCameraVideoFileCompressionStandard(final @Nullable VideoFileCompressionStandard value) {
+    public static CameraVideoFileCompressionStandard getCameraVideoFileCompressionStandard(final @Nullable VideoMimeType value) {
         if (value != null) {
             switch (value) {
                 case H264:
@@ -2313,20 +2313,20 @@ public class DronelinkDJI2 {
         return CameraVideoFileCompressionStandard.UNKNOWN;
     }
 
-    public static VideoFileCompressionStandard getCameraVideoFileCompressionStandard(final @Nullable CameraVideoFileCompressionStandard value) {
+    public static VideoMimeType getCameraVideoFileCompressionStandard(final @Nullable CameraVideoFileCompressionStandard value) {
         if (value != null) {
             switch (value) {
                 case H264:
-                    return VideoFileCompressionStandard.H264;
+                    return VideoMimeType.H264;
                 case H265:
-                    return VideoFileCompressionStandard.H265;
+                    return VideoMimeType.H265;
                 case PRO_RES:
-                    return VideoFileCompressionStandard.ProRes;
+                    return VideoMimeType.ProRes;
                 case UNKNOWN:
                     break;
             }
         }
-        return VideoFileCompressionStandard.UNKNOWN;
+        return VideoMimeType.UNKNOWN;
     }
 
     public static CameraVideoFileFormat getCameraVideoFileFormat(final @Nullable VideoFileFormat value) {
@@ -3245,6 +3245,8 @@ public class DronelinkDJI2 {
                     return context.getString(R.string.DronelinkDJI2_ProductType_value_M30_SERIES);
                 case M300_RTK:
                     return context.getString(R.string.DronelinkDJI2_ProductType_value_M300_RTK);
+                case M350_RTK:
+                    return "M350 RTK";
                 case DJI_MINI_3:
                     return context.getString(R.string.DronelinkDJI2_ProductType_value_DJI_MINI_3);
                 case DJI_MINI_3_PRO:
@@ -3299,8 +3301,6 @@ public class DronelinkDJI2 {
                 case OSMO_MOBILE5_SE:
                 case DJI_MAVIC_3:
                 case MAVIC_MINI_SE:
-                case TA101:
-                case EA210:
                     return value.name();
             }
         }

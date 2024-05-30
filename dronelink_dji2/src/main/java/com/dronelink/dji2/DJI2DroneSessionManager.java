@@ -40,6 +40,7 @@ import dji.v5.manager.aircraft.flysafe.info.FlySafeSeriousWarningInformation;
 import dji.v5.manager.aircraft.flysafe.info.FlySafeTipInformation;
 import dji.v5.manager.aircraft.flysafe.info.FlySafeWarningInformation;
 import dji.v5.manager.aircraft.flysafe.info.FlyZoneInformation;
+import dji.v5.manager.aircraft.uas.AreaStrategy;
 import dji.v5.manager.aircraft.uas.UASRemoteIDManager;
 import dji.v5.manager.aircraft.uas.UASRemoteIDStatus;
 import dji.v5.manager.interfaces.SDKManagerCallback;
@@ -184,6 +185,7 @@ public class DJI2DroneSessionManager implements DroneSessionManager {
                         }
                     });
 
+                    UASRemoteIDManager.getInstance().setUASRemoteIDAreaStrategy(AreaStrategy.US_STRATEGY);
                     UASRemoteIDManager.getInstance().addUASRemoteIDStatusListener(status -> {
                         uasRemoteIDStatus = status;
                     });

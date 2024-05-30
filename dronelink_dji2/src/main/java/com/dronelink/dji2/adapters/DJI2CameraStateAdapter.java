@@ -117,10 +117,9 @@ import dji.sdk.keyvalue.value.camera.PhotoIntervalShootSettings;
 import dji.sdk.keyvalue.value.camera.PhotoRatio;
 import dji.sdk.keyvalue.value.camera.SSDTotalSpace;
 import dji.sdk.keyvalue.value.camera.ThermalDisplayMode;
-import dji.sdk.keyvalue.value.camera.VideoFileCompressionStandard;
 import dji.sdk.keyvalue.value.camera.VideoFileFormat;
+import dji.sdk.keyvalue.value.camera.VideoMimeType;
 import dji.sdk.keyvalue.value.camera.VideoRecordMode;
-import dji.sdk.keyvalue.value.camera.VideoResolution;
 import dji.sdk.keyvalue.value.camera.VideoResolutionFrameRate;
 import dji.sdk.keyvalue.value.camera.VideoResolutionFrameRateAndFov;
 import dji.sdk.keyvalue.value.camera.VideoStandard;
@@ -177,7 +176,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
     private PhotoBurstCount photoBurstCount;
     private PhotoAEBSettings photoAEBSettings;
     private Boolean videoCaptionEnabled;
-    private VideoFileCompressionStandard videoFileCompressionStandard;
+    private VideoMimeType videoFileMimeType;
     private VideoFileFormat videoFileFormat;
     private VideoStandard videoStandard;
     private CameraVideoStreamSourceType videoStreamSource;
@@ -398,7 +397,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
         listeners.init(createLensKey(CameraKey.KeyPhotoBurstCount), (oldValue, newValue) -> photoBurstCount = newValue);
         listeners.init(createLensKey(CameraKey.KeyAEBSettings), (oldValue, newValue) -> photoAEBSettings = newValue);
         listeners.init(createLensKey(CameraKey.KeyCameraVideoCaptionEnabled), (oldValue, newValue) -> videoCaptionEnabled = newValue);
-        listeners.init(createLensKey(CameraKey.KeyVideoFileCompressionStandard), (oldValue, newValue) -> videoFileCompressionStandard = newValue);
+        listeners.init(createLensKey(CameraKey.KeyVideoMimeType), (oldValue, newValue) -> videoFileMimeType = newValue);
         listeners.init(createLensKey(CameraKey.KeyVideoFileFormat), (oldValue, newValue) -> videoFileFormat = newValue);
         listeners.init(createLensKey(CameraKey.KeyVideoRecordMode), (oldValue, newValue) -> videoRecordMode = newValue);
         listeners.init(createLensKey(CameraKey.KeyVideoResolutionFrameRateAndFov), (oldValue, newValue) -> videoResolutionFrameRateFov = newValue);
@@ -1197,8 +1196,8 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
 
         if (command instanceof VideoFileCompressionStandardCameraCommand) {
             final CameraVideoFileCompressionStandard target = ((VideoFileCompressionStandardCameraCommand) command).videoFileCompressionStandard;
-            Command.conditionallyExecute(target != DronelinkDJI2.getCameraVideoFileCompressionStandard(videoFileCompressionStandard), finished, () -> KeyManager.getInstance().setValue(
-                    createLensKey(CameraKey.KeyVideoFileCompressionStandard),
+            Command.conditionallyExecute(target != DronelinkDJI2.getCameraVideoFileCompressionStandard(videoFileMimeType), finished, () -> KeyManager.getInstance().setValue(
+                    createLensKey(CameraKey.KeyVideoMimeType),
                     DronelinkDJI2.getCameraVideoFileCompressionStandard(target),
                     DronelinkDJI2.createCompletionCallback(finished)));
             return null;
