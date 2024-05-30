@@ -32,6 +32,7 @@ import dji.v5.common.error.IDJIError;
 import dji.v5.common.register.DJISDKInitEvent;
 import dji.v5.manager.KeyManager;
 import dji.v5.manager.SDKManager;
+import dji.v5.manager.aircraft.uas.AreaStrategy;
 import dji.v5.manager.aircraft.uas.UASRemoteIDManager;
 import dji.v5.manager.aircraft.uas.UASRemoteIDStatus;
 import dji.v5.manager.interfaces.SDKManagerCallback;
@@ -161,6 +162,7 @@ public class DJI2DroneSessionManager implements DroneSessionManager {
                         }
                     });
 
+                    UASRemoteIDManager.getInstance().setUASRemoteIDAreaStrategy(AreaStrategy.US_STRATEGY);
                     UASRemoteIDManager.getInstance().addUASRemoteIDStatusListener(status -> {
                         uasRemoteIDStatus = status;
                     });

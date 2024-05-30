@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 import dji.sdk.keyvalue.value.common.LocationCoordinate3D;
+import dji.sdk.keyvalue.value.rtkbasestation.RTKStationConnetState;
 import dji.sdk.keyvalue.value.rtkmobilestation.RTKPositioningSolution;
 import dji.v5.common.error.IDJIError;
 import dji.v5.manager.aircraft.rtk.RTKCenter;
@@ -31,8 +32,12 @@ import dji.v5.manager.aircraft.rtk.RTKLocationInfoListener;
 import dji.v5.manager.aircraft.rtk.RTKSystemState;
 import dji.v5.manager.aircraft.rtk.RTKSystemStateListener;
 import dji.v5.manager.aircraft.rtk.network.INetworkServiceInfoListener;
+import dji.v5.manager.aircraft.rtk.station.ConnectedRTKStationInfo;
+import dji.v5.manager.aircraft.rtk.station.ConnectedRTKStationInfoListener;
+import dji.v5.manager.aircraft.rtk.station.RTKStationConnectStatusListener;
 import dji.v5.manager.interfaces.INetworkRTKManager;
 import dji.v5.manager.interfaces.IRTKCenter;
+import dji.v5.manager.interfaces.IRTKStationManager;
 
 public class DJI2RTKStateAdapter implements RTKStateAdapter, RTKSystemStateListener, INetworkServiceInfoListener {
     private final Context context;
@@ -40,10 +45,14 @@ public class DJI2RTKStateAdapter implements RTKStateAdapter, RTKSystemStateListe
     private final DJI2ListenerGroup listeners = new DJI2ListenerGroup();
 
     private RTKSystemState systemState;
-    private RTKLocationInfoListener locationInfoListener;
+    private final RTKLocationInfoListener locationInfoListener;
     private RTKLocationInfo locationInfo;
     private dji.sdk.keyvalue.value.rtkbasestation.RTKServiceState serviceState;
     private IDJIError customNetworkError;
+    private RTKStationConnectStatusListener stationConnectStatusListener;
+    private RTKStationConnetState stationConnectionState;
+    private ConnectedRTKStationInfoListener stationInfoListener;
+    private ConnectedRTKStationInfo stationInfo;
 
     public DJI2RTKStateAdapter(final Context context, final DJI2DroneAdapter drone) {
         this.context = context;
@@ -59,6 +68,14 @@ public class DJI2RTKStateAdapter implements RTKStateAdapter, RTKSystemStateListe
             if (rtkNetworkManager != null) {
                 rtk.getCustomRTKManager().addNetworkRTKServiceInfoListener(this);
             }
+
+            final IRTKStationManager rtkStationManager = rtk.getRTKStationManager();
+            if (rtkStationManager != null) {
+                stationConnectStatusListener = state -> stationConnectionState = state;
+                rtkStationManager.addRTKStationConnectStatusListener(stationConnectStatusListener);
+                stationInfoListener = info -> stationInfo = info;
+                rtkStationManager.addConnectedRTKStationInfoListener(stationInfoListener);
+            }
         }
     }
 
@@ -72,6 +89,12 @@ public class DJI2RTKStateAdapter implements RTKStateAdapter, RTKSystemStateListe
             if (rtkNetworkManager != null) {
                 rtk.getCustomRTKManager().removeNetworkRTKServiceInfoListener(this);
             }
+
+            final IRTKStationManager rtkStationManager = rtk.getRTKStationManager();
+            if (rtkStationManager != null) {
+                rtkStationManager.removeRTKStationConnectStatusListener(stationConnectStatusListener);
+                rtkStationManager.removeConnectedRTKStationInfoListener(stationInfoListener);
+            }
         }
     }
 
@@ -81,12 +104,20 @@ public class DJI2RTKStateAdapter implements RTKStateAdapter, RTKSystemStateListe
 
     @Override
     public boolean isConnected() {
-        return systemState != null && systemState.getRTKConnected();
+        if (systemState != null && systemState.getRTKConnected()) {
+            return true;
+        }
+
+        return stationConnectionState != null && stationConnectionState == RTKStationConnetState.CONNECTED;
     }
 
     @Override
     public boolean isEnabled() {
-        return systemState != null && systemState.getIsRTKEnabled();
+        if (systemState != null && systemState.getIsRTKEnabled()) {
+            return true;
+        }
+
+        return stationInfo != null;
     }
 
     @Override
@@ -161,8 +192,17 @@ public class DJI2RTKStateAdapter implements RTKStateAdapter, RTKSystemStateListe
             }
         }
 
+        final ConnectedRTKStationInfo stationInfo = this.stationInfo;
+        if (stationInfo != null) {
+            //TODO localize
+            messages.add(new Message("Signal", (int)((stationInfo.getSignalLevel().doubleValue() / 5.0) * 100.0) + "%", stationInfo.getSignalLevel() < 2 ? Message.Level.WARNING :  Message.Level.INFO));
+            messages.add(new Message("Battery", stationInfo.getBatteryCapacityPercent() + "%", stationInfo.getBatteryCapacityPercent() < 20 ? Message.Level.WARNING :  Message.Level.INFO));
+            messages.add(new Message("Station ID", stationInfo.getStationId().toString()));
+        }
+
         return messages;
     }
+
     @Override
     public void onErrorCodeUpdate(final IDJIError code) {
         this.customNetworkError = code;
