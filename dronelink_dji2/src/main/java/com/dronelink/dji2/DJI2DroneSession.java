@@ -24,6 +24,7 @@ import com.dronelink.core.adapters.CameraAdapter;
 import com.dronelink.core.adapters.CameraStateAdapter;
 import com.dronelink.core.adapters.DroneAdapter;
 import com.dronelink.core.adapters.DroneStateAdapter;
+import com.dronelink.core.adapters.FlyZoneStateAdapter;
 import com.dronelink.core.adapters.GimbalAdapter;
 import com.dronelink.core.adapters.GimbalStateAdapter;
 import com.dronelink.core.adapters.LiveStreamingAdapter;
@@ -534,6 +535,11 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
     @Override
     public DatedValue<BatteryStateAdapter> getBatteryState(final int index) {
         return droneAdapter.getBatteryState(index);
+    }
+
+    @Override
+    public DatedValue<FlyZoneStateAdapter> getFlyZoneState() {
+        return droneAdapter.getFlyZoneState();
     }
 
     @Override

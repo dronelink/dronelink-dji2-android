@@ -21,6 +21,8 @@ import com.dronelink.core.adapters.CameraStateAdapter;
 import com.dronelink.core.adapters.DroneAdapter;
 import com.dronelink.core.adapters.DroneStateAdapter;
 import com.dronelink.core.adapters.EnumElement;
+import com.dronelink.core.adapters.FlyZoneAdapter;
+import com.dronelink.core.adapters.FlyZoneStateAdapter;
 import com.dronelink.core.adapters.GimbalAdapter;
 import com.dronelink.core.adapters.GimbalStateAdapter;
 import com.dronelink.core.adapters.LiveStreamingAdapter;
@@ -134,6 +136,7 @@ public class DJI2DroneAdapter implements DroneAdapter {
     private final Map<ComponentIndexType, GimbalAdapter> gimbals = new HashMap<>();
     private final Map<Integer, DJI2BatteryAdapter> batteries = new HashMap<>();
     private final DJI2RTKAdapter rtk;
+    private final DJI2FlyZoneAdapter flyZone;
     private final DJI2LiveStreamingAdapter liveStreaming;
 
     public DJI2DroneAdapter(final Context context, final CommonCallbacks.CompletionCallbackWithParam<String> onSerialNumber, final CameraFileGeneratedCallback cameraFileReceiver) {
@@ -260,6 +263,7 @@ public class DJI2DroneAdapter implements DroneAdapter {
         }
 
         rtk = new DJI2RTKAdapter(context, this);
+        flyZone = new DJI2FlyZoneAdapter(context);
         liveStreaming = new DJI2LiveStreamingAdapter(context);
     }
 
@@ -391,6 +395,11 @@ public class DJI2DroneAdapter implements DroneAdapter {
     @Override
     public RTKAdapter getRTK() {
         return rtk;
+    }
+
+    @Override
+    public FlyZoneAdapter getFlyZone() {
+        return flyZone;
     }
 
     @Override
@@ -548,6 +557,14 @@ public class DJI2DroneAdapter implements DroneAdapter {
         final DJI2BatteryAdapter battery = (DJI2BatteryAdapter) getBattery(index);
         if (battery != null) {
             return battery.getState();
+        }
+        return null;
+    }
+
+    public DatedValue<FlyZoneStateAdapter> getFlyZoneState() {
+        final DJI2FlyZoneAdapter flyZone = (DJI2FlyZoneAdapter)getFlyZone();
+        if (flyZone != null) {
+            return flyZone.getState();
         }
         return null;
     }

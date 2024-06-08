@@ -167,6 +167,11 @@ public class DJI2DroneSessionManager implements DroneSessionManager {
     }
 
     @Override
+    public void restrictedFlyZoneLicenses(Command.Finisher finishedWithError, Command.FinisherWith<String> finishedWithValue) {
+
+    }
+
+    @Override
     public void unlockAuthorizationFlyZone(final String flyZoneID, final Command.Finisher finisher) {
         int flyZoneIDResolved;
         try {
@@ -177,6 +182,11 @@ public class DJI2DroneSessionManager implements DroneSessionManager {
             return;
         }
         FlyZoneManager.getInstance().unlockAuthorizationFlyZone(flyZoneIDResolved, DronelinkDJI2.createCompletionCallback(finisher));
+    }
+
+    @Override
+    public void unlockRestrictedFlyZone(String license, Command.Finisher finisher) {
+
     }
 
     @Override
