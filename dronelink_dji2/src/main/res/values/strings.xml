@@ -5,6 +5,7 @@
     <string name="MissionDisengageReason_take_off_failed_title">Unable to Take Off</string>
     <string name="MissionDisengageReason_take_control_failed_title">Unable to Take Control</string>
     <string name="MissionDisengageReason_take_control_failed_rc_mode_details">Please toggle the RC flight mode switch to N (Normal) to continue.</string>
+    <string name="MissionDisengageReason_take_control_failed_rc_mode_verify_details">Please make sure the mode switch is set to N.</string>
     <string name="MissionDisengageReason_take_control_failed_flight_mode_details">Please make sure the drone flight mode is P-GPS to continue.</string>
     <string name="MissionDisengageReason_telemetry_delayed_title">Weak Signal</string>
     <string name="MissionDisengageReason_telemetry_delayed_details">• Please point the RC antennas towards the drone.\n• If the signal does not improve, try moving closer to the drone.\n• If the signal still does not improve, move to an area with fewer obstacles or RF interference.</string>

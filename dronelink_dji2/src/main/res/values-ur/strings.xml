@@ -5,6 +5,7 @@
     <string name="MissionDisengageReason_take_off_failed_title">ٹیک آف کرنے سے قاصر</string>
     <string name="MissionDisengageReason_take_control_failed_title">کنٹرول کرنے سے قاصر</string>
     <string name="MissionDisengageReason_take_control_failed_rc_mode_details">جاری رکھنے کے لیے براہ کرم RC فلائٹ موڈ سوئچ کو N (نارمل) پر ٹوگل کریں۔</string>
+    <string name="MissionDisengageReason_take_control_failed_rc_mode_verify_details">براہ کرم یقینی بنائیں کہ موڈ سوئچ N پر سیٹ ہے۔</string>
     <string name="MissionDisengageReason_take_control_failed_flight_mode_details">براہ کرم یقینی بنائیں کہ جاری رکھنے کے لیے ڈرون فلائٹ موڈ P-GPS ہے۔</string>
     <string name="MissionDisengageReason_telemetry_delayed_title">کمزور سگنل</string>
     <string name="MissionDisengageReason_telemetry_delayed_details">• براہ کرم RC انٹینا کو ڈرون کی طرف رکھیں۔\n• اگر سگنل بہتر نہیں ہوتا ہے تو ڈرون کے قریب جانے کی کوشش کریں۔\n• اگر سگنل اب بھی بہتر نہیں ہوتا ہے تو کم رکاوٹوں یا RF مداخلت والے علاقے میں جائیں۔</string>

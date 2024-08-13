@@ -5,6 +5,7 @@
     <string name="MissionDisengageReason_take_off_failed_title">Incapaz de despegar</string>
     <string name="MissionDisengageReason_take_control_failed_title">Incapaz de tomar el control</string>
     <string name="MissionDisengageReason_take_control_failed_rc_mode_details">Cambie el interruptor de modo de vuelo RC a N (Normal) para continuar.</string>
+    <string name="MissionDisengageReason_take_control_failed_rc_mode_verify_details">Asegúrese de que el interruptor de modo esté configurado en N.</string>
     <string name="MissionDisengageReason_take_control_failed_flight_mode_details">Asegúrese de que el modo de vuelo del dron sea P-GPS para continuar.</string>
     <string name="MissionDisengageReason_telemetry_delayed_title">Señal débil</string>
     <string name="MissionDisengageReason_telemetry_delayed_details">• Apunte las antenas RC hacia el dron.\n• Si la señal no mejora, intente acercarse al dron.\n• Si la señal sigue sin mejorar, muévase a un área con menos obstáculos o interferencias de radiofrecuencia.</string>
