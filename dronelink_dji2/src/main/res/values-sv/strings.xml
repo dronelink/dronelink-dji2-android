@@ -5,6 +5,7 @@
     <string name="MissionDisengageReason_take_off_failed_title">Kan inte lyfta</string>
     <string name="MissionDisengageReason_take_control_failed_title">Kan inte ta kontroll</string>
     <string name="MissionDisengageReason_take_control_failed_rc_mode_details">Vänligen växla RC-flyglägesomkopplaren till N (Normal) för att fortsätta.</string>
+    <string name="MissionDisengageReason_take_control_failed_rc_mode_verify_details">Se till att lägesomkopplaren är inställd på N.</string>
     <string name="MissionDisengageReason_take_control_failed_flight_mode_details">Se till att drönarflygläget är P-GPS för att fortsätta.</string>
     <string name="MissionDisengageReason_telemetry_delayed_title">Svag signal</string>
     <string name="MissionDisengageReason_telemetry_delayed_details">• Rikta RC-antennerna mot drönaren.\n• Om signalen inte förbättras, försök att flytta närmare drönaren.\n• Om signalen fortfarande inte förbättras, flytta till ett område med färre hinder eller RF-störningar.</string>

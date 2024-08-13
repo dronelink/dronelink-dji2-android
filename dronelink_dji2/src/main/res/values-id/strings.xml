@@ -5,6 +5,7 @@
     <string name="MissionDisengageReason_take_off_failed_title">Tidak Dapat Lepas Landas</string>
     <string name="MissionDisengageReason_take_control_failed_title">Tidak Dapat Mengambil Kendali</string>
     <string name="MissionDisengageReason_take_control_failed_rc_mode_details">Harap alihkan sakelar mode penerbangan RC ke N (Normal) untuk melanjutkan.</string>
+    <string name="MissionDisengageReason_take_control_failed_rc_mode_verify_details">Pastikan sakelar mode diatur ke N.</string>
     <string name="MissionDisengageReason_take_control_failed_flight_mode_details">Harap pastikan mode penerbangan drone adalah P-GPS untuk melanjutkan.</string>
     <string name="MissionDisengageReason_telemetry_delayed_title">Sinyal lemah</string>
     <string name="MissionDisengageReason_telemetry_delayed_details">• Harap arahkan antena RC ke arah drone.\n• Jika sinyal tidak membaik, coba mendekat ke drone.\n• Jika sinyal masih tidak membaik, pindahlah ke area dengan lebih sedikit rintangan atau gangguan RF.</string>

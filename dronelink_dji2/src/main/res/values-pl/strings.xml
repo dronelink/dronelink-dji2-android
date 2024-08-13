@@ -5,6 +5,7 @@
     <string name="MissionDisengageReason_take_off_failed_title">Nie można wystartować</string>
     <string name="MissionDisengageReason_take_control_failed_title">Nie można przejąć kontroli</string>
     <string name="MissionDisengageReason_take_control_failed_rc_mode_details">Przełącz przełącznik trybu lotu RC na N (Normalny), aby kontynuować.</string>
+    <string name="MissionDisengageReason_take_control_failed_rc_mode_verify_details">Upewnij się, że przełącznik trybu jest ustawiony w pozycji N.</string>
     <string name="MissionDisengageReason_take_control_failed_flight_mode_details">Aby kontynuować, upewnij się, że tryb lotu drona to P-GPS.</string>
     <string name="MissionDisengageReason_telemetry_delayed_title">Słaby sygnał</string>
     <string name="MissionDisengageReason_telemetry_delayed_details">• Skieruj anteny RC w stronę drona.\n• Jeśli sygnał się nie poprawi, spróbuj zbliżyć się do drona.\n• Jeśli sygnał nadal się nie poprawi, przenieś się w miejsce, gdzie jest mniej przeszkód lub zakłóceń radiowych.</string>

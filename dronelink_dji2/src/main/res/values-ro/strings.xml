@@ -5,6 +5,7 @@
     <string name="MissionDisengageReason_take_off_failed_title">Nu se poate decola</string>
     <string name="MissionDisengageReason_take_control_failed_title">Incapabil să preia controlul</string>
     <string name="MissionDisengageReason_take_control_failed_rc_mode_details">Vă rugăm să comutați comutatorul modului de zbor RC la N (Normal) pentru a continua.</string>
+    <string name="MissionDisengageReason_take_control_failed_rc_mode_verify_details">Vă rugăm să vă asigurați că comutatorul de mod este setat pe N.</string>
     <string name="MissionDisengageReason_take_control_failed_flight_mode_details">Vă rugăm să vă asigurați că modul de zbor al dronei este P-GPS pentru a continua.</string>
     <string name="MissionDisengageReason_telemetry_delayed_title">Semnal slab</string>
     <string name="MissionDisengageReason_telemetry_delayed_details">• Vă rugăm să îndreptați antenele RC către dronă.\n• Dacă semnalul nu se îmbunătățește, încercați să vă apropiați de dronă.\n• Dacă semnalul tot nu se îmbunătățește, mutați-vă într-o zonă cu mai puține obstacole sau interferențe RF.</string>

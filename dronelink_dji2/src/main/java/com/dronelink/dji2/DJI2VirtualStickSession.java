@@ -171,7 +171,10 @@ public class DJI2VirtualStickSession implements DroneControlSession, VirtualStic
                         @Override
                         public void onFailure(final @NonNull IDJIError error) {
                             if (virtualStickAttempts >= 5) {
-                                attemptDisengageReason = new Message(context.getString(R.string.MissionDisengageReason_take_control_failed_title), error.description());
+                                final String messageDetails = error.description() == null || error.description().isEmpty()
+                                        ? context.getString(R.string.MissionDisengageReason_take_control_failed_rc_mode_verify_details)
+                                        : error.description();
+                                attemptDisengageReason = new Message(context.getString(R.string.MissionDisengageReason_take_control_failed_title), messageDetails);
                                 deactivate();
                             }
                             else {
@@ -195,7 +198,8 @@ public class DJI2VirtualStickSession implements DroneControlSession, VirtualStic
 
                 if (flightModeJoystickAttemptingStarted != null) {
                     if ((System.currentTimeMillis() - flightModeJoystickAttemptingStarted.getTime()) > 2000) {
-                        attemptDisengageReason = new Message(context.getString(R.string.MissionDisengageReason_take_control_failed_title));
+                        attemptDisengageReason = new Message(context.getString(R.string.MissionDisengageReason_take_control_failed_title),
+                                context.getString(R.string.MissionDisengageReason_take_control_failed_rc_mode_verify_details));
                         deactivate();
                         return false;
                     }

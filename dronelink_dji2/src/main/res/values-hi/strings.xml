@@ -5,6 +5,7 @@
     <string name="MissionDisengageReason_take_off_failed_title">उतारने में असमर्थ</string>
     <string name="MissionDisengageReason_take_control_failed_title">नियंत्रण करने में असमर्थ</string>
     <string name="MissionDisengageReason_take_control_failed_rc_mode_details">कृपया जारी रखने के लिए आरसी उड़ान मोड स्विच को एन (सामान्य) पर टॉगल करें।</string>
+    <string name="MissionDisengageReason_take_control_failed_rc_mode_verify_details">कृपया सुनिश्चित करें कि मोड स्विच N पर सेट है।</string>
     <string name="MissionDisengageReason_take_control_failed_flight_mode_details">जारी रखने के लिए कृपया सुनिश्चित करें कि ड्रोन उड़ान मोड पी-जीपीएस है।</string>
     <string name="MissionDisengageReason_telemetry_delayed_title">कमजोर संकेत</string>
     <string name="MissionDisengageReason_telemetry_delayed_details">• कृपया आरसी एंटेना को ड्रोन की ओर इंगित करें।\n• यदि सिग्नल में सुधार नहीं होता है, तो ड्रोन के करीब जाने का प्रयास करें।\n• यदि सिग्नल अभी भी नहीं सुधरता है, तो कम बाधाओं या आरएफ हस्तक्षेप वाले क्षेत्र में जाएं।</string>
