@@ -162,7 +162,6 @@ public class DJI2DroneSessionManager implements DroneSessionManager {
                         }
                     });
 
-                    UASRemoteIDManager.getInstance().setUASRemoteIDAreaStrategy(AreaStrategy.US_STRATEGY);
                     UASRemoteIDManager.getInstance().addUASRemoteIDStatusListener(status -> {
                         uasRemoteIDStatus = status;
                     });
