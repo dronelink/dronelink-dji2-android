@@ -5,6 +5,7 @@
     <string name="MissionDisengageReason_take_off_failed_title">Невозможно взлететь</string>
     <string name="MissionDisengageReason_take_control_failed_title">Невозможно взять под контроль</string>
     <string name="MissionDisengageReason_take_control_failed_rc_mode_details">Пожалуйста, переключите переключатель режима полета RC в положение N (нормальный), чтобы продолжить.</string>
+    <string name="MissionDisengageReason_take_control_failed_rc_mode_verify_details">Убедитесь, что переключатель режима установлен в положение N.</string>
     <string name="MissionDisengageReason_take_control_failed_flight_mode_details">Пожалуйста, убедитесь, что режим полета дрона P-GPS, чтобы продолжить.</string>
     <string name="MissionDisengageReason_telemetry_delayed_title">Слабый сигнал</string>
     <string name="MissionDisengageReason_telemetry_delayed_details">• Направьте антенны ДУ на дрон.\n• Если сигнал не улучшится, попробуйте приблизиться к дрону.\n• Если сигнал по-прежнему не улучшится, переместитесь в место с меньшим количеством препятствий или радиопомех.</string>

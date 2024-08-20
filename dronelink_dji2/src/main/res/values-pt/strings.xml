@@ -5,6 +5,7 @@
     <string name="MissionDisengageReason_take_off_failed_title">Incapaz de decolar</string>
     <string name="MissionDisengageReason_take_control_failed_title">Incapaz de Assumir o Controle</string>
     <string name="MissionDisengageReason_take_control_failed_rc_mode_details">Mude o modo de voo RC para N (Normal) para continuar.</string>
+    <string name="MissionDisengageReason_take_control_failed_rc_mode_verify_details">Certifique-se de que o interruptor de modo esteja na posição N.</string>
     <string name="MissionDisengageReason_take_control_failed_flight_mode_details">Certifique-se de que o modo de voo do drone é P-GPS para continuar.</string>
     <string name="MissionDisengageReason_telemetry_delayed_title">Sinal fraco</string>
     <string name="MissionDisengageReason_telemetry_delayed_details">• Aponte as antenas RC para o drone.\n• Se o sinal não melhorar, tente se aproximar do drone.\n• Se o sinal ainda não melhorar, vá para uma área com menos obstáculos ou interferência de RF.</string>

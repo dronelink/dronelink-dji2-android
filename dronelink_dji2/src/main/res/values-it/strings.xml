@@ -5,6 +5,7 @@
     <string name="MissionDisengageReason_take_off_failed_title">Impossibile decollare</string>
     <string name="MissionDisengageReason_take_control_failed_title">Impossibile prendere il controllo</string>
     <string name="MissionDisengageReason_take_control_failed_rc_mode_details">Spostare l\'interruttore della modalità di volo RC su N (Normale) per continuare.</string>
+    <string name="MissionDisengageReason_take_control_failed_rc_mode_verify_details">Assicurarsi che l\'interruttore di modalità sia impostato su N.</string>
     <string name="MissionDisengageReason_take_control_failed_flight_mode_details">Assicurati che la modalità di volo del drone sia P-GPS per continuare.</string>
     <string name="MissionDisengageReason_telemetry_delayed_title">Segnale debole</string>
     <string name="MissionDisengageReason_telemetry_delayed_details">• Punta le antenne RC verso il drone.\n• Se il segnale non migliora, prova ad avvicinarti al drone.\n• Se il segnale continua a non migliorare, spostati in un\'area con meno ostacoli o interferenze RF.</string>

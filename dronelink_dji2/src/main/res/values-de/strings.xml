@@ -5,6 +5,7 @@
     <string name="MissionDisengageReason_take_off_failed_title">Abheben nicht möglich</string>
     <string name="MissionDisengageReason_take_control_failed_title">Die Kontrolle kann nicht übernommen werden</string>
     <string name="MissionDisengageReason_take_control_failed_rc_mode_details">Bitte schalten Sie den RC-Flugmodusschalter auf N (Normal), um fortzufahren.</string>
+    <string name="MissionDisengageReason_take_control_failed_rc_mode_verify_details">Bitte stellen Sie sicher, dass der Modusschalter auf N steht.</string>
     <string name="MissionDisengageReason_take_control_failed_flight_mode_details">Bitte stellen Sie sicher, dass der Drohnenflugmodus P-GPS ist, um fortzufahren.</string>
     <string name="MissionDisengageReason_telemetry_delayed_title">Schwaches Signal</string>
     <string name="MissionDisengageReason_telemetry_delayed_details">• Bitte richten Sie die RC-Antennen auf die Drohne.\n• Wenn sich das Signal nicht verbessert, versuchen Sie, näher an die Drohne heranzukommen.\n• Wenn sich das Signal immer noch nicht verbessert, bewegen Sie sich in einen Bereich mit weniger Hindernissen oder HF-Störungen.</string>
