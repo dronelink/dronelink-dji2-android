@@ -374,21 +374,6 @@ public class DJI2DroneStateAdapter implements DroneStateAdapter, PerceptionInfor
     }
 
     @Override
-    public double getVelocityX() {
-        return velocity.getX();
-    }
-
-    @Override
-    public double getVelocityY() {
-        return velocity.getY();
-    }
-
-    @Override
-    public double getVelocityZ() {
-        return velocity.getZ();
-    }
-
-    @Override
     public double getHorizontalSpeed() {
         return Math.sqrt(Math.pow(velocity.getX(), 2) + Math.pow(velocity.getY(), 2));
     }
