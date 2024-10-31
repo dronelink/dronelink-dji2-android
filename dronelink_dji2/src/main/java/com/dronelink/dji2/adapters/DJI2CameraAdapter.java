@@ -291,7 +291,7 @@ public class DJI2CameraAdapter implements CameraAdapter {
                 case BROADCAST:
                 case UNKNOWN:
                     Log.i(TAG, "Camera start capture invalid mode: " + state.getMode().toString());
-                    return new CommandError(context.getString(R.string.MissionDisengageReason_drone_camera_mode_invalid_title));
+                    return new CommandError(context.getString(com.dronelink.core.R.string.MissionDisengageReason_drone_camera_mode_invalid_title));
             }
         }
 
@@ -352,7 +352,7 @@ public class DJI2CameraAdapter implements CameraAdapter {
                 case BROADCAST:
                 case UNKNOWN:
                     Log.i(TAG, "Camera start capture invalid mode: " + state.getMode().toString());
-                    return new CommandError(context.getString(R.string.MissionDisengageReason_drone_camera_mode_invalid_title));
+                    return new CommandError(context.getString(com.dronelink.core.R.string.MissionDisengageReason_drone_camera_mode_invalid_title));
             }
         }
 

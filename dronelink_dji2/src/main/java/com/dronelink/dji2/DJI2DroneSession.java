@@ -272,7 +272,7 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
 
         final FlightMode flightMode = droneAdapter.state.flightMode;
         if (flightMode == null) {
-            return new Message(context.getString(R.string.MissionDisengageReason_telemetry_unavailable_title));
+            return new Message(context.getString(com.dronelink.core.R.string.MissionDisengageReason_telemetry_unavailable_title));
         }
 
         if (isTelemetryDelayed()) {
