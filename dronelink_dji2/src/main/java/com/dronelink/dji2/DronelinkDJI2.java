@@ -3433,8 +3433,6 @@ public class DronelinkDJI2 {
                     return RTKReferenceStationSource.NTRIP_NETWORK_SERVICE;
                 case DOCK_BASE:
                     return RTKReferenceStationSource.DOCK_BASE;
-                case RSV_RTK_SERVICE2:
-                    return RTKReferenceStationSource.RSV_RTK_SERVICE2;
                 case RSV_RTK_SERVICE3:
                     return RTKReferenceStationSource.RSV_RTK_SERVICE3;
                 case UNKNOWN:
@@ -3461,8 +3459,6 @@ public class DronelinkDJI2 {
                     return dji.sdk.keyvalue.value.rtkbasestation.RTKReferenceStationSource.NTRIP_NETWORK_SERVICE;
                 case DOCK_BASE:
                     return dji.sdk.keyvalue.value.rtkbasestation.RTKReferenceStationSource.DOCK_BASE;
-                case RSV_RTK_SERVICE2:
-                    return dji.sdk.keyvalue.value.rtkbasestation.RTKReferenceStationSource.RSV_RTK_SERVICE2;
                 case RSV_RTK_SERVICE3:
                     return dji.sdk.keyvalue.value.rtkbasestation.RTKReferenceStationSource.RSV_RTK_SERVICE3;
                 case UNKNOWN:
