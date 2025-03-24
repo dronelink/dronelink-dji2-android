@@ -49,6 +49,7 @@ import dji.sdk.keyvalue.value.gimbal.GimbalAngleRotationMode;
 import dji.sdk.keyvalue.value.gimbal.GimbalAttitudeRange;
 import dji.sdk.keyvalue.value.gimbal.GimbalResetType;
 import dji.sdk.keyvalue.value.gimbal.GimbalSpeedRotation;
+import dji.sdk.keyvalue.value.product.ProductType;
 import dji.v5.common.callback.CommonCallbacks;
 import dji.v5.common.error.IDJIError;
 import dji.v5.manager.KeyManager;
@@ -60,6 +61,7 @@ public class DJI2GimbalAdapter implements GimbalAdapter {
 
     private final DJI2ListenerGroup listeners = new DJI2ListenerGroup();
 
+    private final DJI2DroneAdapter drone;
     private final ComponentIndexType index;
 
     private final EnumElementsCollection enumElements = new EnumElementsCollection();
@@ -68,7 +70,8 @@ public class DJI2GimbalAdapter implements GimbalAdapter {
     private boolean isYawAdjustSupported = false;
     private GimbalSpeedRotation pendingSpeedRotation;
 
-    public DJI2GimbalAdapter(final ComponentIndexType index) {
+    public DJI2GimbalAdapter(final DJI2DroneAdapter drone, final ComponentIndexType index) {
+        this.drone = drone;
         this.index = index;
         this.state = new DJI2GimbalStateAdapter(index);
 
@@ -118,7 +121,9 @@ public class DJI2GimbalAdapter implements GimbalAdapter {
         rotation.setDuration(DronelinkDJI2.GimbalRotationMinTime);
         rotation.setMode(GimbalAngleRotationMode.ABSOLUTE_ANGLE);
         rotation.setPitch(-12.0);
-        rotation.setRoll(0.0);
+        if (isAdjustRollAngleSupported()) {
+            rotation.setRoll(0.0);
+        }
         if (isYawAdjustSupported && state.getMode() != GimbalMode.YAW_FOLLOW) {
             KeyManager.getInstance().setValue(createKey(GimbalKey.KeyGimbalMode), dji.sdk.keyvalue.value.gimbal.GimbalMode.YAW_FOLLOW, null);
             KeyManager.getInstance().performAction(createKey(GimbalKey.KeyGimbalReset), null);
@@ -206,12 +211,18 @@ public class DJI2GimbalAdapter implements GimbalAdapter {
                 rotation.setPitch(pitch);
             }
 
-            if (roll != null) {
+            if (roll != null && isAdjustRollAngleSupported()) {
                 rotation.setRoll(roll);
+            }
+            else {
+                rotation.setRollIgnored(true);
             }
 
             if (yaw != null) {
                 rotation.setYaw(yaw);
+            }
+            else {
+                rotation.setYawIgnored(true);
             }
 
             rotation.setMode(GimbalAngleRotationMode.ABSOLUTE_ANGLE);
@@ -234,6 +245,10 @@ public class DJI2GimbalAdapter implements GimbalAdapter {
         }
 
         return new CommandError(context.getString(R.string.MissionDisengageReason_command_type_unhandled) + ": " + command.type);
+    }
+
+    private boolean isAdjustRollAngleSupported() {
+        return drone.productType != ProductType.DJI_MINI_4_PRO;
     }
 
     private boolean isAdjustYaw360Supported() {
@@ -262,7 +277,7 @@ public class DJI2GimbalAdapter implements GimbalAdapter {
             verified = Math.abs(Convert.AngleDifferenceSigned(command.orientation.getPitch(), state.getOrientation().getPitch())) <= threshold;
         }
 
-        if (command.orientation.getRoll() != null) {
+        if (command.orientation.getRoll() != null && isAdjustRollAngleSupported()) {
             verified = verified && Math.abs(Convert.AngleDifferenceSigned(command.orientation.getRoll(), state.getOrientation().getRoll())) <= threshold;
         }
 

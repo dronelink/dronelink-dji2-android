@@ -182,7 +182,7 @@ public class DJI2DroneAdapter implements DroneAdapter {
                             }
                         } else {
                             Log.i(TAG, "Gimbal connected: " + index.name());
-                            gimbals.put(index, new DJI2GimbalAdapter(index));
+                            gimbals.put(index, new DJI2GimbalAdapter(this, index));
                         }
                     }
                 });

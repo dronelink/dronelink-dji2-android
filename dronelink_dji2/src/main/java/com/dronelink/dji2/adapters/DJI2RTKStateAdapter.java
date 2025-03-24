@@ -46,7 +46,7 @@ public class DJI2RTKStateAdapter implements RTKStateAdapter, RTKSystemStateListe
 
     private RTKSystemState systemState;
     private final RTKLocationInfoListener locationInfoListener;
-    private RTKLocationInfo locationInfo;
+    public RTKLocationInfo locationInfo;
     private dji.sdk.keyvalue.value.rtkbasestation.RTKServiceState serviceState;
     private IDJIError customNetworkError;
     private RTKStationConnectStatusListener stationConnectStatusListener;

@@ -11,11 +11,13 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.dronelink.core.DatedValue;
 import com.dronelink.core.DroneControlSession;
-import com.dronelink.core.LocaleUtil;
+import com.dronelink.core.adapters.RTKStateAdapter;
 import com.dronelink.core.kernel.core.Message;
 import com.dronelink.core.kernel.core.enums.ExecutionEngine;
 import com.dronelink.dji2.adapters.DJI2DroneAdapter;
+import com.dronelink.dji2.adapters.DJI2RTKStateAdapter;
 
 import java.util.Date;
 
@@ -24,9 +26,12 @@ import dji.sdk.keyvalue.key.KeyTools;
 import dji.sdk.keyvalue.value.common.EmptyMsg;
 import dji.sdk.keyvalue.value.flightcontroller.FlightControlAuthorityChangeReason;
 import dji.sdk.keyvalue.value.flightcontroller.FlightMode;
+import dji.sdk.keyvalue.value.flightcontroller.GPSSignalLevel;
+import dji.sdk.keyvalue.value.rtkmobilestation.RTKLocation;
 import dji.v5.common.callback.CommonCallbacks;
 import dji.v5.common.error.IDJIError;
 import dji.v5.manager.KeyManager;
+import dji.v5.manager.aircraft.rtk.RTKLocationInfo;
 import dji.v5.manager.aircraft.virtualstick.VirtualStickManager;
 import dji.v5.manager.aircraft.virtualstick.VirtualStickState;
 import dji.v5.manager.aircraft.virtualstick.VirtualStickStateListener;
@@ -69,6 +74,30 @@ public class DJI2VirtualStickSession implements DroneControlSession, VirtualStic
     public Message getDisengageReason() {
         if (attemptDisengageReason != null) {
             return attemptDisengageReason;
+        }
+
+        final DatedValue<RTKStateAdapter> rtkState = droneAdapter.getRTKState();
+        if (rtkState != null && rtkState.value != null && rtkState.value.isEnabled()) {
+            if (rtkState.value instanceof DJI2RTKStateAdapter) {
+                final DJI2RTKStateAdapter djiRTKState = (DJI2RTKStateAdapter)rtkState.value;
+                final RTKLocationInfo locationInfo = djiRTKState.locationInfo;
+                if (locationInfo != null) {
+                    final RTKLocation rtkLocation = locationInfo.getRtkLocation();
+                    switch (rtkLocation.getPositioningSolution()) {
+                        case FLOAT:
+                        case FIXED_POINT:
+                            break;
+                        case SINGLE_POINT:
+                        case NONE:
+                        case UNKNOWN:
+                            return new Message(context.getString(R.string.DJI2DroneStateAdapter_statusMessages_locationUnavailable_title), context.getString(R.string.DJI2DroneStateAdapter_statusMessages_locationUnavailable_details));
+                    }
+                }
+            }
+        }
+
+        if (droneAdapter.state.getGPSSignalStrength() < DronelinkDJI2.getGPSSignalStrength(GPSSignalLevel.LEVEL_3)) {
+            return new Message(context.getString(R.string.DJI2DroneStateAdapter_statusMessages_locationUnavailable_title), context.getString(R.string.DJI2DroneStateAdapter_statusMessages_locationUnavailable_details));
         }
 
         if (state == State.FLIGHT_MODE_JOYSTICK_COMPLETE) {

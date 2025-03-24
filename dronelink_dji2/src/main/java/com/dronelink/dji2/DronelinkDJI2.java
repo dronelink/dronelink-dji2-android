@@ -3245,60 +3245,21 @@ public class DronelinkDJI2 {
                     return context.getString(R.string.DronelinkDJI2_ProductType_value_M300_RTK);
                 case M350_RTK:
                     return "M350 RTK";
+                case DJI_MATRICE_4_SERIES:
+                    return "Matrice 4";
+                case DJI_MATRICE_4D_SERIES:
+                    return "Matrice 4D";
                 case DJI_MINI_3:
                     return context.getString(R.string.DronelinkDJI2_ProductType_value_DJI_MINI_3);
                 case DJI_MINI_3_PRO:
                     return context.getString(R.string.DronelinkDJI2_ProductType_value_DJI_MINI_3_PRO);
+                case DJI_MINI_4_PRO:
+                    return "DJI Mini 4 Pro";
                 case UNRECOGNIZED:
                     return context.getString(R.string.DronelinkDJI2_ProductType_value_UNRECOGNIZED);
                 case UNKNOWN:
                     return context.getString(R.string.DronelinkDJI2_ProductType_value_UNKNOWN);
-                case OSMO:
-                case P4:
-                case MAVIC_PRO:
-                case OSMO_PRO:
-                case OSMO_RAW:
-                case OSMO_PLUS:
-                case P4P:
-                case P4A:
-                case P4R:
-                case OSMO_MOBILE1:
-                case MAVIC_AIR:
-                case OSMO_ACTION:
-                case OSMO_POCKET:
-                case MAVIC_2:
-                case P4P_V2:
-                case OSMO_MOBILE2:
-                case MAVIC_2_ENTERPRISE:
-                case MAVIC_MINI:
-                case M200_V2_SERIES:
-                case M200_V2_PRO:
-                case M200_V2_RTK:
-                case MG_T16:
-                case DRTK_2:
-                case OSMO_MOBILE3:
-                case MAVIC_AIR_2:
-                case FPV_SERIAL_2:
-                case DJI_AIR_2S:
-                case MAVIC_MINI_2:
-                case OSMO_MOBILE5:
-                case OSMO_ACTION_2:
-                case OSMO_ACTION_2_HASSELBLAD:
-                case AC202:
-                case HG212:
-                case MG_T20:
-                case NOT_SUPPORTED_1:
-                case NOT_SUPPORTED_2:
-                case NOT_SUPPORTED_3:
-                case NOT_SUPPORTED_4:
-                case NOT_SUPPORTED_5:
-                case NOT_SUPPORTED_6:
-                case OSMO_POCKET2:
-                case OSMO_MOBILE4:
-                case OSMO_MOBILE6:
-                case OSMO_MOBILE5_SE:
-                case DJI_MAVIC_3:
-                case MAVIC_MINI_SE:
+                default:
                     return value.name();
             }
         }
