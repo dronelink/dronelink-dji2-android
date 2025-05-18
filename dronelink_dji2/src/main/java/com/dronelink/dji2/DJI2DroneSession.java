@@ -507,6 +507,7 @@ public class DJI2DroneSession implements DroneSession, DJI2DroneAdapter.CameraFi
                 return new DJI2VirtualStickSession(context, droneAdapter);
 
             case DJI:
+            case DJI2:
                 break;
 
             default:
