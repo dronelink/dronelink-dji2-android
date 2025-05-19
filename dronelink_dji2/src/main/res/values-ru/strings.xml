@@ -22,6 +22,9 @@
     <string name="MissionDisengageReason_command_type_unsupported_lens">Тип команды не поддерживается этим объективом</string>
     <string name="MissionDisengageReason_zoom_ratio_unsupported">Значение коэффициента масштабирования не поддерживается</string>
     <string name="MissionDisengageReason_command_value_invalid">Невозможно установить значение</string>
+    <string name="MissionDisengageReason_rtk_positioning_solution_unacceptable_title">Решение позиционирования RTK неприемлемо</string>
+    <string name="MissionDisengageReason_rtk_positioning_solution_unavailable_title">Решение позиционирования RTK недоступно</string>
+    <string name="MissionDisengageReason_gps_signal_level_weak_title">Слабый сигнал GPS</string>
     <string name="DJI2DroneSessionManager_initializing">Инициализация DJI SDK</string>
     <string name="DJI2DroneSessionManager_register_failed">Не удалось зарегистрировать DJI SDK</string>
     <string name="DJI2DroneSession_serial_number_failed">Серийный номер недоступен</string>

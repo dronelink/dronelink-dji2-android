@@ -22,6 +22,9 @@
     <string name="MissionDisengageReason_command_type_unsupported_lens">इस लेंस पर कमांड प्रकार असमर्थित है</string>
     <string name="MissionDisengageReason_zoom_ratio_unsupported">ज़ूम अनुपात मान असमर्थित</string>
     <string name="MissionDisengageReason_command_value_invalid">मान सेट करने में असमर्थ</string>
+    <string name="MissionDisengageReason_rtk_positioning_solution_unacceptable_title">आरटीके पोजिशनिंग समाधान अस्वीकार्य</string>
+    <string name="MissionDisengageReason_rtk_positioning_solution_unavailable_title">RTK पोजिशनिंग समाधान अनुपलब्ध</string>
+    <string name="MissionDisengageReason_gps_signal_level_weak_title">जीपीएस सिग्नल कमज़ोर</string>
     <string name="DJI2DroneSessionManager_initializing">डीजेआई एसडीके की शुरुआत</string>
     <string name="DJI2DroneSessionManager_register_failed">डीजेआई एसडीके पंजीकृत करने में असमर्थ</string>
     <string name="DJI2DroneSession_serial_number_failed">सीरियल नंबर अनुपलब्ध</string>

@@ -77,7 +77,7 @@ public class DJI2VirtualStickSession implements DroneControlSession, VirtualStic
         }
 
         final DatedValue<RTKStateAdapter> rtkState = droneAdapter.getRTKState();
-        if (rtkState != null && rtkState.value != null && rtkState.value.isEnabled()) {
+        if (rtkState != null && rtkState.value != null && rtkState.value.isEnabled() && rtkState.value.isConnected()) {
             if (rtkState.value instanceof DJI2RTKStateAdapter) {
                 final DJI2RTKStateAdapter djiRTKState = (DJI2RTKStateAdapter)rtkState.value;
                 final RTKLocationInfo locationInfo = djiRTKState.locationInfo;
@@ -88,16 +88,17 @@ public class DJI2VirtualStickSession implements DroneControlSession, VirtualStic
                         case FIXED_POINT:
                             break;
                         case SINGLE_POINT:
+                            return new Message(context.getString(R.string.MissionDisengageReason_rtk_positioning_solution_unacceptable_title), context.getString(R.string.DronelinkDJI2_RTKPositioningSolution_value_SINGLE_POINT));
                         case NONE:
                         case UNKNOWN:
-                            return new Message(context.getString(R.string.DJI2DroneStateAdapter_statusMessages_locationUnavailable_title), context.getString(R.string.DJI2DroneStateAdapter_statusMessages_locationUnavailable_details));
+                            return new Message(context.getString(R.string.MissionDisengageReason_rtk_positioning_solution_unavailable_title));
                     }
                 }
             }
         }
 
         if (droneAdapter.state.getGPSSignalStrength() < DronelinkDJI2.getGPSSignalStrength(GPSSignalLevel.LEVEL_3)) {
-            return new Message(context.getString(R.string.DJI2DroneStateAdapter_statusMessages_locationUnavailable_title), context.getString(R.string.DJI2DroneStateAdapter_statusMessages_locationUnavailable_details));
+            return new Message(context.getString(R.string.MissionDisengageReason_gps_signal_level_weak_title));
         }
 
         if (state == State.FLIGHT_MODE_JOYSTICK_COMPLETE) {

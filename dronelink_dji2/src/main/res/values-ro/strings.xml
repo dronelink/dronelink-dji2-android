@@ -22,6 +22,9 @@
     <string name="MissionDisengageReason_command_type_unsupported_lens">Tip de comandă Neacceptat pe acest obiectiv</string>
     <string name="MissionDisengageReason_zoom_ratio_unsupported">Valoarea raportului de zoom Neacceptată</string>
     <string name="MissionDisengageReason_command_value_invalid">Nu se poate seta valoarea</string>
+    <string name="MissionDisengageReason_rtk_positioning_solution_unacceptable_title">Soluție de poziționare RTK inacceptabilă</string>
+    <string name="MissionDisengageReason_rtk_positioning_solution_unavailable_title">Soluția de poziționare RTK indisponibilă</string>
+    <string name="MissionDisengageReason_gps_signal_level_weak_title">Semnal GPS slab</string>
     <string name="DJI2DroneSessionManager_initializing">Se inițializează DJI SDK</string>
     <string name="DJI2DroneSessionManager_register_failed">Nu se poate înregistra DJI SDK</string>
     <string name="DJI2DroneSession_serial_number_failed">Numărul de serie indisponibil</string>

@@ -22,6 +22,9 @@
     <string name="MissionDisengageReason_command_type_unsupported_lens">Tipo di comando non supportato su questo obiettivo</string>
     <string name="MissionDisengageReason_zoom_ratio_unsupported">Valore del rapporto di zoom non supportato</string>
     <string name="MissionDisengageReason_command_value_invalid">Impossibile impostare il valore</string>
+    <string name="MissionDisengageReason_rtk_positioning_solution_unacceptable_title">Soluzione di posizionamento RTK inaccettabile</string>
+    <string name="MissionDisengageReason_rtk_positioning_solution_unavailable_title">Soluzione di posizionamento RTK non disponibile</string>
+    <string name="MissionDisengageReason_gps_signal_level_weak_title">Segnale GPS debole</string>
     <string name="DJI2DroneSessionManager_initializing">Inizializzazione DJI SDK</string>
     <string name="DJI2DroneSessionManager_register_failed">Impossibile registrare DJI SDK</string>
     <string name="DJI2DroneSession_serial_number_failed">Numero di serie non disponibile</string>

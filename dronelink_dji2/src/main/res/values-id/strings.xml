@@ -22,6 +22,9 @@
     <string name="MissionDisengageReason_command_type_unsupported_lens">Jenis Perintah Tidak Didukung di Lensa ini</string>
     <string name="MissionDisengageReason_zoom_ratio_unsupported">Nilai Rasio Zoom Tidak Didukung</string>
     <string name="MissionDisengageReason_command_value_invalid">Tidak Dapat Menetapkan Nilai</string>
+    <string name="MissionDisengageReason_rtk_positioning_solution_unacceptable_title">Solusi Penentuan Posisi RTK Tidak Dapat Diterima</string>
+    <string name="MissionDisengageReason_rtk_positioning_solution_unavailable_title">Solusi Pemosisian RTK Tidak Tersedia</string>
+    <string name="MissionDisengageReason_gps_signal_level_weak_title">Sinyal GPS Lemah</string>
     <string name="DJI2DroneSessionManager_initializing">Menginisialisasi DJI SDK</string>
     <string name="DJI2DroneSessionManager_register_failed">Tidak dapat mendaftarkan DJI SDK</string>
     <string name="DJI2DroneSession_serial_number_failed">Nomor Seri Tidak Tersedia</string>

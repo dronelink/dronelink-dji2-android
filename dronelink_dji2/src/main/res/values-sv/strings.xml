@@ -22,6 +22,9 @@
     <string name="MissionDisengageReason_command_type_unsupported_lens">Kommandotyp stöds inte på detta objektiv</string>
     <string name="MissionDisengageReason_zoom_ratio_unsupported">Zoomförhållandet stöds inte</string>
     <string name="MissionDisengageReason_command_value_invalid">Det går inte att ställa in värde</string>
+    <string name="MissionDisengageReason_rtk_positioning_solution_unacceptable_title">RTK Positioneringslösning Oacceptabel</string>
+    <string name="MissionDisengageReason_rtk_positioning_solution_unavailable_title">RTK Positioneringslösning ej tillgänglig</string>
+    <string name="MissionDisengageReason_gps_signal_level_weak_title">GPS-signal svag</string>
     <string name="DJI2DroneSessionManager_initializing">Initierar DJI SDK</string>
     <string name="DJI2DroneSessionManager_register_failed">Det gick inte att registrera DJI SDK</string>
     <string name="DJI2DroneSession_serial_number_failed">Serienummer ej tillgängligt</string>

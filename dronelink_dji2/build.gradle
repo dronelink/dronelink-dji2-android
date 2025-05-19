@@ -8,7 +8,7 @@ android {
         targetSdkVersion 34
         compileSdk 34
         versionCode 1
-        versionName "5.0.1"
+        versionName "5.2.0"
         consumerProguardFiles 'consumer-rules.pro'
     }
 
@@ -28,6 +28,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':dronelink_core')
-    compileOnly 'com.dji:dji-sdk-v5-aircraft:5.13.0'
-    compileOnly 'com.dji:dji-sdk-v5-aircraft-provided:5.13.0'
+    compileOnly 'com.dji:dji-sdk-v5-aircraft:5.14.0'
+    compileOnly 'com.dji:dji-sdk-v5-aircraft-provided:5.14.0'
 }
