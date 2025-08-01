@@ -201,4 +201,8 @@
     <string name="DronelinkDJI2_RemoteIdWorkingState_value_OPERATOR_LOCATION_LOST_ERROR">Location Lost</string>
     <string name="DronelinkDJI2_RemoteIdWorkingState_value_FIRMWARE_ERROR">Firmware Error</string>
     <string name="DronelinkDJI2_RemoteIdWorkingState_value_UNKNOWN_ERROR">Unknown Error</string>
+    <string name="DJI2DroneSessionManager_location_unavailable">Drone Location Unavailable</string>
+    <string name="DJI2DroneSessionManager_session_unavailable">Drone Disconnected</string>
+    <string name="DJI2DroneSessionManager_authorization_fly_zones_unavailable">Unable to retrieve authorization fly zones</string>
+    <string name="DJI2DroneSessionManager_invalid_authorization_fly_zone_id">Invalid authorization fly zone id</string>
 </resources>

@@ -7,16 +7,26 @@
 package com.dronelink.dji2;
 
 import android.content.Context;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.dronelink.core.DatedValue;
 import com.dronelink.core.DroneSession;
 import com.dronelink.core.DroneSessionManager;
 import com.dronelink.core.LocaleUtil;
+import com.dronelink.core.adapters.DroneStateAdapter;
+import com.dronelink.core.adapters.EnumElement;
 import com.dronelink.core.command.Command;
+import com.dronelink.core.command.CommandError;
 import com.dronelink.core.kernel.core.Message;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -26,12 +36,16 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import dji.sdk.keyvalue.key.KeyTools;
 import dji.sdk.keyvalue.key.ProductKey;
 import dji.sdk.keyvalue.key.RemoteControllerKey;
+import dji.sdk.keyvalue.value.common.LocationCoordinate2D;
 import dji.sdk.keyvalue.value.product.ProductType;
 import dji.v5.common.callback.CommonCallbacks;
 import dji.v5.common.error.IDJIError;
 import dji.v5.common.register.DJISDKInitEvent;
 import dji.v5.manager.KeyManager;
 import dji.v5.manager.SDKManager;
+import dji.v5.manager.aircraft.flysafe.FlyZoneManager;
+import dji.v5.manager.aircraft.flysafe.info.FlyZoneCategory;
+import dji.v5.manager.aircraft.flysafe.info.FlyZoneInformation;
 import dji.v5.manager.aircraft.uas.AreaStrategy;
 import dji.v5.manager.aircraft.uas.UASRemoteIDManager;
 import dji.v5.manager.aircraft.uas.UASRemoteIDStatus;
@@ -94,6 +108,75 @@ public class DJI2DroneSessionManager implements DroneSessionManager {
     @Override
     public void stopRemoteControllerLinking(final Command.Finisher finisher) {
         KeyManager.getInstance().performAction(KeyTools.createKey(RemoteControllerKey.KeyStopPairing), DronelinkDJI2.createCompletionCallbackWithParam(finisher));
+    }
+
+    @Override
+    public void authorizationFlyZonesInSurroundingArea(final Command.Finisher finishedWithError, final Command.FinisherWith<String> finishedWithValue) {
+        final DroneSession session = getSession();
+        if (session == null) {
+            //TODO N localize
+            finishedWithError.execute(new CommandError(context.getString(R.string.DJI2DroneSessionManager_session_unavailable)));
+            return;
+        }
+
+        final DatedValue<DroneStateAdapter> state = session.getState();
+        if (state == null || state.value == null) {
+            //TODO N localize
+            finishedWithError.execute(new CommandError(context.getString(R.string.DJI2DroneSessionManager_session_unavailable)));
+            return;
+        }
+
+        final Location location = state.value.getLocation();
+        if (location == null) {
+            //TODO N localize
+            finishedWithError.execute(new CommandError(context.getString(R.string.DJI2DroneSessionManager_location_unavailable)));
+            return;
+        }
+        FlyZoneManager.getInstance().getFlyZonesInSurroundingArea(new LocationCoordinate2D(location.getLatitude(), location.getLongitude()), new CommonCallbacks.CompletionCallbackWithParam<List<FlyZoneInformation>>() {
+            @Override
+            public void onSuccess(List<FlyZoneInformation> flyZonesInformation) {
+                if (flyZonesInformation != null && !flyZonesInformation.isEmpty()) {
+                    List<EnumElement> flyZones = new ArrayList<>();
+                    for (FlyZoneInformation flyZoneInformation : flyZonesInformation) {
+                        if (flyZoneInformation.getCategory() == FlyZoneCategory.AUTHORIZATION) {
+                            flyZones.add(new EnumElement(flyZoneInformation.getName() + " - " + flyZoneInformation.getFlyZoneID(), String.valueOf(flyZoneInformation.getFlyZoneID())));
+                        }
+                    }
+                    if (!flyZones.isEmpty()) {
+                        List<JSONObject> enumElementJSONs = new ArrayList<>();
+                        for (EnumElement flyZone : flyZones) {
+                            try {
+                                enumElementJSONs.add(flyZone.asJSON());
+                            } catch (JSONException e) {
+                                Log.e(TAG, "Failed to serialize fly zone: " + e.getMessage());
+                            }
+                        }
+                        finishedWithValue.execute(new JSONArray(enumElementJSONs).toString());
+                        return;
+                    }
+                }
+                //TODO N localize
+                finishedWithError.execute(new CommandError(context.getString(R.string.DJI2DroneSessionManager_authorization_fly_zones_unavailable)));
+            }
+
+            @Override
+            public void onFailure(@NonNull IDJIError djiError) {
+                finishedWithError.execute(new CommandError(djiError.description()));
+            }
+        });
+    }
+
+    @Override
+    public void unlockAuthorizationFlyZone(final String flyZoneID, final Command.Finisher finisher) {
+        int flyZoneIDResolved;
+        try {
+            flyZoneIDResolved = Integer.parseInt(flyZoneID);
+        } catch (NumberFormatException e) {
+            //TODO N localize
+            finisher.execute(new CommandError(context.getString(R.string.DJI2DroneSessionManager_invalid_authorization_fly_zone_id)));
+            return;
+        }
+        FlyZoneManager.getInstance().unlockAuthorizationFlyZone(flyZoneIDResolved, DronelinkDJI2.createCompletionCallback(finisher));
     }
 
     @Override
