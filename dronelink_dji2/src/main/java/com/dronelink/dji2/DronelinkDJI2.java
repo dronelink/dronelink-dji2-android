@@ -895,7 +895,7 @@ public class DronelinkDJI2 {
                     return DroneOcuSyncFrequencyBand._5_DOT_7_GHZ;
                 case BAND_5_DOT_8G:
                     return DroneOcuSyncFrequencyBand._5_DOT_8_GHZ;
-                case BAND_DUAL:
+                case BAND_MULTI:
                     return DroneOcuSyncFrequencyBand.DUAL;
                 case UNKNOWN:
                     return DroneOcuSyncFrequencyBand.UNKNOWN;
@@ -917,7 +917,7 @@ public class DronelinkDJI2 {
             case _5_DOT_8_GHZ:
                 return FrequencyBand.BAND_5_DOT_8G;
             case DUAL:
-                return FrequencyBand.BAND_DUAL;
+                return FrequencyBand.BAND_MULTI;
             case UNKNOWN:
                 return FrequencyBand.UNKNOWN;
         }

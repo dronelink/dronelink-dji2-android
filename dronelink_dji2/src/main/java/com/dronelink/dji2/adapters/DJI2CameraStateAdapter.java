@@ -1015,7 +1015,7 @@ class DJI2CameraStateAdapter implements CameraStateAdapter {
                         @Override
                         public void onSuccess() {
                             if (finished != null) {
-                                commandFinishFocusTargetVerifyRing(context, (FocusCameraCommand) command, finished);
+                                new Handler().postDelayed(() -> commandFinishFocusTargetVerifyRing(context, (FocusCameraCommand) command, finished), 1000);
                             }
                         }
 
